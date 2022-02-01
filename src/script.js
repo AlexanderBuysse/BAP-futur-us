@@ -2,46 +2,10 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
-import axios from 'axios';
-
-
-// DOM
- const formElement = document.querySelector('.form');
-   formElement.addEventListener('submit', async(e) => {
-    e.preventDefault();
-
-    const data = new FormData();
-    data.append(`files`, e.target[0].files[0]);
-
-    const uploadRes = await axios({
-        method: 'POST',
-        url: 'http://localhost:1337/api/upload',
-        data
-    })
-
-    axios
-    .post('http://localhost:1337/api/sounds', {
-        data: {
-            name: 'Dolemon Sushi',
-            url: uploadRes.data[0].url
-        }
-    })
-    .then(response => {
-        console.log(response);
-    });
-    document.querySelector(`.img`).src = `http://localhost:1337${uploadRes.data[0].url}`;
-  });
-
-// Data
-const getStaticProps = async () => {
-    const resp = await fetch(`http://localhost:1337/api/sounds`);
-    const data = await resp.json();
-  return data;
-}
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
-const normalTexture = textureLoader.load(`/textures/golfball.png`)
 
 // Debug
 const gui = new dat.GUI()
@@ -53,21 +17,126 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 // Objects
-const geometry = new THREE.SphereBufferGeometry( .5, 64, 64);
 
 // Materials
+for (let i = 1; i < 7; i++) {
+    
+}
+const material = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/background.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
 
-const material = new THREE.MeshStandardMaterial()
-material.metalness= .7
-material.roughness= .2
-material.normalMap = normalTexture;
+const materialTwo = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/bij.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
 
+const materialImker = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/imker.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
 
-material.color = new THREE.Color(0xff0000)
+const materialMadeliefje = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/madeliefje.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
+
+const materialPaardenbloem = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/paardenbloem.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
+
+const materialPaardenbloemjong = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/paardenbloemjong.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
+
+const materialTree = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/detailpage/tree.png'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
+
+const materialCloud = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/cloud.jpg'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
+
+const wait = async() => {
+    console.log(materialTree.map.repeat.set(1,1));  
+    console.log(materialImker.map.repeat.set(1,1));
+}
+wait();
+
+const material1 = new THREE.MeshBasicMaterial( {
+    color: 0xb2dcff,
+    side: THREE.DoubleSide
+});
 
 // Mesh
-const sphere = new THREE.Mesh(geometry,material)
-scene.add(sphere)
+// const shapeFlat = new THREE.PlaneGeometry(100, 100);
+// shapeFlat.rotateX(-Math.PI * 0.5);
+// const meshPlane = new THREE.Mesh(shapeFlat, material1);
+
+// meshPlane.overdraw = true;
+// meshPlane.position.y = -3;
+//scene.add(meshPlane);
+
+const shape = new THREE.PlaneGeometry(500, 500);
+const meshTexture = new THREE.Mesh(shape, material1);
+meshTexture.position.y = -.5;
+meshTexture.position.z = -60;
+scene.add(meshTexture);
+
+const shapeTwo = new THREE.PlaneGeometry(10, 5);
+let meshTextureTwo = new THREE.Mesh(shapeTwo, materialTwo);
+meshTextureTwo.position.y = .3;
+meshTextureTwo.position.z = 2;
+scene.add(meshTextureTwo);
+
+console.log(window.innerHeight, window.innerWidth);
+const shapeTree = new THREE.PlaneGeometry(160,80);
+let meshTextureThree = new THREE.Mesh(shapeTree, materialTree);
+meshTextureThree.position.z = -50;
+meshTextureThree.position.y = 5;
+scene.add(meshTextureThree);
+
+const shapeImker = new THREE.PlaneGeometry(53,27);
+const meshTextureFour = new THREE.Mesh(shapeImker, materialImker);
+meshTextureFour.position.z = -15;
+meshTextureFour.position.y = -2.5;
+meshTextureFour.position.x = 1.5;
+scene.add(meshTextureFour);
+
+const meshTextureFive = new THREE.Mesh(shapeTwo, materialPaardenbloem);
+meshTextureFive.position.z = 1.4;
+meshTextureFive.position.y = -.4;
+scene.add(meshTextureFive);
+
+const meshTextureSix = new THREE.Mesh(shapeTwo, materialPaardenbloemjong);
+meshTextureSix.position.z = 1.6;
+meshTextureSix.position.y = -.4;
+scene.add(meshTextureSix);
+
+const meshTextureSeven = new THREE.Mesh(shapeTwo, materialMadeliefje);
+meshTextureSeven.position.z = 1.8;
+meshTextureSeven.position.y = -.4;
+scene.add(meshTextureSeven);
+
+materialCloud.map.repeat.set(1,1)
+const shapeCloud = new THREE.PlaneGeometry(20,10);
+const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
+meshTextureEight.position.z = 0;
+meshTextureEight.position.y = 12;
+scene.add(meshTextureEight);
 
 // Lights
 
@@ -75,18 +144,8 @@ const pointLight = new THREE.PointLight(0xffffff, 0.1)
 pointLight.position.x = 2
 pointLight.position.y = 3
 pointLight.position.z = 4
-scene.add(pointLight)
+scene.add(pointLight);
 
-const pointLight2 = new THREE.PointLight(0xff0000, 2)
-pointLight2.position.set(2,2,2);
-pointLight2.intensity = 1;
-
-scene.add(pointLight2)
-
-gui.add(pointLight2.position, `y`).min(-3).max(3).step(.01);
-gui.add(pointLight2.position, `x`).min(-3).max(3).step(.01);
-gui.add(pointLight2.position, `z`).min(-3).max(3).step(.01);
-gui.add(pointLight2, `intensity`).min(0).max(6).step(.01);
 
 /**
  * Sizes
@@ -98,9 +157,11 @@ const sizes = {
 
 window.addEventListener('resize', () =>
 {
+    console.log(sizes, window.innerWidth, window.innerHeight);
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
+
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
@@ -118,8 +179,11 @@ window.addEventListener('resize', () =>
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 0
 camera.position.y = 0
-camera.position.z = 2
-scene.add(camera)
+camera.position.z = 5
+scene.add(camera);
+gui.add(camera.position, `y`);
+gui.add(camera.position, `x`);
+gui.add(camera.position, `z`);
 
 // Controls
 // const controls = new OrbitControls(camera, canvas)
@@ -144,17 +208,39 @@ const handleMoveDocument = e => {
     mouseY = (e.clientY - windowHalfY);
 }
 
-const handleScrollWindow = e => {
-    sphere.position.y = -(window.scrollY * .008)
+const sceneTwo = () => {
+    //scene.remove(meshTextureThree);
+    //scene.remove(meshTextureSeven);
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        y: 25,
+      }, 800)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onComplete(() => { 
+            document.addEventListener(`mousemove`, handleMoveDocument);
+            document.removeEventListener(`click`, handleClickDocument);
+      })
+    .start();
 }
 
-const handleClickTitle = async (e) => {
-    const sounds = await getStaticProps();
-    console.log(sounds.data[1].attributes.url);
-    document.querySelector(`.img`).src = `http://localhost:1337${sounds.data[0].attributes.url}`;
+const handleClickDocument = e => {
+    document.removeEventListener(`mousemove`, handleMoveDocument);
+    conditionMoveCamera = false;
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        y: 12,
+      }, 800)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onComplete(() => { 
+          sceneTwo();
+      })
+    .start();
 }
 
 document.addEventListener(`mousemove`, handleMoveDocument);
+document.addEventListener(`click`, handleClickDocument);
 let mouseX = 0;
 let mouseY = 0;
 
@@ -164,32 +250,49 @@ let targetY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
-window.addEventListener(`scroll`, handleScrollWindow);
-document.querySelector(`.get`).addEventListener(`click`, handleClickTitle)
+let conditionMoveCamera = true;
 
-const clock = new THREE.Clock()
+const clock = new THREE.Clock();
 
 const tick = () =>
 {
-    targetX= mouseX * .001;
-    targetY= mouseY * .001;
+    targetX= mouseX * .05;
+    targetY= mouseY * .05;
 
+    TWEEN.update();
 
     const elapsedTime = clock.getElapsedTime()
 
-    // Update objects
-    //sphere.rotation.y = .5 * elapsedTime
+    if (conditionMoveCamera) {
+        camera.position.x = -.005 * -(targetX -  camera.position.x);
+        camera.position.y = -.005 * -(targetY -  camera.position.y);
+    }
 
-    // soort paralax effect 
-    sphere.rotation.y = .5 * (targetX - sphere.rotation.y);
-    sphere.rotation.x = .5 * (targetY - sphere.rotation.x);
-    sphere.position.z = .5 * (targetY - sphere.rotation.y);
+    // meshTextureTwo.rotation.y = .2 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureTwo.rotation.x = .2 * (targetY - meshTextureTwo.rotation.x);
+
+    // meshTextureThree.rotation.y = .7 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureThree.rotation.x = .7 * (targetY - meshTextureTwo.rotation.x);
+
+    // meshTextureFour.rotation.y = .6 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureFour.rotation.x = .6 * (targetY - meshTextureTwo.rotation.x);
+
+    // meshTextureFive.rotation.y = .5 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureFive.rotation.x = .5 * (targetY - meshTextureTwo.rotation.x);
+
+    // meshTextureSix.rotation.y = .4 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureSix.rotation.x = .4 * (targetY - meshTextureTwo.rotation.x);
+
+    // meshTextureSeven.rotation.y = .3 * (targetX - meshTextureTwo.rotation.y);
+    // meshTextureSeven.rotation.x = .3 * (targetY - meshTextureTwo.rotation.x);
+
 
     // Update Orbital Controls
-    // controls.update()
+    //controls.update()
 
     // Render
-    renderer.render(scene, camera)
+    renderer.render(scene, camera);
+
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
