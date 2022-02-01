@@ -18,7 +18,49 @@ const scene = new THREE.Scene()
 
 // Objects
 
-// Materials
+// sprite
+const geometry = new THREE.BufferGeometry();
+const vertices = [];
+let parameters;
+let materials = [];
+
+const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
+
+for ( let i = 0; i < 1; i ++ ) {
+
+    const x = 1;
+    const y = 1;
+    const z = 1;
+
+    vertices.push( x, y, z );
+
+}
+
+geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+
+parameters = [
+    [[ 1, 1, 1 ], sprite1, .2 ]
+];
+
+for ( let i = 0; i < parameters.length; i ++ ) {
+
+    const color = parameters[ i ][ 0 ];
+    const sprite = parameters[ i ][ 1 ];
+    const size = parameters[ i ][ 2 ];
+
+    materials[ i ] = new THREE.PointsMaterial( { size: size, map: sprite, depthTest: false, transparent: true } );
+    materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ] );
+
+    const particles = new THREE.Points( geometry, materials[ i ] );
+
+    particles.rotation.x = Math.random() * 6;
+    particles.rotation.y = Math.random() * 6;
+    particles.rotation.z = Math.random() * 6;
+
+    console.log(particles);
+    scene.add( particles );
+}
+
 const baseSizeWidth = 10;
 const baseSizeHeight = 5;
 
@@ -277,10 +319,10 @@ let conditionMoveCamera = true;
 
 const clock = new THREE.Clock();
 
-const tick = () =>
-{
+const tick = () => {
     targetX= mouseX * .05;
     targetY= mouseY * .05;
+    const time = Date.now() * 0.00005;
 
     TWEEN.update();
 
@@ -295,6 +337,26 @@ const tick = () =>
 
     // Update Orbital Controls
     //controls.update()
+    for ( let i = 0; i < scene.children.length; i ++ ) {
+
+        const object = scene.children[ i ];
+
+        if ( object instanceof THREE.Points ) {
+
+            object.rotation.y = time * ( i < 4 ? i + 1 : - ( i + 1 ) );
+
+        }
+
+    }
+
+    for ( let i = 0; i < materials.length; i ++ ) {
+
+        const color = parameters[ i ][ 0 ];
+
+        const h = ( 360 * ( color[ 0 ] + time ) % 360 ) / 360;
+        materials[ i ].color.setHSL( h, color[ 1 ], color[ 2 ] );
+
+    }
 
     // Render
     renderer.render(scene, camera);
