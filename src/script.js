@@ -19,47 +19,55 @@ const scene = new THREE.Scene()
 // Objects
 
 // Materials
+
+const treeTextures = [];
 for (let i = 1; i < 7; i++) {
-    
+    treeTextures[i]= new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`/detailpage/tree_${i}.png`),
+        transparent: true
+    });
 }
+
+console.log(treeTextures);
+
 const material = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/background.png'),
+    map: textureLoader.load('/detailpagetest/background.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialTwo = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/bij.png'),
+    map: textureLoader.load('/detailpagetest/bij.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialImker = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/imker.png'),
+    map: textureLoader.load('/detailpagetest/imker.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialMadeliefje = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/madeliefje.png'),
+    map: textureLoader.load('/detailpagetest/madeliefje.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialPaardenbloem = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/paardenbloem.png'),
+    map: textureLoader.load('/detailpagetest/paardenbloem.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialPaardenbloemjong = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/paardenbloemjong.png'),
+    map: textureLoader.load('/detailpagetest/paardenbloemjong.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
 
 const materialTree = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpage/tree.png'),
+    map: textureLoader.load('/detailpagetest/tree.png'),
     transparent: true,
     side: THREE.DoubleSide
 });
@@ -267,25 +275,6 @@ const tick = () =>
         camera.position.x = -.005 * -(targetX -  camera.position.x);
         camera.position.y = -.005 * -(targetY -  camera.position.y);
     }
-
-    // meshTextureTwo.rotation.y = .2 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureTwo.rotation.x = .2 * (targetY - meshTextureTwo.rotation.x);
-
-    // meshTextureThree.rotation.y = .7 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureThree.rotation.x = .7 * (targetY - meshTextureTwo.rotation.x);
-
-    // meshTextureFour.rotation.y = .6 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureFour.rotation.x = .6 * (targetY - meshTextureTwo.rotation.x);
-
-    // meshTextureFive.rotation.y = .5 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureFive.rotation.x = .5 * (targetY - meshTextureTwo.rotation.x);
-
-    // meshTextureSix.rotation.y = .4 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureSix.rotation.x = .4 * (targetY - meshTextureTwo.rotation.x);
-
-    // meshTextureSeven.rotation.y = .3 * (targetX - meshTextureTwo.rotation.y);
-    // meshTextureSeven.rotation.x = .3 * (targetY - meshTextureTwo.rotation.x);
-
 
     // Update Orbital Controls
     //controls.update()
