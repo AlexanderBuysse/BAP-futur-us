@@ -19,58 +19,125 @@ const scene = new THREE.Scene()
 // Objects
 
 // Materials
+const baseSizeWidth = 10;
+const baseSizeHeight = 5;
+
+const swtichDistance = number => {
+    let multiply;
+    switch (number) {
+        case 0:
+            multiply = 99;
+            break;
+        case 1:
+            multiply = 74;
+            break;
+        case 2:
+            multiply = 34;
+            break;
+        case 3:
+            multiply = 18;
+            break;
+        case 4:
+            multiply = 6;
+            break;
+        default:
+            break;
+    }
+    return multiply;
+}
+
+const swtichDistanceTree = number => {
+    let multiply;
+    switch (number) {
+        case 0:
+            multiply = 99;
+            break;
+        case 1:
+            multiply = 74;
+            break;
+        case 2:
+            multiply = 34;
+            break;
+        case 3:
+            multiply = 20;
+            break;
+        case 4:
+            multiply = 14;
+            break;
+        case 5:
+            multiply = 8;
+            break;
+        default:
+            break;
+    }
+    return multiply;
+}
+
+const backgroundTexture = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/detailpage/clouds.png`),
+    transparent: true
+});
+const shapeBackground = new THREE.PlaneGeometry(200, 120);
+const meshBackground = new THREE.Mesh(shapeBackground, backgroundTexture);
+meshBackground.position.z = -60;
+meshBackground.position.y = 5;
+scene.add(meshBackground);
+
+const beekeeperTexture = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/detailpage/beekeper.png`),
+    transparent: true
+});
+const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
+const meshBeekeeper = new THREE.Mesh(shapeBeekeeper, beekeeperTexture);
+meshBeekeeper.position.z = 2;
+meshBeekeeper.position.y = 0;
+scene.add(meshBeekeeper);
+
 
 const treeTextures = [];
-for (let i = 1; i < 7; i++) {
+for (let i = 0; i < 6; i++) {
     treeTextures[i]= new THREE.MeshBasicMaterial({
         map: textureLoader.load(`/detailpage/tree_${i}.png`),
         transparent: true
     });
+    let shapeTree;
+    let bruh = 24;
+    let bruh2 = 12;
+
+    if (i === 0) {
+        console.log(`dit werkt`);
+        shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*1}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*1}`)));
+    } else {
+        shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*i}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*i}`)));
+    }
+    console.log();
+    const meshTree = new THREE.Mesh(shapeTree, treeTextures[i]);
+    meshTree.position.y = window.innerWidth/9000;
+    meshTree.position.x = (window.innerWidth/9000);    
+    meshTree.position.z = -10+ i;
+    // parseFloat(`0.${i}`)
+    scene.add(meshTree);
 }
 
-console.log(treeTextures);
-
-const material = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/background.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialTwo = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/bij.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialImker = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/imker.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialMadeliefje = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/madeliefje.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialPaardenbloem = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/paardenbloem.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialPaardenbloemjong = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/paardenbloemjong.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
-
-const materialTree = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/detailpagetest/tree.png'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
+const flowerTextures = [];
+for (let i = 0; i < 6; i++) {
+    flowerTextures[i]= new THREE.MeshBasicMaterial({
+        map: textureLoader.load(`/detailpage/flower_${i}.png`),
+        transparent: true
+    });
+    let shapeFlower;
+    if (i === 5) {
+        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth, baseSizeHeight);
+    } else if (i === 0) {
+        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*1}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*1}`)));
+    } else {
+        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*i}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*i}`)));
+    }
+    const meshFlower = new THREE.Mesh(shapeFlower, flowerTextures[i]);
+    meshFlower.position.z = -3+ i;
+    meshFlower.position.x =-(window.innerWidth/3000);
+    scene.add(meshFlower);
+}
 
 const materialCloud = new THREE.MeshBasicMaterial({
     map: textureLoader.load('/cloud.jpg'),
@@ -78,66 +145,16 @@ const materialCloud = new THREE.MeshBasicMaterial({
     side: THREE.DoubleSide
 });
 
-const wait = async() => {
-    console.log(materialTree.map.repeat.set(1,1));  
-    console.log(materialImker.map.repeat.set(1,1));
-}
-wait();
-
 const material1 = new THREE.MeshBasicMaterial( {
     color: 0xb2dcff,
     side: THREE.DoubleSide
 });
-
-// Mesh
-// const shapeFlat = new THREE.PlaneGeometry(100, 100);
-// shapeFlat.rotateX(-Math.PI * 0.5);
-// const meshPlane = new THREE.Mesh(shapeFlat, material1);
-
-// meshPlane.overdraw = true;
-// meshPlane.position.y = -3;
-//scene.add(meshPlane);
 
 const shape = new THREE.PlaneGeometry(500, 500);
 const meshTexture = new THREE.Mesh(shape, material1);
 meshTexture.position.y = -.5;
 meshTexture.position.z = -60;
 scene.add(meshTexture);
-
-const shapeTwo = new THREE.PlaneGeometry(10, 5);
-let meshTextureTwo = new THREE.Mesh(shapeTwo, materialTwo);
-meshTextureTwo.position.y = .3;
-meshTextureTwo.position.z = 2;
-scene.add(meshTextureTwo);
-
-console.log(window.innerHeight, window.innerWidth);
-const shapeTree = new THREE.PlaneGeometry(160,80);
-let meshTextureThree = new THREE.Mesh(shapeTree, materialTree);
-meshTextureThree.position.z = -50;
-meshTextureThree.position.y = 5;
-scene.add(meshTextureThree);
-
-const shapeImker = new THREE.PlaneGeometry(53,27);
-const meshTextureFour = new THREE.Mesh(shapeImker, materialImker);
-meshTextureFour.position.z = -15;
-meshTextureFour.position.y = -2.5;
-meshTextureFour.position.x = 1.5;
-scene.add(meshTextureFour);
-
-const meshTextureFive = new THREE.Mesh(shapeTwo, materialPaardenbloem);
-meshTextureFive.position.z = 1.4;
-meshTextureFive.position.y = -.4;
-scene.add(meshTextureFive);
-
-const meshTextureSix = new THREE.Mesh(shapeTwo, materialPaardenbloemjong);
-meshTextureSix.position.z = 1.6;
-meshTextureSix.position.y = -.4;
-scene.add(meshTextureSix);
-
-const meshTextureSeven = new THREE.Mesh(shapeTwo, materialMadeliefje);
-meshTextureSeven.position.z = 1.8;
-meshTextureSeven.position.y = -.4;
-scene.add(meshTextureSeven);
 
 materialCloud.map.repeat.set(1,1)
 const shapeCloud = new THREE.PlaneGeometry(20,10);
@@ -217,8 +234,6 @@ const handleMoveDocument = e => {
 }
 
 const sceneTwo = () => {
-    //scene.remove(meshTextureThree);
-    //scene.remove(meshTextureSeven);
     new TWEEN.Tween(camera.position)
     .to(
       {
@@ -248,7 +263,7 @@ const handleClickDocument = e => {
 }
 
 document.addEventListener(`mousemove`, handleMoveDocument);
-document.addEventListener(`click`, handleClickDocument);
+//document.addEventListener(`click`, handleClickDocument);
 let mouseX = 0;
 let mouseY = 0;
 
@@ -274,6 +289,8 @@ const tick = () =>
     if (conditionMoveCamera) {
         camera.position.x = -.005 * -(targetX -  camera.position.x);
         camera.position.y = -.005 * -(targetY -  camera.position.y);
+        meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
+        meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
     }
 
     // Update Orbital Controls
