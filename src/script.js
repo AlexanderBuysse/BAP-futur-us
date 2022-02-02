@@ -1,8 +1,9 @@
 import './style.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls.js'
 import * as dat from 'dat.gui'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
+//import { MapControls } from './jsm/controls/OrbitControls.js';
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
@@ -17,6 +18,38 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 // Objects
+const backgroundMapTexture = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/hometest/worldmap.jpg`),
+    transparent: false
+});
+
+const handleMoveCamera = e => {
+    switch (e.keyCode) {
+        case 37:
+            camera.position.x = camera.position.x - 2;
+            break;
+        case 38:
+            camera.position.y = camera.position.y + 2;
+            break;
+        case 39:
+            camera.position.x = camera.position.x + 2;
+            break;
+        case 40:
+            camera.position.y = camera.position.y - 2;
+            break;
+    }
+}
+
+let controls;
+
+const home = () => {
+    const shapeBackgroundMap = new THREE.PlaneGeometry(200, 120);
+    const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
+    meshBackgroundMap.position.z = -40;
+    meshBackgroundMap.position.y =6;
+    scene.add(meshBackgroundMap);
+    //document.addEventListener(`keydown`, handleMoveCamera);
+}
 
 // sprite
 const geometry = new THREE.BufferGeometry();
@@ -26,14 +59,13 @@ let materials = [];
 
 const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
 
-for ( let i = 0; i < 1; i ++ ) {
 
-    const x = 1;
-    const y = 1;
-    const z = 1;
+for ( let i = 0; i < 100; i ++ ) {
+    const x = Math.random() * 20 - 10;
+    const y = Math.random() * 20 - 10;
+    const z = Math.random() * 20 - 10;;
 
     vertices.push( x, y, z );
-
 }
 
 geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
@@ -42,8 +74,8 @@ parameters = [
     [[ 1, 1, 1 ], sprite1, .2 ]
 ];
 
+let beePatricles;
 for ( let i = 0; i < parameters.length; i ++ ) {
-
     const color = parameters[ i ][ 0 ];
     const sprite = parameters[ i ][ 1 ];
     const size = parameters[ i ][ 2 ];
@@ -53,11 +85,11 @@ for ( let i = 0; i < parameters.length; i ++ ) {
 
     const particles = new THREE.Points( geometry, materials[ i ] );
 
-    particles.rotation.x = Math.random() * 6;
-    particles.rotation.y = Math.random() * 6;
-    particles.rotation.z = Math.random() * 6;
+    //particles.rotation.x = Math.random() * 6;
+    //particles.rotation.y = Math.random() * 6;
+    //particles.rotation.z = Math.random() * 6;
 
-    console.log(particles);
+    beePatricles = particles;
     scene.add( particles );
 }
 
@@ -122,7 +154,7 @@ const backgroundTexture = new THREE.MeshBasicMaterial({
 const shapeBackground = new THREE.PlaneGeometry(200, 120);
 const meshBackground = new THREE.Mesh(shapeBackground, backgroundTexture);
 meshBackground.position.z = -60;
-meshBackground.position.y = 5;
+meshBackground.position.y = 6;
 scene.add(meshBackground);
 
 const beekeeperTexture = new THREE.MeshBasicMaterial({
@@ -137,6 +169,7 @@ scene.add(meshBeekeeper);
 
 
 const treeTextures = [];
+const treeMeshes = [];
 for (let i = 0; i < 6; i++) {
     treeTextures[i]= new THREE.MeshBasicMaterial({
         map: textureLoader.load(`/detailpage/tree_${i}.png`),
@@ -147,18 +180,16 @@ for (let i = 0; i < 6; i++) {
     let bruh2 = 12;
 
     if (i === 0) {
-        console.log(`dit werkt`);
         shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*1}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*1}`)));
     } else {
         shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*i}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*i}`)));
     }
-    console.log();
     const meshTree = new THREE.Mesh(shapeTree, treeTextures[i]);
     meshTree.position.y = window.innerWidth/9000;
     meshTree.position.x = (window.innerWidth/9000);    
     meshTree.position.z = -10+ i;
-    // parseFloat(`0.${i}`)
     scene.add(meshTree);
+    treeMeshes.push(meshTree);
 }
 
 const flowerTextures = [];
@@ -202,7 +233,7 @@ materialCloud.map.repeat.set(1,1)
 const shapeCloud = new THREE.PlaneGeometry(20,10);
 const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
 meshTextureEight.position.z = 0;
-meshTextureEight.position.y = 12;
+meshTextureEight.position.y = 9;
 scene.add(meshTextureEight);
 
 // Lights
@@ -253,8 +284,8 @@ gui.add(camera.position, `x`);
 gui.add(camera.position, `z`);
 
 // Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+//const controls = new OrbitControls(camera, canvas)
+//controls.enableDamping = true
 
 /**
  * Renderer
@@ -279,33 +310,50 @@ const sceneTwo = () => {
     new TWEEN.Tween(camera.position)
     .to(
       {
-        y: 25,
+        y: 35,
       }, 800)
       .easing(TWEEN.Easing.Sinusoidal.In)
-      .onComplete(() => { 
-            document.addEventListener(`mousemove`, handleMoveDocument);
-            document.removeEventListener(`click`, handleClickDocument);
-      })
+      .onComplete(() => {
+            new TWEEN.Tween(camera.position)
+            .to(
+              {
+                z: -3,
+              }, 200)
+              .easing(TWEEN.Easing.Sinusoidal.In)
+              .onComplete(() => {
+                document.addEventListener(`mousemove`, handleMoveDocument);
+                mapCamera= true;
+            })
+            .start();
+        })
     .start();
+
 }
 
 const handleClickDocument = e => {
     document.removeEventListener(`mousemove`, handleMoveDocument);
+    document.removeEventListener(`click`, handleClickDocument);
     conditionMoveCamera = false;
     new TWEEN.Tween(camera.position)
     .to(
       {
-        y: 12,
+        y: 9,
       }, 800)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => { 
+          for (let i = 0; i < 6; i++) {
+            scene.remove(treeMeshes[i]);
+            scene.remove(meshBackground);
+            scene.remove(beePatricles);
+            home();
+          } 
           sceneTwo();
       })
     .start();
 }
 
 document.addEventListener(`mousemove`, handleMoveDocument);
-//document.addEventListener(`click`, handleClickDocument);
+document.addEventListener(`click`, handleClickDocument);
 let mouseX = 0;
 let mouseY = 0;
 
@@ -319,10 +367,13 @@ let conditionMoveCamera = true;
 
 const clock = new THREE.Clock();
 
+let mapCamera = false;
+
 const tick = () => {
     targetX= mouseX * .05;
     targetY= mouseY * .05;
-    const time = Date.now() * 0.00005;
+    const time = Date.now() * 0.005;
+    const delta = clock.getDelta();
 
     TWEEN.update();
 
@@ -334,29 +385,27 @@ const tick = () => {
         meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
         meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
     }
+    if (mapCamera) {
+        camera.position.x = -.6 * -(targetX -  camera.position.x);
+        camera.position.y = .5 * -(targetY -  camera.position.y);
+    }
 
     // Update Orbital Controls
-    //controls.update()
-    for ( let i = 0; i < scene.children.length; i ++ ) {
-
-        const object = scene.children[ i ];
-
-        if ( object instanceof THREE.Points ) {
-
-            object.rotation.y = time * ( i < 4 ? i + 1 : - ( i + 1 ) );
-
-        }
-
+    if (controls) {
+        //controls.update(delta);
+        //controls.movementSpeed = 0.33 * 100;    
     }
 
-    for ( let i = 0; i < materials.length; i ++ ) {
-
-        const color = parameters[ i ][ 0 ];
-
-        const h = ( 360 * ( color[ 0 ] + time ) % 360 ) / 360;
-        materials[ i ].color.setHSL( h, color[ 1 ], color[ 2 ] );
-
-    }
+    //console.log(geometry.boundingSphere);
+    // geometry.forEach(geometry.vertices, function(particle){
+    //     var dX, dY, dZ;
+    //     dX = Math.random() * 2 - 1;
+    //     dY = Math.random() * 2 - 1;
+    //     dZ = Math.random() * 2 - 1;
+    
+    //     particle.add(new THREE.Vector3(dX, dY, dZ));
+    //   });
+    //   geometry.verticesNeedUpdate = true;
 
     // Render
     renderer.render(scene, camera);
