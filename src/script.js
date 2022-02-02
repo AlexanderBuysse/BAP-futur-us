@@ -23,30 +23,13 @@ const backgroundMapTexture = new THREE.MeshBasicMaterial({
     transparent: false
 });
 
-const handleMoveCamera = e => {
-    switch (e.keyCode) {
-        case 37:
-            camera.position.x = camera.position.x - 2;
-            break;
-        case 38:
-            camera.position.y = camera.position.y + 2;
-            break;
-        case 39:
-            camera.position.x = camera.position.x + 2;
-            break;
-        case 40:
-            camera.position.y = camera.position.y - 2;
-            break;
-    }
-}
-
 let controls;
 
 const home = () => {
-    const shapeBackgroundMap = new THREE.PlaneGeometry(200, 120);
+    const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
     const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
-    meshBackgroundMap.position.z = -40;
-    meshBackgroundMap.position.y =6;
+    meshBackgroundMap.position.z = -30;
+    meshBackgroundMap.position.y =0;
     scene.add(meshBackgroundMap);
     //document.addEventListener(`keydown`, handleMoveCamera);
 }
@@ -310,24 +293,23 @@ const sceneTwo = () => {
     new TWEEN.Tween(camera.position)
     .to(
       {
-        y: 35,
-      }, 800)
+        y: 40,
+      }, 500)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
-            new TWEEN.Tween(camera.position)
-            .to(
-              {
-                z: -3,
-              }, 200)
-              .easing(TWEEN.Easing.Sinusoidal.In)
-              .onComplete(() => {
-                document.addEventListener(`mousemove`, handleMoveDocument);
-                mapCamera= true;
-            })
-            .start();
         })
     .start();
-
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        z: -25,
+      }, 500)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onComplete(() => {
+        document.addEventListener(`mousemove`, handleMoveDocument);
+        mapCamera= true;
+    })
+    .start();
 }
 
 const handleClickDocument = e => {
@@ -386,8 +368,8 @@ const tick = () => {
         meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
     }
     if (mapCamera) {
-        camera.position.x = -.6 * -(targetX -  camera.position.x);
-        camera.position.y = .5 * -(targetY -  camera.position.y);
+        camera.position.x = -.05 * -(targetX -  camera.position.x);
+        camera.position.y = .05 * -(targetY -  camera.position.y);
     }
 
     // Update Orbital Controls
@@ -395,17 +377,6 @@ const tick = () => {
         //controls.update(delta);
         //controls.movementSpeed = 0.33 * 100;    
     }
-
-    //console.log(geometry.boundingSphere);
-    // geometry.forEach(geometry.vertices, function(particle){
-    //     var dX, dY, dZ;
-    //     dX = Math.random() * 2 - 1;
-    //     dY = Math.random() * 2 - 1;
-    //     dZ = Math.random() * 2 - 1;
-    
-    //     particle.add(new THREE.Vector3(dX, dY, dZ));
-    //   });
-    //   geometry.verticesNeedUpdate = true;
 
     // Render
     renderer.render(scene, camera);
