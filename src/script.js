@@ -8,19 +8,24 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
+let broom;
 
 const loadPhaser = () => {
     const config = {
         type: Phaser.AUTO,
-        width: 1200,
-        height: 700,
+        scale: {
+            mode: Phaser.Scale.FIT,
+            parent: 'game-area',
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: 1680,
+            height: 945
+        },
         physics: {
           default: 'arcade',
           arcade: {
-            gravity: { y: 200 }
+            gravity: { y: 400 }
           }
         },
-        parent: 'game-area',
         scene: {
           preload: preload,
           create: create,
@@ -30,23 +35,88 @@ const loadPhaser = () => {
       
     new Phaser.Game(config);
       
+    let rect;
+    let goodleaves;
+
     function preload () {
         this.load.image('background', 'interactie1/achtergrond.png');
+        this.load.image('broom', 'interactie1/broom.png');
+        this.load.image('platform', 'interactie1/plat.png');
+        this.load.image('badleaf', 'interactie1/badleaf.png');
+        this.load.image('goodleaf', 'interactie1/goodleaf.png');
     }
       
     function create () {
-        this.add.image(600, 350, 'background');
+        rect = this.add.rectangle(400, 300, 300, 200).setStrokeStyle(2, 0xffff00);
+
+        this.add.image(840, 473, 'background');
+        broom = this.physics.add.sprite(840, 300, 'broom');
+        broom.body.setAllowGravity(false);
+        this.add.image(840, 900, 'platform');
+
+        let platforms = this.physics.add.staticGroup();
+        platforms.create(840, 900, 'platform').refreshBody();
+
+        let badleaves = this.physics.add.group({
+            key: 'badleaf',
+            repeat: 4,
+            setXY: {x: 100, y: 0, stepX: 100}
+        });
+
+        goodleaves = this.physics.add.group({
+            key: 'goodleaf',
+            repeat: 4,
+            setXY: {x: 110, y: 0, stepX: 100}
+        });
+
+        const handleColiBroom = () => {
+           console.log(`colided`);
+
+        }
+
+        this.physics.add.collider(badleaves, broom);
+        this.physics.add.collider(goodleaves, broom);
+        this.physics.add.collider(badleaves, platforms);
+        this.physics.add.collider(goodleaves, platforms);
+        //this.physics.add.collider(broom, goodleaves, handleColiBroom);
+        this.physics.world.enable([ broom, goodleaves]);
+
+        this.input.on('pointermove', function (pointer) {
+            if (pointer.position.y > 763) {
+                broom.y = 763;
+                broom.x = pointer.position.x;
+            } else {
+                broom.x = pointer.position.x;
+                broom.y = pointer.position.y;
+            }
+
+            rect.x = pointer.x;
+            rect.y = pointer.y;
+
+            // Force the sprite to stay on screen
+            // broom.x = Phaser.Math.Wrap(broom.x, 0, game.renderer.width);
+            // broom.y = Phaser.Math.Wrap(broom.y, 0, game.renderer.height);
+
+            if (pointer.movementX > 0) { broom.setRotation(0.1); }
+            else if (pointer.movementX < 0) { broom.setRotation(-0.1); }
+            else { broom.setRotation(0); }
+        }, this);
     }
 
     function update () {
-
+        this.physics.world.collide(broom, goodleaves);
     }
+
+    console.log(sizes);
       
     var modal = document.querySelector(`.myModal`);
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0]; 
     btn.onclick = function() {
-        modal.style.display = "block";
+        modal.style.display = "grid";
+        let frame = document.getElementById("myBtn");
+        frame.style.width= sizes.width - 400;
+        frame.style.height= sizes.height - 400;        
     }
     span.onclick = function() {
         modal.style.display = "none";
