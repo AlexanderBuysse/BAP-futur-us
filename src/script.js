@@ -1,9 +1,53 @@
 import './style.css'
 import * as THREE from 'three'
-import { FlyControls } from 'three/examples/jsm/controls/FlyControls.js'
 import * as dat from 'dat.gui'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
-//import { MapControls } from './jsm/controls/OrbitControls.js';
+import Phaser from "phaser";
+
+const loadPhaser = () => {
+    const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        physics: {
+          default: 'arcade',
+          arcade: {
+            gravity: { y: 200 }
+          }
+        },
+        parent: 'game-area',
+        scene: {
+          preload: preload,
+          create: create
+        }
+      };
+      
+    new Phaser.Game(config);
+      
+    function preload () {
+      
+    }
+      
+    function create () {
+    }
+      
+    var modal = document.querySelector(`.myModal`);
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0]; 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+    }
+} 
+loadPhaser();
+
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
