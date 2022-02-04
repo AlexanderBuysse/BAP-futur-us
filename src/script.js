@@ -7,8 +7,8 @@ import Phaser from "phaser";
 const loadPhaser = () => {
     const config = {
         type: Phaser.AUTO,
-        width: 800,
-        height: 600,
+        width: sizes.width -100,
+        height: sizes.height -100,
         physics: {
           default: 'arcade',
           arcade: {
@@ -35,7 +35,7 @@ const loadPhaser = () => {
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0]; 
     btn.onclick = function() {
-        modal.style.display = "block";
+        modal.style.display = "grid";
     }
     span.onclick = function() {
         modal.style.display = "none";
@@ -46,7 +46,7 @@ const loadPhaser = () => {
         }
     }
 } 
-loadPhaser();
+
 
 
 // Loading
@@ -394,6 +394,7 @@ let conditionMoveCamera = true;
 const clock = new THREE.Clock();
 
 let mapCamera = false;
+loadPhaser();
 
 const tick = () => {
     targetX= mouseX * .05;
@@ -414,12 +415,6 @@ const tick = () => {
     if (mapCamera) {
         camera.position.x = -.05 * -(targetX -  camera.position.x);
         camera.position.y = .05 * -(targetY -  camera.position.y);
-    }
-
-    // Update Orbital Controls
-    if (controls) {
-        //controls.update(delta);
-        //controls.movementSpeed = 0.33 * 100;    
     }
 
     // Render
