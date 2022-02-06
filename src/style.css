@@ -45,10 +45,10 @@ body
   .modal-content {
     background-color: #fefefe;
     border: 1px solid #888;
-    max-width: 80vw;
-    max-height: 80vh;
-    min-width: 79vw;
-    min-height: 79vh;
+    max-width: 90vw;
+    max-height: 60vh;
+    min-width: 89vw;
+    min-height: 59vh;
   }
   
   /* The Close Button */

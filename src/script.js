@@ -69,25 +69,46 @@ const loadPhaser = () => {
             setXY: {x: 110, y: 0, stepX: 100}
         });
 
-        const handleColiBroom = () => {
-           console.log(`colided`);
-
+        const handleColiBroom = (eBroom, eLeave) => {
+           //console.log(e);
+           eLeave.x = eLeave.x + 10;
         }
+
+        this.input.setDraggable(broom.setInteractive());
+        console.log(broom);
+        console.log(goodleaves.children.entries);
+        goodleaves.children.entries.forEach(leaf => {
+            this.input.setDraggable(leaf.setInteractive());
+        })
+
+        this.input.on('dragstart', function (pointer, obj)
+        {
+            obj.body.moves = false;
+        });
+    
+        this.input.on('drag', function (pointer, obj, dragX, dragY)
+        {
+            obj.setPosition(dragX, dragY);
+        });
+    
+        this.input.on('dragend', function (pointer, obj)
+        {
+            obj.body.moves = true;
+        });
 
         this.physics.add.collider(badleaves, broom);
         this.physics.add.collider(goodleaves, broom);
         this.physics.add.collider(badleaves, platforms);
         this.physics.add.collider(goodleaves, platforms);
-        //this.physics.add.collider(broom, goodleaves, handleColiBroom);
-        this.physics.world.enable([ broom, goodleaves]);
+        this.physics.add.collider(broom, goodleaves, handleColiBroom);
 
         this.input.on('pointermove', function (pointer) {
             if (pointer.position.y > 763) {
-                broom.y = 763;
-                broom.x = pointer.position.x;
+                //broom.y = 763;
+                //broom.x = pointer.position.x;
             } else {
-                broom.x = pointer.position.x;
-                broom.y = pointer.position.y;
+                //broom.x = pointer.position.x;
+                //broom.y = pointer.position.y;
             }
 
             rect.x = pointer.x;
@@ -104,7 +125,6 @@ const loadPhaser = () => {
     }
 
     function update () {
-        this.physics.world.collide(broom, goodleaves);
     }
 
     console.log(sizes);
