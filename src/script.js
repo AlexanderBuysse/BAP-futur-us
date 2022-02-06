@@ -50,7 +50,6 @@ const loadPhaser = () => {
 
     function create () {
         scene= this;
-        rect = this.add.rectangle(400, 300, 300, 200).setStrokeStyle(2, 0xffff00);
 
         this.add.image(840, 473, 'background');
         broom = this.physics.add.sprite(840, 300, 'broom');
@@ -73,13 +72,10 @@ const loadPhaser = () => {
         });
 
         const handleColiBroom = (eBroom, eLeave) => {
-            //console.log(eLeave.x-eBroom.x);
             if(Math.sign((eLeave.x-eBroom.x)) === -1) {
-                console.log('right');
                 eLeave.x = eLeave.x -10; 
             } else {
                 eLeave.x = eLeave.x +10; 
-                console.log('left');
             }
         }
 
@@ -117,8 +113,8 @@ const loadPhaser = () => {
 
         this.physics.add.collider(badleaves, goodleaves, customSeparate);
         this.physics.add.collider(goodleaves, badleaves, customSeparate);
-        this.physics.add.collider(goodleaves, badleaves, customSeparate);
-        this.physics.add.collider(badleaves, badleaves, customSeparate);
+        
+        rect = this.add.rectangle(780, 600, 730, 600).setStrokeStyle(2, 0xffff00);
     }
 
     function customSeparate(s1, s2) {
@@ -204,6 +200,23 @@ const loadPhaser = () => {
       
 
     function update () {
+        var x = rect.x - (rect.width / 2);
+        var y = rect.y - (rect.height / 2);
+    
+        var within = this.physics.overlapRect(x, y, rect.width, rect.height);
+        let countLeaves= 0;
+    
+        within.forEach(function (body) {
+            //console.log(body.width);
+            if(body.width !== 95) {
+                countLeaves ++;
+            }
+        });
+
+        document.querySelector(`.countLeaves`).textContent= countLeaves;
+
+        console.log(countLeaves);
+    
 
         goodleaves.children.entries.forEach(leaf => {
             if (leaf.y > 900) {
