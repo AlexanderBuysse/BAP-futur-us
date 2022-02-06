@@ -23,7 +23,7 @@ const loadPhaser = () => {
         physics: {
           default: 'arcade',
           arcade: {
-            gravity: { y: 400 }
+            gravity: { y: 600 }
           }
         },
         scene: {
@@ -36,7 +36,9 @@ const loadPhaser = () => {
     new Phaser.Game(config);
       
     let rect;
-    let goodleaves;
+    let goodleaves;    
+    let badleaves;
+    let scene;
 
     function preload () {
         this.load.image('background', 'interactie1/achtergrond.png');
@@ -45,8 +47,9 @@ const loadPhaser = () => {
         this.load.image('badleaf', 'interactie1/badleaf.png');
         this.load.image('goodleaf', 'interactie1/goodleaf.png');
     }
-      
+
     function create () {
+        scene= this;
         rect = this.add.rectangle(400, 300, 300, 200).setStrokeStyle(2, 0xffff00);
 
         this.add.image(840, 473, 'background');
@@ -57,28 +60,39 @@ const loadPhaser = () => {
         let platforms = this.physics.add.staticGroup();
         platforms.create(840, 900, 'platform').refreshBody();
 
-        let badleaves = this.physics.add.group({
+        badleaves = this.physics.add.group({
             key: 'badleaf',
             repeat: 4,
-            setXY: {x: 100, y: 0, stepX: 100}
+            setXY: {x: 100, y: 600, stepX: 100}
         });
 
         goodleaves = this.physics.add.group({
             key: 'goodleaf',
             repeat: 4,
-            setXY: {x: 110, y: 0, stepX: 100}
+            setXY: {x: 150, y: 600, stepX: 100}
         });
 
         const handleColiBroom = (eBroom, eLeave) => {
-           //console.log(e);
-           eLeave.x = eLeave.x + 10;
+            //console.log(eLeave.x-eBroom.x);
+            if(Math.sign((eLeave.x-eBroom.x)) === -1) {
+                console.log('right');
+                eLeave.x = eLeave.x -10; 
+            } else {
+                eLeave.x = eLeave.x +10; 
+                console.log('left');
+            }
         }
 
         this.input.setDraggable(broom.setInteractive());
-        console.log(broom);
-        console.log(goodleaves.children.entries);
+
         goodleaves.children.entries.forEach(leaf => {
             this.input.setDraggable(leaf.setInteractive());
+            leaf.setBounce(0.2).setCollideWorldBounds(true);
+        })
+
+        badleaves.children.entries.forEach(leaf => {
+            this.input.setDraggable(leaf.setInteractive());
+            leaf.setBounce(0.2).setCollideWorldBounds(true);
         })
 
         this.input.on('dragstart', function (pointer, obj)
@@ -96,38 +110,117 @@ const loadPhaser = () => {
             obj.body.moves = true;
         });
 
-        this.physics.add.collider(badleaves, broom);
-        this.physics.add.collider(goodleaves, broom);
         this.physics.add.collider(badleaves, platforms);
         this.physics.add.collider(goodleaves, platforms);
         this.physics.add.collider(broom, goodleaves, handleColiBroom);
+        this.physics.add.collider(broom, badleaves, handleColiBroom);
 
-        this.input.on('pointermove', function (pointer) {
-            if (pointer.position.y > 763) {
-                //broom.y = 763;
-                //broom.x = pointer.position.x;
-            } else {
-                //broom.x = pointer.position.x;
-                //broom.y = pointer.position.y;
-            }
-
-            rect.x = pointer.x;
-            rect.y = pointer.y;
-
-            // Force the sprite to stay on screen
-            // broom.x = Phaser.Math.Wrap(broom.x, 0, game.renderer.width);
-            // broom.y = Phaser.Math.Wrap(broom.y, 0, game.renderer.height);
-
-            if (pointer.movementX > 0) { broom.setRotation(0.1); }
-            else if (pointer.movementX < 0) { broom.setRotation(-0.1); }
-            else { broom.setRotation(0); }
-        }, this);
+        this.physics.add.collider(badleaves, goodleaves, customSeparate);
+        this.physics.add.collider(goodleaves, badleaves, customSeparate);
+        this.physics.add.collider(goodleaves, badleaves, customSeparate);
+        this.physics.add.collider(badleaves, badleaves, customSeparate);
     }
+
+    function customSeparate(s1, s2) {
+        var b1 = s1.body;
+        var b2 = s2.body;
+    
+        //for dragged object, we have no velocity, so we take pointer direction
+        let pointFacingX = "left";
+        let pointFacingY = "top";
+        if (scene.input.activePointer.position.x > scene.input.activePointer.prevPosition.x) pointFacingX = "right";
+        if (scene.input.activePointer.position.y > scene.input.activePointer.prevPosition.y) pointFacingY = "bottom";
+    
+        //if we have velocity we use that - could add priority to fastest object
+        if (b1.velocity.x > 0) pointFacingX = "right";
+        if (b2.velocity.x > 0) pointFacingX = "right";
+        if (b1.velocity.y > 0) pointFacingY = "bottom";
+        if (b2.velocity.y > 0) pointFacingY = "bottom";
+    
+        let overlapX = 0;
+        let overlapY = 0;
+        if(b1.x > b2.x) {
+            overlapX = b2.right - b1.left;
+        }
+        else {
+            overlapX = b1.right - b2.left;
+        }
+    
+        if(b1.y > b2.y) {
+            overlapY = b2.bottom - b1.top;
+        }
+        else {
+            overlapY = b1.bottom - b2.top;
+        }
+    
+        //we move according to smallest overlap **no overlap is coded at 10000
+        if (overlapX <= 0) overlapX = 10000;
+        if (overlapY <= 0) overlapY = 10000;
+        if(overlapX < overlapY){
+            if (pointFacingX === "left"){
+                if (b1.x > b2.x) {
+                    b2.x -= overlapX;
+                    b2.stop();
+                }
+                else {
+                    b1.x -= overlapX;
+                    b1.stop();
+                }
+            }
+            else{
+                if (b1.x < b2.x) {
+                    b2.x += overlapX;
+                    b2.stop();
+                }
+                else {
+                    b1.x += overlapX;
+                    b1.stop();
+                }
+            }
+        }
+        else{
+            if (pointFacingY === "top"){
+                if (b1.y > b2.y) {
+                    b2.y -= overlapY;
+                    b2.stop();
+                }
+                else {
+                    b1.y -= overlapY;
+                    b1.stop();
+                }
+            }
+            else{
+                if (b1.y < b2.y) {
+                    b2.y += overlapY;
+                    b2.stop();
+                }
+                else {
+                    b1.y += overlapY;
+                    b1.stop();
+                }
+            }
+        }
+    }
+      
 
     function update () {
-    }
 
-    console.log(sizes);
+        goodleaves.children.entries.forEach(leaf => {
+            if (leaf.y > 900) {
+                leaf.y = 830;
+            }
+        })
+
+        badleaves.children.entries.forEach(leaf => {
+            if (leaf.y > 900) {
+                leaf.y = 830;
+            }
+        })
+
+        if (broom.y >760) {
+            broom.y = 760;
+        }
+    }
       
     var modal = document.querySelector(`.myModal`);
     var btn = document.getElementById("myBtn");
