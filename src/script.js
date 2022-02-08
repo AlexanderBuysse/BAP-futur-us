@@ -287,20 +287,6 @@ for (let i = 0; i < 70; i++) {
     }
 }
 
-
-// let foxTexture = new THREE.MeshBasicMaterial({
-//     transparent: true
-// });
-// let foxTextures =[];
-
-// for (let i = 0; i < 65; i++) {
-//     if(i<10) {
-//         foxTextures[i] = textureLoader.load(`animatieFox/vos0${i}.png`)
-//     } else {
-//         foxTextures[i] = textureLoader.load(`animatieFox/vos${i}.png`)
-//     }
-// }
-
 const loadImagesAnimation = (animationName, amountFrames) => {
     const arrayOfTextures =[];
     for (let i = 0; i < amountFrames; i++) {
@@ -356,14 +342,6 @@ const home = () => {
 
     animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
     animationMesh(basicTexturesLoaded[1], 1.33, 1, 1, -4, .8);
-
-    // const shapeFox =  new THREE.PlaneGeometry(1.33, 1);
-    // foxTexture.map = foxTextures[0];
-    // const meshFox = new THREE.Mesh(shapeFox, foxTexture);
-    // meshFox.position.z = -29.5;
-    // meshFox.position.y = .8;
-    // meshFox.position.x = -4;
-    // scene.add(meshFox);
 }
 
 // sprite
