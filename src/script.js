@@ -25,7 +25,7 @@ const scene = new THREE.Scene()
 // -------------------- GLOBALE VERIABELEN HOME -------------------------
 const basicTextures  = []; 
 const basicTexturesLoaded  = []; 
-let counters = [0, 0, 0, 0, 0];
+let counters = [0, 0, 0, 0, 0, 0];
 let secondPassed = 0;
 let once = true;
 let meshBackgroundMap;
@@ -80,6 +80,19 @@ basicTextures.push(new THREE.MeshBasicMaterial({
 }));
 basicTexturesLoaded.push(loadImagesAnimation('clouds', 74))
 
+//water
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('water', 74))
+
+//imker
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('water', 74))
+
+
 
 const home = () => {
     //laadt achtergrond in
@@ -119,6 +132,9 @@ const home = () => {
 
     //wolken
     animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.75, 1.65);
+
+    //water
+    animationMesh(basicTexturesLoaded[5], 3.54, 2, 5, 8, -2);
 }
 
 const loadPhaser = () => {
@@ -363,7 +379,7 @@ const loadPhaser = () => {
         }
     }
 }
-//loadPhaser();
+loadPhaser();
 
 
 // -------------------- GLOBALE VERIABELEN IMKER -------------------------
@@ -583,9 +599,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 40
-camera.position.z = -23
+camera.position.x = 15
+camera.position.y = 0
+camera.position.z = 5
 gui.add(camera.position, `y`);
 gui.add(camera.position, `x`);
 gui.add(camera.position, `z`);
@@ -657,6 +673,8 @@ const sceneToHome = () => {
             .easing(TWEEN.Easing.Sinusoidal.In)
             .onComplete(() => {
                 addHome();
+                camera.position.x = 0
+                camera.position.y = 0
             // start redendering home page
               userOnHome= true;
               userOnDetailImker = false;
@@ -694,6 +712,33 @@ const sceneToImker = () => {
     .start();
 }
 
+const loadAll = () => {
+    conditionMoveCamera = false;
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        z: -23,
+      }, 300)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+    .start();
+
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        y: 0,
+      }, 300)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+    .start();
+
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        x: 0,
+      }, 300)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+    .start();
+}
+
 const handleClickDocument = e => {
     if (userOnDetailImker) {
         sceneToHome();
@@ -708,15 +753,15 @@ const handleMoveDocument = e => {
     mouseY = (e.clientY - windowHalfY);
 }
 
-document.addEventListener(`click`, handleClickDocument);
+//document.addEventListener(`click`, handleClickDocument);
 
 
 // gebruiker op welke pagina
 let loadHomeOnce = true;
 let loadImkerOnce = true;
 
-let userOnHome = false;
-let userOnDetailImker = true;
+let userOnHome = true;
+let userOnDetailImker = false;
 
 const clock = new THREE.Clock();
 
@@ -729,9 +774,13 @@ const tick = () => {
     }
 
     if(loadImkerOnce) {
-        imkerPage();
-        removeImkerMeshes();
+        //imkerPage();
         loadImkerOnce = false;
+        var callback = function() {
+            loadAll();
+            removeImkerMeshes();
+          }
+        setTimeout(callback, 100);
     }    
 
     targetX= mouseX * .05;
@@ -742,16 +791,10 @@ const tick = () => {
 
     if(userOnDetailImker) {
         if (conditionMoveCamera) {
-            if (onceStart) {
-                userOnHome = true;
-                userOnDetailImker = false;    
-                console.log('hier door gegaan');
-            }
             camera.position.x = -.005 * -(targetX -  camera.position.x);
             camera.position.y = -.005 * -(targetY -  camera.position.y);
             meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
             meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
-            onceStart = false;
         }
     }
     
@@ -769,9 +812,6 @@ const tick = () => {
     
             counters = newCounters;
         }
-
-        camera.position.x = 0
-        camera.position.y = 0
 
         //TEXTURE CHANGER
         for (let i = 0; i < basicTextures.length; i++) {
