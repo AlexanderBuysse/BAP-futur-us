@@ -251,7 +251,7 @@ const loadPhaser = () => {
         }
     }
 }
-loadPhaser();
+//loadPhaser();
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
@@ -271,6 +271,9 @@ const backgroundMapTexture = new THREE.MeshBasicMaterial({
     transparent: false
 });
 
+const basicTextures  = []; 
+const basicTexturesLoaded  = []; 
+
 let deerTexture = new THREE.MeshBasicMaterial({
     transparent: true
 });
@@ -284,33 +287,44 @@ for (let i = 0; i < 70; i++) {
     }
 }
 
-let gardenerTexture = new THREE.MeshBasicMaterial({
-    transparent: true
-});
-let gardenerTextures =[];
 
-for (let i = 0; i < 4; i++) {
-    if(i<10) {
-        gardenerTextures[i] = textureLoader.load(`animatieGardener/tuinier0${i}.png`)
-    } else {
-        gardenerTextures[i] = textureLoader.load(`animatieGardener/tuinier${i}.png`)
+// let foxTexture = new THREE.MeshBasicMaterial({
+//     transparent: true
+// });
+// let foxTextures =[];
+
+// for (let i = 0; i < 65; i++) {
+//     if(i<10) {
+//         foxTextures[i] = textureLoader.load(`animatieFox/vos0${i}.png`)
+//     } else {
+//         foxTextures[i] = textureLoader.load(`animatieFox/vos${i}.png`)
+//     }
+// }
+
+const loadImagesAnimation = (animationName, amountFrames) => {
+    const arrayOfTextures =[];
+    for (let i = 0; i < amountFrames; i++) {
+        if(i<10) {
+            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}0${i}.png`)
+        } else {
+            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}${i}.png`)
+        }
     }
+    return arrayOfTextures;
 }
 
-let foxTexture = new THREE.MeshBasicMaterial({
+//tuinier inladen
+basicTextures.push(new THREE.MeshBasicMaterial({
     transparent: true
-});
-let foxTextures =[];
+}));
+basicTexturesLoaded.push(loadImagesAnimation('tuinier', 4))
 
-for (let i = 0; i < 65; i++) {
-    if(i<10) {
-        foxTextures[i] = textureLoader.load(`animatieFox/vos0${i}.png`)
-    } else {
-        foxTextures[i] = textureLoader.load(`animatieFox/vos${i}.png`)
-    }
-}
+//vos
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('vos', 65))
 
-console.log(foxTextures);
 
 let controls;
 let meshDear;
@@ -330,21 +344,26 @@ const home = () => {
     meshDear.position.x = -2;
     scene.add(meshDear);
 
-    const shapeGardener =  new THREE.PlaneGeometry(1.2, 1.5);
-    gardenerTexture.map = gardenerTextures[0];
-    const meshGardener = new THREE.Mesh(shapeGardener, gardenerTexture);
-    meshGardener.position.z = -29.5;
-    meshGardener.position.y = .3;
-    meshGardener.position.x = 4;
-    scene.add(meshGardener);
+    const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
+        const shapeAnimation =  new THREE.PlaneGeometry(x, y);
+        basicTextures[indexTexture].map = textures[0];
+        const meshAnimation = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
+        meshAnimation.position.z = -29.5;
+        meshAnimation.position.y = posY;
+        meshAnimation.position.x = posX;
+        scene.add(meshAnimation);
+    }
 
-    const shapeFox =  new THREE.PlaneGeometry(1.33, 1);
-    foxTexture.map = foxTextures[0];
-    const meshFox = new THREE.Mesh(shapeFox, foxTexture);
-    meshFox.position.z = -29.5;
-    meshFox.position.y = .8;
-    meshFox.position.x = -4;
-    scene.add(meshFox);
+    animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
+    animationMesh(basicTexturesLoaded[1], 1.33, 1, 1, -4, .8);
+
+    // const shapeFox =  new THREE.PlaneGeometry(1.33, 1);
+    // foxTexture.map = foxTextures[0];
+    // const meshFox = new THREE.Mesh(shapeFox, foxTexture);
+    // meshFox.position.z = -29.5;
+    // meshFox.position.y = .8;
+    // meshFox.position.x = -4;
+    // scene.add(meshFox);
 }
 
 // sprite
@@ -662,8 +681,7 @@ const clock = new THREE.Clock();
 let mapCamera = false;
 
 let counterFrameRate = 0;
-let counterFrameRateGardener = 0;
-let counterFrameRateFox = 0;
+let counters = [0, 0];
 
 let secondPassed = 0;
 
@@ -678,13 +696,15 @@ const tick = () => {
         once = false;
     }
     if((time-secondPassed) >= .3) {
-        //console.log('second passed');
         secondPassed = time;
+        const newCounters = counters.map(counter =>{
+            counter++
+            return counter++
+        });
+
+        counters = newCounters;
         counterFrameRate ++
-        counterFrameRateGardener ++
-        counterFrameRateFox ++
     }
-    //console.log(time-secondPassed);
 
     TWEEN.update();
 
@@ -703,13 +723,13 @@ const tick = () => {
         if(counterFrameRate > deersTextures.length-1) {
             counterFrameRate = 0;
         }
-        gardenerTexture.map = gardenerTextures[counterFrameRateGardener];
-        if(counterFrameRateGardener > gardenerTextures.length-1) {
-            counterFrameRateGardener = 0;
-        }
-        foxTexture.map = foxTextures[counterFrameRateFox];
-        if(counterFrameRateFox > foxTextures.length-1) {
-            counterFrameRateFox = 0;
+
+        //TEXTURE CHANGER
+        for (let i = 0; i < basicTextures.length; i++) {
+            basicTextures[i].map = basicTexturesLoaded[i][counters[i]];
+            if(counters[i] > basicTexturesLoaded[i].length-1) {
+                counters[i] = 0;
+            }
         }
     }
 
