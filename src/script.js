@@ -756,14 +756,6 @@ const handleMoveDocument = e => {
     mouseY = (e.clientY - windowHalfY);
 }
 
-const handleMoveDocumentStuff = e => {
-    mouseX = (e.clientX - windowHalfX);
-    mouseY = (e.clientY - windowHalfY);
-    targetX= mouseX * .05;
-    targetY= mouseY * .05;
-    console.log(targetX, targetY);
-}
-
 
 function handleMoveDocumentTest( event ) {
 
@@ -850,9 +842,14 @@ const tick = () => {
         raycaster.setFromCamera( mouse, camera );
 		const intersection = raycaster.intersectObject( meshBackCircle );
         if ( intersection.length > 0 && intersection.length !== 2 ) {
+            var modal = document.querySelector(`.myModal`);
+            modal.style.display = "grid";
+            let frame = document.getElementById("myBtn");
+            frame.style.width= sizes.width - 400;
+            frame.style.height= sizes.height - 400;        
+
             mouse.x = 10;
             mouse.y = 10;
-            
         }
     }
 

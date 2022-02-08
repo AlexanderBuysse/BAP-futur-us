@@ -68,9 +68,13 @@ body
 
   .container {
         height: 100vh;
-        display: none;
+        display: grid;
         place-items: center;
         position: absolute;
         z-index: 100;
         width: 100vw;
+  }
+
+  .onTop {
+    display: none;
   }
