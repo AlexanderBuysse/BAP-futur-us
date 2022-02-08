@@ -578,6 +578,9 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 5
+gui.add(camera.position, `y`);
+gui.add(camera.position, `x`);
+gui.add(camera.position, `z`);
 scene.add(camera);
 /**
  * Renderer
@@ -598,23 +601,28 @@ let once = true;
 
 //globale variabelen detail imker
 
+const removeImkerMeshes = () =>{
+    for (let i = 0; i < 6; i++) {
+        scene.remove(treeMeshes[i]);
+    } 
+    scene.remove(meshBackground);
+    scene.remove(beePatricles);
+}
 
 const sceneToHome = () => {
     // event verwijderen voor bewegen
     document.removeEventListener(`mousemove`, handleMoveDocument);
+    conditionMoveCamera = false;
+
     new TWEEN.Tween(camera.position)
     .to(
       {
         y: 9,
       }, 800)
       .easing(TWEEN.Easing.Sinusoidal.In)
-      .onComplete(() => { 
-          for (let i = 0; i < 6; i++) {
-            scene.remove(treeMeshes[i]);
-          } 
-          scene.remove(meshBackground);
-          scene.remove(beePatricles);
+      .onComplete(() => {
           home();
+          removeImkerMeshes();
 
           new TWEEN.Tween(camera.position)
           .to(
@@ -623,7 +631,6 @@ const sceneToHome = () => {
             }, 500)
             .easing(TWEEN.Easing.Sinusoidal.In)
           .start();
-      
           new TWEEN.Tween(camera.position)
           .to(
             {
@@ -631,6 +638,7 @@ const sceneToHome = () => {
             }, 500)
             .easing(TWEEN.Easing.Sinusoidal.In)
             .onComplete(() => {
+            // start redendering home page
               userOnHome= true;
               userOnDetailImker = false;
           })
@@ -659,14 +667,19 @@ const sceneToImker = () => {
         userOnDetailImker = true;
 
         //event voor imker
+        conditionMoveCamera = true;
         document.addEventListener(`mousemove`, handleMoveDocument);
     })
     .start();
 }
 
 const handleClickDocument = e => {
-    document.removeEventListener(`click`, handleClickDocument);
-    sceneToHome();
+    if (userOnDetailImker) {
+        sceneToHome();
+    }
+    if(userOnHome) {
+        sceneToImker();
+    }
 }
 
 const handleMoveDocument = e => {
