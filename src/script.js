@@ -251,7 +251,7 @@ const loadPhaser = () => {
         }
     }
 }
-//loadPhaser();
+loadPhaser();
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
