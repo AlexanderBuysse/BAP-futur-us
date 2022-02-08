@@ -72,7 +72,7 @@ basicTexturesLoaded.push(loadImagesAnimation('hert', 60))
 basicTextures.push(new THREE.MeshBasicMaterial({
     transparent: true
 }));
-basicTexturesLoaded.push(loadImagesAnimation('clouds', 79))
+basicTexturesLoaded.push(loadImagesAnimation('clouds', 74))
 
 
 const home = () => {
@@ -359,20 +359,12 @@ const loadPhaser = () => {
 }
 //loadPhaser();
 
-const loadDetailImker = () => {
-
-}
-loadDetailImker();
-
-// sprite
+// bee sprites
 const geometry = new THREE.BufferGeometry();
 const vertices = [];
 let parameters;
 let materials = [];
-
 const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
-
-
 for ( let i = 0; i < 100; i ++ ) {
     const x = Math.random() * 20 - 10;
     const y = Math.random() * 20 - 10;
@@ -380,31 +372,13 @@ for ( let i = 0; i < 100; i ++ ) {
 
     vertices.push( x, y, z );
 }
-
 geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-
 parameters = [
     [[ 1, 1, 1 ], sprite1, .2 ]
 ];
-
 let beePatricles;
-for ( let i = 0; i < parameters.length; i ++ ) {
-    const color = parameters[ i ][ 0 ];
-    const sprite = parameters[ i ][ 1 ];
-    const size = parameters[ i ][ 2 ];
+// bee sprites
 
-    materials[ i ] = new THREE.PointsMaterial( { size: size, map: sprite, depthTest: false, transparent: true } );
-    materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ] );
-
-    const particles = new THREE.Points( geometry, materials[ i ] );
-
-    //particles.rotation.x = Math.random() * 6;
-    //particles.rotation.y = Math.random() * 6;
-    //particles.rotation.z = Math.random() * 6;
-
-    beePatricles = particles;
-    scene.add( particles );
-}
 
 const baseSizeWidth = 10;
 const baseSizeHeight = 5;
@@ -468,62 +442,17 @@ const shapeBackground = new THREE.PlaneGeometry(200, 120);
 const meshBackground = new THREE.Mesh(shapeBackground, backgroundTexture);
 meshBackground.position.z = -60;
 meshBackground.position.y = 6;
-scene.add(meshBackground);
 
 const beekeeperTexture = new THREE.MeshBasicMaterial({
     map: textureLoader.load(`/detailpage/beekeper.png`),
     transparent: true
 });
-const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
-const meshBeekeeper = new THREE.Mesh(shapeBeekeeper, beekeeperTexture);
-meshBeekeeper.position.z = 2;
-meshBeekeeper.position.y = 0;
-scene.add(meshBeekeeper);
+
 
 
 const treeTextures = [];
 const treeMeshes = [];
-for (let i = 0; i < 6; i++) {
-    treeTextures[i]= new THREE.MeshBasicMaterial({
-        map: textureLoader.load(`/detailpage/tree_${i}.png`),
-        transparent: true
-    });
-    let shapeTree;
-    let bruh = 24;
-    let bruh2 = 12;
 
-    if (i === 0) {
-        shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*1}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*1}`)));
-    } else {
-        shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*i}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*i}`)));
-    }
-    const meshTree = new THREE.Mesh(shapeTree, treeTextures[i]);
-    meshTree.position.y = window.innerWidth/9000;
-    meshTree.position.x = (window.innerWidth/9000);    
-    meshTree.position.z = -10+ i;
-    scene.add(meshTree);
-    treeMeshes.push(meshTree);
-}
-
-const flowerTextures = [];
-for (let i = 0; i < 6; i++) {
-    flowerTextures[i]= new THREE.MeshBasicMaterial({
-        map: textureLoader.load(`/detailpage/flower_${i}.png`),
-        transparent: true
-    });
-    let shapeFlower;
-    if (i === 5) {
-        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth, baseSizeHeight);
-    } else if (i === 0) {
-        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*1}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*1}`)));
-    } else {
-        shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*i}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*i}`)));
-    }
-    const meshFlower = new THREE.Mesh(shapeFlower, flowerTextures[i]);
-    meshFlower.position.z = -3+ i;
-    meshFlower.position.x =-(window.innerWidth/3000);
-    scene.add(meshFlower);
-}
 
 
 //background blue BLIJVEN ALGEMEEN
@@ -549,6 +478,7 @@ const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
 meshTextureEight.position.z = 0;
 meshTextureEight.position.y = 9;
 scene.add(meshTextureEight);
+
 
 
 /**
@@ -592,6 +522,76 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+const imkerPage = () => {
+    scene.add(meshBackground);
+
+    const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
+    const meshBeekeeper = new THREE.Mesh(shapeBeekeeper, beekeeperTexture);
+    meshBeekeeper.position.z = 2;
+    meshBeekeeper.position.y = 0;
+    scene.add(meshBeekeeper);
+
+    for ( let i = 0; i < parameters.length; i ++ ) {
+        const color = parameters[ i ][ 0 ];
+        const sprite = parameters[ i ][ 1 ];
+        const size = parameters[ i ][ 2 ];
+    
+        materials[ i ] = new THREE.PointsMaterial( { size: size, map: sprite, depthTest: false, transparent: true } );
+        materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ] );
+    
+        const particles = new THREE.Points( geometry, materials[ i ] );
+    
+        //particles.rotation.x = Math.random() * 6;
+        //particles.rotation.y = Math.random() * 6;
+        //particles.rotation.z = Math.random() * 6;
+    
+        beePatricles = particles;
+        scene.add( particles );
+    }
+
+    for (let i = 0; i < 6; i++) {
+        treeTextures[i]= new THREE.MeshBasicMaterial({
+            map: textureLoader.load(`/detailpage/tree_${i}.png`),
+            transparent: true
+        });
+        let shapeTree;
+        let bruh = 24;
+        let bruh2 = 12;
+    
+        if (i === 0) {
+            shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*1}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*1}`)));
+        } else {
+            shapeTree = new THREE.PlaneGeometry(bruh * (parseFloat(`1.${swtichDistanceTree(i)*i}`)), bruh2 * (parseFloat(`1.${swtichDistanceTree(i)*i}`)));
+        }
+        const meshTree = new THREE.Mesh(shapeTree, treeTextures[i]);
+        meshTree.position.y = window.innerWidth/9000;
+        meshTree.position.x = (window.innerWidth/9000);    
+        meshTree.position.z = -10+ i;
+        scene.add(meshTree);
+        treeMeshes.push(meshTree);
+    }
+    
+    const flowerTextures = [];
+    for (let i = 0; i < 6; i++) {
+        flowerTextures[i]= new THREE.MeshBasicMaterial({
+            map: textureLoader.load(`/detailpage/flower_${i}.png`),
+            transparent: true
+        });
+        let shapeFlower;
+        if (i === 5) {
+            shapeFlower = new THREE.PlaneGeometry(baseSizeWidth, baseSizeHeight);
+        } else if (i === 0) {
+            shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*1}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*1}`)));
+        } else {
+            shapeFlower = new THREE.PlaneGeometry(baseSizeWidth * (parseFloat(`1.${swtichDistance(i)*i}`)), baseSizeHeight * (parseFloat(`1.${swtichDistance(i)*i}`)));
+        }
+        const meshFlower = new THREE.Mesh(shapeFlower, flowerTextures[i]);
+        meshFlower.position.z = -3+ i;
+        meshFlower.position.x =-(window.innerWidth/3000);
+        scene.add(meshFlower);
+    }
+}
+
 //globale variabelen home
 
 let counters = [0, 0, 0, 0, 0];
@@ -601,7 +601,7 @@ let once = true;
 
 //globale variabelen detail imker
 
-const removeImkerMeshes = () =>{
+const removeImkerMeshes = () => {
     for (let i = 0; i < 6; i++) {
         scene.remove(treeMeshes[i]);
     } 
@@ -609,9 +609,19 @@ const removeImkerMeshes = () =>{
     scene.remove(beePatricles);
 }
 
+const addImkerMeshes = () =>{
+    for (let i = 0; i < 6; i++) {
+        scene.add(treeMeshes[i]);
+    } 
+    scene.add(meshBackground);
+    scene.add(beePatricles);
+}
+
 const sceneToHome = () => {
     // event verwijderen voor bewegen
     document.removeEventListener(`mousemove`, handleMoveDocument);
+    document.addEventListener(`click`, handleClickDocument);
+
     conditionMoveCamera = false;
 
     new TWEEN.Tween(camera.position)
@@ -621,7 +631,6 @@ const sceneToHome = () => {
       }, 800)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
-          home();
           removeImkerMeshes();
 
           new TWEEN.Tween(camera.position)
@@ -648,11 +657,12 @@ const sceneToHome = () => {
 }
 
 const sceneToImker = () => {
+    addImkerMeshes();
     new TWEEN.Tween(camera.position)
     .to(
       {
         y: 0,
-      }, 500)
+      }, 300)
       .easing(TWEEN.Easing.Sinusoidal.In)
     .start();
 
@@ -674,6 +684,8 @@ const sceneToImker = () => {
 }
 
 const handleClickDocument = e => {
+    console.log(userOnDetailImker);
+
     if (userOnDetailImker) {
         sceneToHome();
     }
@@ -687,7 +699,6 @@ const handleMoveDocument = e => {
     mouseY = (e.clientY - windowHalfY);
 }
 
-document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleClickDocument);
 
 let mouseX = 0;
@@ -705,11 +716,22 @@ const clock = new THREE.Clock();
 
 
 // gebruiker op welke pagina
+let loadHomeOnce = true;
+let loadImkerOnce = true;
 
-let userOnHome = false;
-let userOnDetailImker = true;
+let userOnHome = true;
+let userOnDetailImker = false;
 
 const tick = () => {
+    if(loadHomeOnce) {
+        home();
+        loadHomeOnce = false;
+    }
+    if(loadImkerOnce) {
+        imkerPage();
+        loadImkerOnce = false;
+    }
+
     targetX= mouseX * .05;
     targetY= mouseY * .05;
 
