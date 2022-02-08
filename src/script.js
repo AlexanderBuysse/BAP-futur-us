@@ -9,6 +9,7 @@ const sizes = {
     height: window.innerHeight
 }
 
+// -------------------- ALLE BASIS DINGEN -------------------------
 // Loading
 const textureLoader = new THREE.TextureLoader()
 textureLoader.crossOrigin = '';
@@ -21,16 +22,21 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+// -------------------- GLOBALE VERIABELEN HOME -------------------------
+const basicTextures  = []; 
+const basicTexturesLoaded  = []; 
+let counters = [0, 0, 0, 0, 0];
+let secondPassed = 0;
+let once = true;
+let meshBackgroundMap;
 
+// -------------------- HOME PAGE -------------------------
 //begin inladen textures voor home
 // Objects
 const backgroundMapTexture = new THREE.MeshBasicMaterial({
     map: textureLoader.load(`/background.png`),
     transparent: false
 });
-
-const basicTextures  = []; 
-const basicTexturesLoaded  = []; 
 
 const loadImagesAnimation = (animationName, amountFrames) => {
     const arrayOfTextures =[];
@@ -78,7 +84,7 @@ basicTexturesLoaded.push(loadImagesAnimation('clouds', 74))
 const home = () => {
     //laadt achtergrond in
     const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
-    const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
+    meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
     meshBackgroundMap.position.z = -30;
     meshBackgroundMap.position.y =0;
     scene.add(meshBackgroundMap);
@@ -359,30 +365,26 @@ const loadPhaser = () => {
 }
 //loadPhaser();
 
-// bee sprites
+
+// -------------------- GLOBALE VERIABELEN IMKER -------------------------
 const geometry = new THREE.BufferGeometry();
 const vertices = [];
 let parameters;
 let materials = [];
-const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
-for ( let i = 0; i < 100; i ++ ) {
-    const x = Math.random() * 20 - 10;
-    const y = Math.random() * 20 - 10;
-    const z = Math.random() * 20 - 10;;
-
-    vertices.push( x, y, z );
-}
-geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
-parameters = [
-    [[ 1, 1, 1 ], sprite1, .2 ]
-];
-let beePatricles;
-// bee sprites
-
-
 const baseSizeWidth = 10;
 const baseSizeHeight = 5;
+let beePatricles;
+const treeTextures = [];
+const treeMeshes = [];
+let mouseX = 0;
+let mouseY = 0;
+let targetX = 0;
+let targetY = 0;
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
+let conditionMoveCamera = true;
 
+// -------------------- GLOBALE FUNCTIES IMKER -------------------------
 const swtichDistance = number => {
     let multiply;
     switch (number) {
@@ -406,7 +408,6 @@ const swtichDistance = number => {
     }
     return multiply;
 }
-
 const swtichDistanceTree = number => {
     let multiply;
     switch (number) {
@@ -434,6 +435,21 @@ const swtichDistanceTree = number => {
     return multiply;
 }
 
+// -------------------- BIJ PARTICLE IMKER -------------------------
+const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
+for ( let i = 0; i < 100; i ++ ) {
+    const x = Math.random() * 20 - 10;
+    const y = Math.random() * 20 - 10;
+    const z = Math.random() * 20 - 10;;
+
+    vertices.push( x, y, z );
+}
+geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+parameters = [
+    [[ 1, 1, 1 ], sprite1, .2 ]
+];
+
+// -------------------- BIJ TEXTURES INLADEN IMKER -------------------------
 const backgroundTexture = new THREE.MeshBasicMaterial({
     map: textureLoader.load(`/detailpage/clouds.png`),
     transparent: true
@@ -447,13 +463,6 @@ const beekeeperTexture = new THREE.MeshBasicMaterial({
     map: textureLoader.load(`/detailpage/beekeper.png`),
     transparent: true
 });
-
-
-
-const treeTextures = [];
-const treeMeshes = [];
-
-
 
 //background blue BLIJVEN ALGEMEEN
 const material1 = new THREE.MeshBasicMaterial( {
@@ -474,81 +483,7 @@ const materialCloud = new THREE.MeshBasicMaterial({
 });
 
 
-
-/**
- * Sizes
- */
-window.addEventListener('resize', () =>
-{
-    console.log(sizes, window.innerWidth, window.innerHeight);
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 5
-gui.add(camera.position, `y`);
-gui.add(camera.position, `x`);
-gui.add(camera.position, `z`);
-scene.add(camera);
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    alpha: true
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
 const imkerPage = () => {
-    materialCloud.map.repeat.set(1,1)
-    const shapeCloud = new THREE.PlaneGeometry(20,10);
-    const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
-    meshTextureEight.position.z = 0;
-    meshTextureEight.position.y = 9;
-    scene.add(meshTextureEight);
-    scene.add(meshBackground);
-
-    const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
-    const meshBeekeeper = new THREE.Mesh(shapeBeekeeper, beekeeperTexture);
-    meshBeekeeper.position.z = 2;
-    meshBeekeeper.position.y = 0;
-    scene.add(meshBeekeeper);
-
-    for ( let i = 0; i < parameters.length; i ++ ) {
-        const color = parameters[ i ][ 0 ];
-        const sprite = parameters[ i ][ 1 ];
-        const size = parameters[ i ][ 2 ];
-    
-        materials[ i ] = new THREE.PointsMaterial( { size: size, map: sprite, depthTest: false, transparent: true } );
-        materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ] );
-    
-        const particles = new THREE.Points( geometry, materials[ i ] );
-    
-        //particles.rotation.x = Math.random() * 6;
-        //particles.rotation.y = Math.random() * 6;
-        //particles.rotation.z = Math.random() * 6;
-    
-        beePatricles = particles;
-        scene.add( particles );
-    }
-
     for (let i = 0; i < 6; i++) {
         treeTextures[i]= new THREE.MeshBasicMaterial({
             map: textureLoader.load(`/detailpage/tree_${i}.png`),
@@ -590,17 +525,83 @@ const imkerPage = () => {
         meshFlower.position.x =-(window.innerWidth/3000);
         scene.add(meshFlower);
     }
+    
+    for ( let i = 0; i < parameters.length; i ++ ) {
+        const color = parameters[ i ][ 0 ];
+        const sprite = parameters[ i ][ 1 ];
+        const size = parameters[ i ][ 2 ];
+    
+        materials[ i ] = new THREE.PointsMaterial( { size: size, map: sprite, depthTest: false, transparent: true } );
+        materials[ i ].color.setHSL( color[ 0 ], color[ 1 ], color[ 2 ] );
+    
+        const particles = new THREE.Points( geometry, materials[ i ] );
+    
+        //particles.rotation.x = Math.random() * 6;
+        //particles.rotation.y = Math.random() * 6;
+        //particles.rotation.z = Math.random() * 6;
+    
+        beePatricles = particles;
+        scene.add( particles );
+    }
+    
+    materialCloud.map.repeat.set(1,1)
+    const shapeCloud = new THREE.PlaneGeometry(20,10);
+    const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
+    meshTextureEight.position.z = 0;
+    meshTextureEight.position.y = 9;
+    scene.add(meshTextureEight);
+    scene.add(meshBackground);
+    
+    const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
+    const meshBeekeeper = new THREE.Mesh(shapeBeekeeper, beekeeperTexture);
+    meshBeekeeper.position.z = 2;
+    meshBeekeeper.position.y = 0;
+    scene.add(meshBeekeeper);
+    
 }
 
-//globale variabelen home
 
-let counters = [0, 0, 0, 0, 0];
-let secondPassed = 0;
-let once = true;
+// -------------------- BASIS STUFF VOOR THREE JS -------------------------
+window.addEventListener('resize', () =>
+{
+    console.log(sizes, window.innerWidth, window.innerHeight);
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
 
-//globale variabelen detail imker
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+/**
+ * Camera
+ */
+// Base camera
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+camera.position.x = 0
+camera.position.y = 40
+camera.position.z = -23
+gui.add(camera.position, `y`);
+gui.add(camera.position, `x`);
+gui.add(camera.position, `z`);
+scene.add(camera);
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    alpha: true
+})
+renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+
+// -------------------- OVERGANGEN PAGINAS -------------------------
 const removeImkerMeshes = () => {
     for (let i = 0; i < 6; i++) {
         scene.remove(treeMeshes[i]);
@@ -615,6 +616,14 @@ const addImkerMeshes = () =>{
     } 
     scene.add(meshBackground);
     scene.add(beePatricles);
+}
+
+const removeHome = () => {
+    scene.remove(meshBackgroundMap);
+}
+
+const addHome = () =>{
+    scene.add(meshBackgroundMap);
 }
 
 const sceneToHome = () => {
@@ -647,6 +656,7 @@ const sceneToHome = () => {
             }, 500)
             .easing(TWEEN.Easing.Sinusoidal.In)
             .onComplete(() => {
+                addHome();
             // start redendering home page
               userOnHome= true;
               userOnDetailImker = false;
@@ -673,6 +683,7 @@ const sceneToImker = () => {
       }, 500)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
+        removeHome();
         userOnHome= false;
         userOnDetailImker = true;
 
@@ -684,8 +695,6 @@ const sceneToImker = () => {
 }
 
 const handleClickDocument = e => {
-    console.log(userOnDetailImker);
-
     if (userOnDetailImker) {
         sceneToHome();
     }
@@ -701,36 +710,29 @@ const handleMoveDocument = e => {
 
 document.addEventListener(`click`, handleClickDocument);
 
-let mouseX = 0;
-let mouseY = 0;
-
-let targetX = 0;
-let targetY = 0;
-
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
-
-let conditionMoveCamera = true;
-
-const clock = new THREE.Clock();
-
 
 // gebruiker op welke pagina
 let loadHomeOnce = true;
 let loadImkerOnce = true;
 
-let userOnHome = true;
-let userOnDetailImker = false;
+let userOnHome = false;
+let userOnDetailImker = true;
+
+const clock = new THREE.Clock();
+
+let onceStart = true;
 
 const tick = () => {
     if(loadHomeOnce) {
         home();
         loadHomeOnce = false;
     }
+
     if(loadImkerOnce) {
         imkerPage();
+        removeImkerMeshes();
         loadImkerOnce = false;
-    }
+    }    
 
     targetX= mouseX * .05;
     targetY= mouseY * .05;
@@ -740,10 +742,16 @@ const tick = () => {
 
     if(userOnDetailImker) {
         if (conditionMoveCamera) {
+            if (onceStart) {
+                userOnHome = true;
+                userOnDetailImker = false;    
+                console.log('hier door gegaan');
+            }
             camera.position.x = -.005 * -(targetX -  camera.position.x);
             camera.position.y = -.005 * -(targetY -  camera.position.y);
             meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
             meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
+            onceStart = false;
         }
     }
     
