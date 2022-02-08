@@ -297,7 +297,20 @@ for (let i = 0; i < 4; i++) {
     }
 }
 
-console.log(gardenerTextures);
+let foxTexture = new THREE.MeshBasicMaterial({
+    transparent: true
+});
+let foxTextures =[];
+
+for (let i = 0; i < 65; i++) {
+    if(i<10) {
+        foxTextures[i] = textureLoader.load(`animatieFox/vos0${i}.png`)
+    } else {
+        foxTextures[i] = textureLoader.load(`animatieFox/vos${i}.png`)
+    }
+}
+
+console.log(foxTextures);
 
 let controls;
 let meshDear;
@@ -324,6 +337,14 @@ const home = () => {
     meshGardener.position.y = .3;
     meshGardener.position.x = 4;
     scene.add(meshGardener);
+
+    const shapeFox =  new THREE.PlaneGeometry(1.33, 1);
+    foxTexture.map = foxTextures[0];
+    const meshFox = new THREE.Mesh(shapeFox, foxTexture);
+    meshFox.position.z = -29.5;
+    meshFox.position.y = .8;
+    meshFox.position.x = -4;
+    scene.add(meshFox);
 }
 
 // sprite
@@ -642,6 +663,7 @@ let mapCamera = false;
 
 let counterFrameRate = 0;
 let counterFrameRateGardener = 0;
+let counterFrameRateFox = 0;
 
 let secondPassed = 0;
 
@@ -660,6 +682,7 @@ const tick = () => {
         secondPassed = time;
         counterFrameRate ++
         counterFrameRateGardener ++
+        counterFrameRateFox ++
     }
     //console.log(time-secondPassed);
 
@@ -683,6 +706,10 @@ const tick = () => {
         gardenerTexture.map = gardenerTextures[counterFrameRateGardener];
         if(counterFrameRateGardener > gardenerTextures.length-1) {
             counterFrameRateGardener = 0;
+        }
+        foxTexture.map = foxTextures[counterFrameRateFox];
+        if(counterFrameRateFox > foxTextures.length-1) {
+            counterFrameRateFox = 0;
         }
     }
 
