@@ -29,6 +29,9 @@ let counters = [0, 0, 0, 0, 0, 0];
 let secondPassed = 0;
 let once = true;
 let meshBackgroundMap;
+let meshBackCircle;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2( 1, 1 );
 
 // -------------------- HOME PAGE -------------------------
 //begin inladen textures voor home
@@ -36,6 +39,11 @@ let meshBackgroundMap;
 const backgroundMapTexture = new THREE.MeshBasicMaterial({
     map: textureLoader.load(`/background.png`),
     transparent: false
+});
+
+const circleTexture = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/indicators/circle.png`),
+    transparent: true
 });
 
 const loadImagesAnimation = (animationName, amountFrames) => {
@@ -86,12 +94,6 @@ basicTextures.push(new THREE.MeshBasicMaterial({
 }));
 basicTexturesLoaded.push(loadImagesAnimation('water', 74))
 
-//imker
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('water', 74))
-
 
 
 const home = () => {
@@ -102,10 +104,12 @@ const home = () => {
     meshBackgroundMap.position.y =0;
     scene.add(meshBackgroundMap);
 
-    let positionTest = {
-        x:0,
-        y:0
-    }
+    const shapeCircle = new THREE.PlaneGeometry(.3, .3);
+    meshBackCircle = new THREE.Mesh(shapeCircle, circleTexture);
+    meshBackCircle.position.z = -25;
+    meshBackCircle.position.y =0;
+    scene.add(meshBackCircle);
+
     //laadt de eerst frame van animatie in
     const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
         const shapeAnimation =  new THREE.PlaneGeometry(x, y);
@@ -116,7 +120,6 @@ const home = () => {
         meshAnimation.position.x = posX;
         scene.add(meshAnimation);
     }
-
 
     //tuinier
     animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
@@ -753,7 +756,28 @@ const handleMoveDocument = e => {
     mouseY = (e.clientY - windowHalfY);
 }
 
+const handleMoveDocumentStuff = e => {
+    mouseX = (e.clientX - windowHalfX);
+    mouseY = (e.clientY - windowHalfY);
+    targetX= mouseX * .05;
+    targetY= mouseY * .05;
+    console.log(targetX, targetY);
+}
+
+
+function handleMoveDocumentTest( event ) {
+
+    event.preventDefault();
+
+    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
+
 //document.addEventListener(`click`, handleClickDocument);
+//document.addEventListener(`click`, handleMoveDocumentStuff);
+//document.addEventListener(`mousemove`, handleMoveDocument);
+document.addEventListener(`click`, handleMoveDocumentTest);
 
 
 // gebruiker op welke pagina
@@ -768,6 +792,7 @@ const clock = new THREE.Clock();
 let onceStart = true;
 
 const tick = () => {
+
     if(loadHomeOnce) {
         home();
         loadHomeOnce = false;
@@ -780,11 +805,12 @@ const tick = () => {
             loadAll();
             removeImkerMeshes();
           }
-        setTimeout(callback, 100);
+        setTimeout(callback, 2500);
     }    
 
     targetX= mouseX * .05;
     targetY= mouseY * .05;
+    //console.log(targetX, targetY);
 
     const time = Date.now() * 0.005;
     TWEEN.update();
@@ -819,6 +845,14 @@ const tick = () => {
             if(counters[i] > basicTexturesLoaded[i].length-1) {
                 counters[i] = 0;
             }
+        }
+
+        raycaster.setFromCamera( mouse, camera );
+		const intersection = raycaster.intersectObject( meshBackCircle );
+        if ( intersection.length > 0 && intersection.length !== 2 ) {
+            mouse.x = 10;
+            mouse.y = 10;
+            
         }
     }
 
