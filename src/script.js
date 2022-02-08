@@ -8,7 +8,112 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
-let broom;
+
+// Loading
+const textureLoader = new THREE.TextureLoader()
+textureLoader.crossOrigin = '';
+// Debug
+const gui = new dat.GUI()
+
+// Canvas
+const canvas = document.querySelector('canvas.webgl')
+
+// Scene
+const scene = new THREE.Scene()
+
+
+//begin inladen textures voor home
+// Objects
+const backgroundMapTexture = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/background.png`),
+    transparent: false
+});
+
+const basicTextures  = []; 
+const basicTexturesLoaded  = []; 
+
+const loadImagesAnimation = (animationName, amountFrames) => {
+    const arrayOfTextures =[];
+    for (let i = 0; i < amountFrames; i++) {
+        if(i<10) {
+            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}0${i}.png`)
+        } else {
+            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}${i}.png`)
+        }
+    }
+    return arrayOfTextures;
+}
+
+//tuinier inladen
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('tuinier', 4))
+
+//vos
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('vos', 65))
+
+//oranjerie
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('oranjerie', 79))
+
+//hert
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('hert', 60))
+
+//wolken
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('clouds', 79))
+
+
+const home = () => {
+    //laadt achtergrond in
+    const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
+    const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
+    meshBackgroundMap.position.z = -30;
+    meshBackgroundMap.position.y =0;
+    scene.add(meshBackgroundMap);
+
+    let positionTest = {
+        x:0,
+        y:0
+    }
+    //laadt de eerst frame van animatie in
+    const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
+        const shapeAnimation =  new THREE.PlaneGeometry(x, y);
+        basicTextures[indexTexture].map = textures[0];
+        const meshAnimation = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
+        meshAnimation.position.z = -29.5;
+        meshAnimation.position.y = posY;
+        meshAnimation.position.x = posX;
+        scene.add(meshAnimation);
+    }
+
+
+    //tuinier
+    animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
+
+    //vos
+    animationMesh(basicTexturesLoaded[1], 1.33, 1, 1, -4, .8);
+
+    //oranjerie
+    animationMesh(basicTexturesLoaded[2], 2.1, 1.4, 2, 7.9, 1.3);
+
+    //hert
+    animationMesh(basicTexturesLoaded[3], 2.4, 1.5, 3, -2, -2.5);
+
+    //wolken
+    animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.75, 1.65);
+}
 
 const loadPhaser = () => {
     const config = {
@@ -39,6 +144,7 @@ const loadPhaser = () => {
     let goodleaves;    
     let badleaves;
     let scene;
+    let broom;
 
     function preload () {
         this.load.image('background', 'interactie1/achtergrond.png');
@@ -253,112 +359,10 @@ const loadPhaser = () => {
 }
 //loadPhaser();
 
-// Loading
-const textureLoader = new THREE.TextureLoader()
-textureLoader.crossOrigin = '';
-// Debug
-const gui = new dat.GUI()
+const loadDetailImker = () => {
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl')
-
-// Scene
-const scene = new THREE.Scene()
-
-// Objects
-const backgroundMapTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/background.png`),
-    transparent: false
-});
-
-const basicTextures  = []; 
-const basicTexturesLoaded  = []; 
-
-const loadImagesAnimation = (animationName, amountFrames) => {
-    const arrayOfTextures =[];
-    for (let i = 0; i < amountFrames; i++) {
-        if(i<10) {
-            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}0${i}.png`)
-        } else {
-            arrayOfTextures[i] = textureLoader.load(`animatie${animationName}/${animationName}${i}.png`)
-        }
-    }
-    return arrayOfTextures;
 }
-
-//tuinier inladen
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('tuinier', 4))
-
-//vos
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('vos', 65))
-
-//oranjerie
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('oranjerie', 79))
-
-//hert
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('hert', 60))
-
-//wolken
-basicTextures.push(new THREE.MeshBasicMaterial({
-    transparent: true
-}));
-basicTexturesLoaded.push(loadImagesAnimation('clouds', 79))
-
-
-let controls;
-let meshDear;
-
-const home = () => {
-    //laadt achtergrond in
-    const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
-    const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
-    meshBackgroundMap.position.z = -30;
-    meshBackgroundMap.position.y =0;
-    scene.add(meshBackgroundMap);
-
-    let positionTest = {
-        x:0,
-        y:0
-    }
-    //laadt de eerst frame van animatie in
-    const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
-        const shapeAnimation =  new THREE.PlaneGeometry(x, y);
-        basicTextures[indexTexture].map = textures[0];
-        const meshAnimation = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
-        meshAnimation.position.z = -29.5;
-        meshAnimation.position.y = posY;
-        meshAnimation.position.x = posX;
-        scene.add(meshAnimation);
-    }
-
-
-    //tuinier
-    animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
-
-    //vos
-    animationMesh(basicTexturesLoaded[1], 1.33, 1, 1, -4, .8);
-
-    //oranjerie
-    animationMesh(basicTexturesLoaded[2], 2.1, 1.4, 2, 7.9, 1.3);
-
-    //hert
-    animationMesh(basicTexturesLoaded[3], 2.4, 1.5, 3, -2, -2.5);
-
-    //wolken
-    animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.75, 1.65);
-}
+loadDetailImker();
 
 // sprite
 const geometry = new THREE.BufferGeometry();
@@ -521,23 +525,24 @@ for (let i = 0; i < 6; i++) {
     scene.add(meshFlower);
 }
 
-const materialCloud = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/cloud.jpg'),
-    transparent: true,
-    side: THREE.DoubleSide
-});
 
+//background blue BLIJVEN ALGEMEEN
 const material1 = new THREE.MeshBasicMaterial( {
     color: 0xb2dcff,
     side: THREE.DoubleSide
 });
-
 const shape = new THREE.PlaneGeometry(500, 500);
 const meshTexture = new THREE.Mesh(shape, material1);
 meshTexture.position.y = -.5;
 meshTexture.position.z = -60;
 scene.add(meshTexture);
 
+//wolk scene overgang
+const materialCloud = new THREE.MeshBasicMaterial({
+    map: textureLoader.load('/cloud.jpg'),
+    transparent: true,
+    side: THREE.DoubleSide
+});
 materialCloud.map.repeat.set(1,1)
 const shapeCloud = new THREE.PlaneGeometry(20,10);
 const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
@@ -545,20 +550,10 @@ meshTextureEight.position.z = 0;
 meshTextureEight.position.y = 9;
 scene.add(meshTextureEight);
 
-// Lights
-
-const pointLight = new THREE.PointLight(0xffffff, 0.1)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight);
-
 
 /**
  * Sizes
  */
-
-
 window.addEventListener('resize', () =>
 {
     console.log(sizes, window.innerWidth, window.innerHeight);
@@ -575,7 +570,6 @@ window.addEventListener('resize', () =>
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
-
 /**
  * Camera
  */
@@ -585,11 +579,6 @@ camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 5
 scene.add(camera);
-
-// Controls
-//const controls = new OrbitControls(camera, canvas)
-//controls.enableDamping = true
-
 /**
  * Renderer
  */
@@ -600,9 +589,14 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-/**
- * Animate
- */
+//globale variabelen home
+
+let counters = [0, 0, 0, 0, 0];
+let secondPassed = 0;
+let once = true;
+
+
+//globale variabelen detail imker
 
 const handleMoveDocument = e => {
     mouseX = (e.clientX - windowHalfX);
@@ -627,7 +621,7 @@ const sceneTwo = () => {
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
         //document.addEventListener(`mousemove`, handleMoveDocument);
-        mapCamera= true;
+        userOnHome= true;
     })
     .start();
 }
@@ -656,6 +650,7 @@ const handleClickDocument = e => {
 
 document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleClickDocument);
+
 let mouseX = 0;
 let mouseY = 0;
 
@@ -669,45 +664,43 @@ let conditionMoveCamera = true;
 
 const clock = new THREE.Clock();
 
-let mapCamera = false;
 
-let counterFrameRate = 0;
-let counters = [0, 0, 0, 0, 0];
+// gebruiker op welke pagina
 
-let secondPassed = 0;
-
-let once = true;
+let userOnHome = false;
+let userOnDetailImker = true;
 
 const tick = () => {
     targetX= mouseX * .05;
     targetY= mouseY * .05;
+
     const time = Date.now() * 0.005;
-    if (once) {
-        secondPassed = time;
-        once = false;
-    }
-    if((time-secondPassed) >= .3) {
-        secondPassed = time;
-        const newCounters = counters.map(counter =>{
-            counter++
-            return counter++
-        });
-
-        counters = newCounters;
-        counterFrameRate ++
-    }
-
     TWEEN.update();
 
-    const elapsedTime = clock.getElapsedTime()
-
-    if (conditionMoveCamera) {
-        camera.position.x = -.005 * -(targetX -  camera.position.x);
-        camera.position.y = -.005 * -(targetY -  camera.position.y);
-        meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
-        meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
+    if(userOnDetailImker) {
+        if (conditionMoveCamera) {
+            camera.position.x = -.005 * -(targetX -  camera.position.x);
+            camera.position.y = -.005 * -(targetY -  camera.position.y);
+            meshBackground.position.x = .03 * (targetX -  meshBackground.position.x);
+            meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
+        }
     }
-    if (mapCamera) {
+    
+    if (userOnHome) {
+        if (once) {
+            secondPassed = time;
+            once = false;
+        }
+        if((time-secondPassed) >= .3) {
+            secondPassed = time;
+            const newCounters = counters.map(counter =>{
+                counter++
+                return counter++
+            });
+    
+            counters = newCounters;
+        }
+
         camera.position.x = 0
         camera.position.y = 0
 
@@ -719,6 +712,10 @@ const tick = () => {
             }
         }
     }
+
+
+    // dingen dat ik niet weet of ik ze mag verwijderen
+    const elapsedTime = clock.getElapsedTime();
 
     // Render
     renderer.render(scene, camera);
