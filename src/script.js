@@ -274,19 +274,6 @@ const backgroundMapTexture = new THREE.MeshBasicMaterial({
 const basicTextures  = []; 
 const basicTexturesLoaded  = []; 
 
-let deerTexture = new THREE.MeshBasicMaterial({
-    transparent: true
-});
-let deersTextures =[];
-
-for (let i = 0; i < 70; i++) {
-    if(i<10) {
-        deersTextures[i] = textureLoader.load(`animatieHert/herten20${i}.png`)
-    } else {
-        deersTextures[i] = textureLoader.load(`animatieHert/herten2${i}.png`)
-    }
-}
-
 const loadImagesAnimation = (animationName, amountFrames) => {
     const arrayOfTextures =[];
     for (let i = 0; i < amountFrames; i++) {
@@ -311,25 +298,41 @@ basicTextures.push(new THREE.MeshBasicMaterial({
 }));
 basicTexturesLoaded.push(loadImagesAnimation('vos', 65))
 
+//oranjerie
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('oranjerie', 79))
+
+//hert
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('hert', 60))
+
+//wolken
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('clouds', 79))
+
 
 let controls;
 let meshDear;
 
 const home = () => {
+    //laadt achtergrond in
     const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
     const meshBackgroundMap = new THREE.Mesh(shapeBackgroundMap, backgroundMapTexture);
     meshBackgroundMap.position.z = -30;
     meshBackgroundMap.position.y =0;
     scene.add(meshBackgroundMap);
 
-    const shapeDear =  new THREE.PlaneGeometry(2.4, 1.5);
-    deerTexture.map = deersTextures[0];
-    meshDear = new THREE.Mesh(shapeDear, deerTexture);
-    meshDear.position.z = -29.5;
-    meshDear.position.y = -2.5;
-    meshDear.position.x = -2;
-    scene.add(meshDear);
-
+    let positionTest = {
+        x:0,
+        y:0
+    }
+    //laadt de eerst frame van animatie in
     const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
         const shapeAnimation =  new THREE.PlaneGeometry(x, y);
         basicTextures[indexTexture].map = textures[0];
@@ -340,8 +343,21 @@ const home = () => {
         scene.add(meshAnimation);
     }
 
+
+    //tuinier
     animationMesh(basicTexturesLoaded[0], 1.2, 1.5, 0, 4, .3);
+
+    //vos
     animationMesh(basicTexturesLoaded[1], 1.33, 1, 1, -4, .8);
+
+    //oranjerie
+    animationMesh(basicTexturesLoaded[2], 2.1, 1.4, 2, 7.9, 1.3);
+
+    //hert
+    animationMesh(basicTexturesLoaded[3], 2.4, 1.5, 3, -2, -2.5);
+
+    //wolken
+    animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.75, 1.65);
 }
 
 // sprite
@@ -569,9 +585,6 @@ camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 5
 scene.add(camera);
-gui.add(camera.position, `y`);
-gui.add(camera.position, `x`);
-gui.add(camera.position, `z`);
 
 // Controls
 //const controls = new OrbitControls(camera, canvas)
@@ -659,7 +672,7 @@ const clock = new THREE.Clock();
 let mapCamera = false;
 
 let counterFrameRate = 0;
-let counters = [0, 0];
+let counters = [0, 0, 0, 0, 0];
 
 let secondPassed = 0;
 
@@ -697,10 +710,6 @@ const tick = () => {
     if (mapCamera) {
         camera.position.x = 0
         camera.position.y = 0
-        deerTexture.map = deersTextures[counterFrameRate];
-        if(counterFrameRate > deersTextures.length-1) {
-            counterFrameRate = 0;
-        }
 
         //TEXTURE CHANGER
         for (let i = 0; i < basicTextures.length; i++) {

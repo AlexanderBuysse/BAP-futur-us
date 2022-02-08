@@ -68,7 +68,7 @@ body
 
   .container {
         height: 100vh;
-        display: grid;
+        display: none;
         place-items: center;
         position: absolute;
         z-index: 100;
