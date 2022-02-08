@@ -251,7 +251,7 @@ const loadPhaser = () => {
         }
     }
 }
-loadPhaser();
+//loadPhaser();
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
@@ -267,9 +267,27 @@ const scene = new THREE.Scene()
 
 // Objects
 const backgroundMapTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/hometest/worldmap.jpg`),
+    map: textureLoader.load(`/background.png`),
     transparent: false
 });
+
+let deersTextures =[];
+
+for (let i = 0; i < 79; i++) {
+    if(i<10) {
+        deersTextures[i] = new THREE.MeshBasicMaterial({
+            map: textureLoader.load(`animatieHert/herten20${i}.png`),
+            transparent: true
+        });
+    } else {
+        deersTextures[i] = new THREE.MeshBasicMaterial({
+            map: textureLoader.load(`animatieHert/herten2${i}.png`),
+            transparent: true
+        });
+    }
+}
+
+console.log(deersTextures);
 
 let controls;
 
@@ -547,11 +565,11 @@ const sceneTwo = () => {
     new TWEEN.Tween(camera.position)
     .to(
       {
-        z: -25,
+        z: -23,
       }, 500)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
-        document.addEventListener(`mousemove`, handleMoveDocument);
+        //document.addEventListener(`mousemove`, handleMoveDocument);
         mapCamera= true;
     })
     .start();
@@ -570,10 +588,10 @@ const handleClickDocument = e => {
       .onComplete(() => { 
           for (let i = 0; i < 6; i++) {
             scene.remove(treeMeshes[i]);
-            scene.remove(meshBackground);
-            scene.remove(beePatricles);
-            home();
           } 
+          scene.remove(meshBackground);
+          scene.remove(beePatricles);
+          home();
           sceneTwo();
       })
     .start();
@@ -614,8 +632,8 @@ const tick = () => {
         meshBackground.position.y = .03 * (targetY -  meshBackground.position.y);
     }
     if (mapCamera) {
-        camera.position.x = -.05 * -(targetX -  camera.position.x);
-        camera.position.y = .05 * -(targetY -  camera.position.y);
+        camera.position.x = 0
+        camera.position.y = 0
     }
 
     // Render
