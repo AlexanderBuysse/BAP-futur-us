@@ -215,7 +215,6 @@ const loadPhaser = () => {
 
         document.querySelector(`.countLeaves`).textContent= countLeaves;
 
-        console.log(countLeaves);
     
 
         goodleaves.children.entries.forEach(leaf => {
@@ -234,27 +233,26 @@ const loadPhaser = () => {
             broom.y = 760;
         }
     }
-      
-    var modal = document.querySelector(`.myModal`);
-    var btn = document.getElementById("myBtn");
-    var span = document.getElementsByClassName("close")[0]; 
-    btn.onclick = function() {
-        modal.style.display = "grid";
-        let frame = document.getElementById("myBtn");
-        frame.style.width= sizes.width - 400;
-        frame.style.height= sizes.height - 400;        
-    }
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-    }
 } 
 
-loadPhaser();
+var modal = document.querySelector(`.myModal`);
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0]; 
+btn.onclick = function() {
+    loadPhaser();
+    modal.style.display = "grid";
+    let frame = document.getElementById("myBtn");
+    frame.style.width= sizes.width - 400;
+    frame.style.height= sizes.height - 400;        
+}
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+}
 
 
 // Loading
