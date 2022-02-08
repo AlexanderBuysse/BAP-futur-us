@@ -255,7 +255,7 @@ const loadPhaser = () => {
 
 // Loading
 const textureLoader = new THREE.TextureLoader()
-
+textureLoader.crossOrigin = '';
 // Debug
 const gui = new dat.GUI()
 
@@ -271,25 +271,25 @@ const backgroundMapTexture = new THREE.MeshBasicMaterial({
     transparent: false
 });
 
+let deerTexture = new THREE.MeshBasicMaterial({
+    transparent: true
+});
 let deersTextures =[];
+
+let backgroundTextureTest= textureLoader.load(`/background.png`);
 
 for (let i = 0; i < 79; i++) {
     if(i<10) {
-        deersTextures[i] = new THREE.MeshBasicMaterial({
-            map: textureLoader.load(`animatieHert/herten20${i}.png`),
-            transparent: true
-        });
+        deersTextures[i] = textureLoader.load(`animatieHert/herten20${i}.png`)
     } else {
-        deersTextures[i] = new THREE.MeshBasicMaterial({
-            map: textureLoader.load(`animatieHert/herten2${i}.png`),
-            transparent: true
-        });
+        deersTextures[i] = textureLoader.load(`animatieHert/herten2${i}.png`)
     }
 }
 
 console.log(deersTextures);
 
 let controls;
+let meshDear;
 
 const home = () => {
     const shapeBackgroundMap = new THREE.PlaneGeometry(20, 10);
@@ -297,6 +297,17 @@ const home = () => {
     meshBackgroundMap.position.z = -30;
     meshBackgroundMap.position.y =0;
     scene.add(meshBackgroundMap);
+
+    const shapeDear =  new THREE.PlaneGeometry(2.4, 1.5);
+    deerTexture.map = deersTextures[0];
+    meshDear = new THREE.Mesh(shapeDear, deerTexture);
+    meshDear.position.z = -29.5;
+    meshDear.position.y = -2.5;
+    meshDear.position.x = -2;
+    console.log(meshDear);
+    //deersTextures[0].map =  backgroundMapTexture;
+    console.log(meshDear);
+    scene.add(meshDear);
     //document.addEventListener(`keydown`, handleMoveCamera);
 }
 
@@ -614,12 +625,26 @@ const clock = new THREE.Clock();
 
 let mapCamera = false;
 
+let counterFrameRate = 0;
+
+let secondPassed = 0;
+
+let once = true;
 
 const tick = () => {
     targetX= mouseX * .05;
     targetY= mouseY * .05;
     const time = Date.now() * 0.005;
-    const delta = clock.getDelta();
+    if (once) {
+        secondPassed = time;
+        once = false;
+    }
+    if((time-secondPassed) >= .3) {
+        //console.log('second passed');
+        secondPassed = time;
+        counterFrameRate ++
+    }
+    //console.log(time-secondPassed);
 
     TWEEN.update();
 
@@ -634,6 +659,10 @@ const tick = () => {
     if (mapCamera) {
         camera.position.x = 0
         camera.position.y = 0
+        deerTexture.map = deersTextures[counterFrameRate];
+        if(counterFrameRate > deersTextures.length-1) {
+            counterFrameRate = 0;
+           }
     }
 
     // Render
