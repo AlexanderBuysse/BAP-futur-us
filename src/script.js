@@ -598,38 +598,10 @@ let once = true;
 
 //globale variabelen detail imker
 
-const handleMoveDocument = e => {
-    mouseX = (e.clientX - windowHalfX);
-    mouseY = (e.clientY - windowHalfY);
-}
 
-const sceneTwo = () => {
-    new TWEEN.Tween(camera.position)
-    .to(
-      {
-        y: 40,
-      }, 500)
-      .easing(TWEEN.Easing.Sinusoidal.In)
-      .onComplete(() => {
-        })
-    .start();
-    new TWEEN.Tween(camera.position)
-    .to(
-      {
-        z: -23,
-      }, 500)
-      .easing(TWEEN.Easing.Sinusoidal.In)
-      .onComplete(() => {
-        //document.addEventListener(`mousemove`, handleMoveDocument);
-        userOnHome= true;
-    })
-    .start();
-}
-
-const handleClickDocument = e => {
+const sceneToHome = () => {
+    // event verwijderen voor bewegen
     document.removeEventListener(`mousemove`, handleMoveDocument);
-    document.removeEventListener(`click`, handleClickDocument);
-    conditionMoveCamera = false;
     new TWEEN.Tween(camera.position)
     .to(
       {
@@ -643,9 +615,63 @@ const handleClickDocument = e => {
           scene.remove(meshBackground);
           scene.remove(beePatricles);
           home();
-          sceneTwo();
+
+          new TWEEN.Tween(camera.position)
+          .to(
+            {
+              y: 40,
+            }, 500)
+            .easing(TWEEN.Easing.Sinusoidal.In)
+          .start();
+      
+          new TWEEN.Tween(camera.position)
+          .to(
+            {
+              z: -23,
+            }, 500)
+            .easing(TWEEN.Easing.Sinusoidal.In)
+            .onComplete(() => {
+              userOnHome= true;
+              userOnDetailImker = false;
+          })
+          .start();
       })
     .start();
+}
+
+const sceneToImker = () => {
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        y: 0,
+      }, 500)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+    .start();
+
+    new TWEEN.Tween(camera.position)
+    .to(
+      {
+        z: 5,
+      }, 500)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onComplete(() => {
+        userOnHome= false;
+        userOnDetailImker = true;
+
+        //event voor imker
+        document.addEventListener(`mousemove`, handleMoveDocument);
+    })
+    .start();
+}
+
+const handleClickDocument = e => {
+    document.removeEventListener(`click`, handleClickDocument);
+    sceneToHome();
+}
+
+const handleMoveDocument = e => {
+    mouseX = (e.clientX - windowHalfX);
+    mouseY = (e.clientY - windowHalfY);
 }
 
 document.addEventListener(`mousemove`, handleMoveDocument);
