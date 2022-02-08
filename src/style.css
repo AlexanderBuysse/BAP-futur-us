@@ -43,12 +43,8 @@ body
   
   /* Modal Content */
   .modal-content {
-    background-color: #fefefe;
-    border: 1px solid #888;
-    max-width: 90vw;
-    max-height: 60vh;
-    min-width: 89vw;
-    min-height: 59vh;
+    min-width: 94vw;
+    min-height: 94vh;
   }
   
   /* The Close Button */
@@ -77,4 +73,12 @@ body
 
   .onTop {
     display: none;
+  }
+
+  .nomargin {
+    margin-top: 0;
+  }
+
+  .opacity {
+    opacity: 0;
   }

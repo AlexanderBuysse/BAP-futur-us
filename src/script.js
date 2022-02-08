@@ -14,7 +14,6 @@ const sizes = {
 const textureLoader = new THREE.TextureLoader()
 textureLoader.crossOrigin = '';
 // Debug
-const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -367,6 +366,8 @@ const loadPhaser = () => {
     var modal = document.querySelector(`.myModal`);
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0]; 
+    //var cont = document.querySelector(`.container`).getElementsByTagName("canvas")[0].classList.add('nomargin'); 
+
     btn.onclick = function() {
         modal.style.display = "grid";
         let frame = document.getElementById("myBtn");
@@ -605,9 +606,6 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = 15
 camera.position.y = 0
 camera.position.z = 5
-gui.add(camera.position, `y`);
-gui.add(camera.position, `x`);
-gui.add(camera.position, `z`);
 scene.add(camera);
 /**
  * Renderer
@@ -846,8 +844,7 @@ const tick = () => {
             modal.style.display = "grid";
             let frame = document.getElementById("myBtn");
             frame.style.width= sizes.width - 400;
-            frame.style.height= sizes.height - 400;        
-
+            frame.style.height= sizes.height - 800;
             mouse.x = 10;
             mouse.y = 10;
         }
