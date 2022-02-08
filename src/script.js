@@ -276,9 +276,7 @@ let deerTexture = new THREE.MeshBasicMaterial({
 });
 let deersTextures =[];
 
-let backgroundTextureTest= textureLoader.load(`/background.png`);
-
-for (let i = 0; i < 79; i++) {
+for (let i = 0; i < 70; i++) {
     if(i<10) {
         deersTextures[i] = textureLoader.load(`animatieHert/herten20${i}.png`)
     } else {
@@ -286,7 +284,20 @@ for (let i = 0; i < 79; i++) {
     }
 }
 
-console.log(deersTextures);
+let gardenerTexture = new THREE.MeshBasicMaterial({
+    transparent: true
+});
+let gardenerTextures =[];
+
+for (let i = 0; i < 4; i++) {
+    if(i<10) {
+        gardenerTextures[i] = textureLoader.load(`animatieGardener/tuinier0${i}.png`)
+    } else {
+        gardenerTextures[i] = textureLoader.load(`animatieGardener/tuinier${i}.png`)
+    }
+}
+
+console.log(gardenerTextures);
 
 let controls;
 let meshDear;
@@ -304,11 +315,15 @@ const home = () => {
     meshDear.position.z = -29.5;
     meshDear.position.y = -2.5;
     meshDear.position.x = -2;
-    console.log(meshDear);
-    //deersTextures[0].map =  backgroundMapTexture;
-    console.log(meshDear);
     scene.add(meshDear);
-    //document.addEventListener(`keydown`, handleMoveCamera);
+
+    const shapeGardener =  new THREE.PlaneGeometry(1.2, 1.5);
+    gardenerTexture.map = gardenerTextures[0];
+    const meshGardener = new THREE.Mesh(shapeGardener, gardenerTexture);
+    meshGardener.position.z = -29.5;
+    meshGardener.position.y = .3;
+    meshGardener.position.x = 4;
+    scene.add(meshGardener);
 }
 
 // sprite
@@ -626,6 +641,7 @@ const clock = new THREE.Clock();
 let mapCamera = false;
 
 let counterFrameRate = 0;
+let counterFrameRateGardener = 0;
 
 let secondPassed = 0;
 
@@ -643,6 +659,7 @@ const tick = () => {
         //console.log('second passed');
         secondPassed = time;
         counterFrameRate ++
+        counterFrameRateGardener ++
     }
     //console.log(time-secondPassed);
 
@@ -662,7 +679,11 @@ const tick = () => {
         deerTexture.map = deersTextures[counterFrameRate];
         if(counterFrameRate > deersTextures.length-1) {
             counterFrameRate = 0;
-           }
+        }
+        gardenerTexture.map = gardenerTextures[counterFrameRateGardener];
+        if(counterFrameRateGardener > gardenerTextures.length-1) {
+            counterFrameRateGardener = 0;
+        }
     }
 
     // Render
