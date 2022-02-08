@@ -472,12 +472,6 @@ const materialCloud = new THREE.MeshBasicMaterial({
     transparent: true,
     side: THREE.DoubleSide
 });
-materialCloud.map.repeat.set(1,1)
-const shapeCloud = new THREE.PlaneGeometry(20,10);
-const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
-meshTextureEight.position.z = 0;
-meshTextureEight.position.y = 9;
-scene.add(meshTextureEight);
 
 
 
@@ -523,6 +517,12 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 const imkerPage = () => {
+    materialCloud.map.repeat.set(1,1)
+    const shapeCloud = new THREE.PlaneGeometry(20,10);
+    const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
+    meshTextureEight.position.z = 0;
+    meshTextureEight.position.y = 9;
+    scene.add(meshTextureEight);
     scene.add(meshBackground);
 
     const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
