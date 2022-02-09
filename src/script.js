@@ -21,7 +21,7 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// -------------------- GLOBALE VERIABELEN HOME -------------------------
+// -------------------- GLOBALE VERIABELEN HOME -------------------
 const basicTextures  = []; 
 const basicTexturesLoaded  = []; 
 let counters = [0, 0, 0, 0, 0, 0];
@@ -239,6 +239,12 @@ const loadPhaser = () => {
         this.load.html('slider', 'testClouds/slider.html');
     }
 
+    let layerOne;
+    let layerTwo;
+    let layerThree;
+    let setBackGround; 
+
+
     function create () {
         if(interactionLeaves) {
             scene= this;
@@ -353,18 +359,22 @@ const loadPhaser = () => {
 
         if(interactionClouds) {
             this.add.image(840, 473, 'backgroundCloud');
-            this.add.image(840, 880, 'layer');
-            this.add.image(840, 900, 'layer1');
-            this.add.image(840, 920, 'layer2');
+            layerOne = this.add.image(840, 880, 'layer');
+            layerTwo = this.add.image(840, 900, 'layer1');
+            layerThree = this.add.image(840, 920, 'layer2');
 
             let slider = this.add.dom(400,400).createFromCache('slider');
-            slider.addListener('click');
+            console.log(slider.addListener('change'));
+            slider.addListener('input');
 
-            slider.on('click', function (event) {
+            slider.on('input', function (event) {
                 if( event.target.name ='slider') {
-                    console.log(event.target.value);
+                    const sliderValue = event.target.value;
+                    layerOne.y = 880 - sliderValue;
+                    layerTwo.y = 900 - (.6*sliderValue);
+                    layerThree.y = 920 -  (.5*sliderValue);
                 }
-            })
+            });
         }
     }
 
@@ -953,7 +963,7 @@ const tick = () => {
         raycaster.setFromCamera( mouse, camera );
 		const intersection = raycaster.intersectObject( meshBackCircle );
         if ( intersection.length > 0 && intersection.length !== 2 ) {
-            if(doubleClickPrevent) {
+            if(doubleClickPrevent && !interactionLeaves) {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
                 let frame = document.getElementById("myBtn");
@@ -973,7 +983,7 @@ const tick = () => {
 
         const intersectionClouds = raycaster.intersectObject( meshBackCircleClouds );
         if ( intersectionClouds.length > 0 && intersectionClouds.length !== 2 ) {
-            if (doubleClickPrevent) {
+            if (doubleClickPrevent && !interactionClouds) {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
                 let frame = document.getElementById("myBtn");
