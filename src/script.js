@@ -197,7 +197,8 @@ const loadPhaser = () => {
 
         goodleaves = this.physics.add.group({
             key: 'goodleaf',
-            repeat: 4,
+            repeat: 3,
+            setAngle: { min: 0, max: 360 },
             setXY: {x: 150, y: 600, stepX: 100}
         });
 
