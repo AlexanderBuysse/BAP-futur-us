@@ -165,6 +165,9 @@ const loadPhaser = () => {
             gravity: { y: 600 }
           }
         },
+        dom: {
+            createContainer: true
+        },
         scene: {
           preload: preload,
           create: create,
@@ -185,7 +188,6 @@ const loadPhaser = () => {
     var modal = document.querySelector(`.myModal`);
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0]; 
-    //var cont = document.querySelector(`.container`).getElementsByTagName("canvas")[0].classList.add('nomargin'); 
     btn.onclick = function() {
         modal.style.display = "grid";
         let frame = document.getElementById("myBtn");
@@ -195,13 +197,11 @@ const loadPhaser = () => {
     span.onclick = function() {
         modal.style.display = "none";
         var element = document.getElementById('game-area').getElementsByTagName('canvas');
-        console.log(element.length);
         if(element.length >= 2) {
             element[0].parentNode.removeChild(element[0]);  
             element[0].parentNode.removeChild(element[0]);  
         } else {
             for (let i = 0; i < element.length; i++) {
-                console.log(element);
                 element[0].parentNode.removeChild(element[0]);
             }    
         }
@@ -212,13 +212,11 @@ const loadPhaser = () => {
         if (event.target == modal) {
             modal.style.display = "none";
             var element = document.getElementById('game-area').getElementsByTagName('canvas');
-            console.log(element.length);
             if(element.length >= 2) {
                 element[0].parentNode.removeChild(element[0]);  
                 element[0].parentNode.removeChild(element[0]);  
             } else {
                 for (let i = 0; i < element.length; i++) {
-                    console.log(element);
                     element[0].parentNode.removeChild(element[0]);
                 }    
             }
@@ -232,7 +230,13 @@ const loadPhaser = () => {
         this.load.image('platform', 'interaction1design/platform.png');
         this.load.image('badleaf', 'interactie1/badleaf.png');
         this.load.image('goodleaf', 'interaction1design/leave1.png');
-        this.load.image('background', 'interaction1design/background.png')
+        this.load.image('background', 'interaction1design/background.png')    
+        
+        this.load.image('backgroundCloud', 'testClouds/background.png');
+        this.load.image('layer', 'testClouds/layers.png');
+        this.load.image('layer1', 'testClouds/layers1.png');
+        this.load.image('layer2', 'testClouds/layers2.png');
+        this.load.html('slider', 'testClouds/slider.html');
     }
 
     function create () {
@@ -346,6 +350,22 @@ const loadPhaser = () => {
             
             rect = this.add.rectangle(780, 600, 730, 600).setStrokeStyle(2, 0xffff00);
         }
+
+        if(interactionClouds) {
+            this.add.image(840, 473, 'backgroundCloud');
+            this.add.image(840, 880, 'layer');
+            this.add.image(840, 900, 'layer1');
+            this.add.image(840, 920, 'layer2');
+
+            let slider = this.add.dom(400,400).createFromCache('slider');
+            slider.addListener('click');
+
+            slider.on('click', function (event) {
+                if( event.target.name ='slider') {
+                    console.log(event.target.value);
+                }
+            })
+        }
     }
 
     function customSeparate(s1, s2) {
@@ -431,7 +451,6 @@ const loadPhaser = () => {
       
 
     function update () {
-        //console.log('gaat hier door')
         if (interactionLeaves) {
             var x = rect.x - (rect.width / 2);
             var y = rect.y - (rect.height / 2);
@@ -440,7 +459,6 @@ const loadPhaser = () => {
             let countLeaves= 0;
         
             within.forEach(function (body) {
-                //console.log(body.width);
                 if(body.width !== 95) {
                     countLeaves ++;
                 }
@@ -474,6 +492,9 @@ const loadPhaser = () => {
             if (broom.y >780) {
                 broom.y = 780;
             }
+        }
+        if(interactionClouds) {
+
         }
     }
 }
