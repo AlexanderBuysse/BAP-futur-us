@@ -171,11 +171,11 @@ const loadPhaser = () => {
     let broom;
 
     function preload () {
-        this.load.image('background', 'interactie1/achtergrond.png');
         this.load.image('broom', 'interactie1/broom.png');
-        this.load.image('platform', 'interactie1/plat.png');
+        this.load.image('platform', 'interaction1design/platform.png');
         this.load.image('badleaf', 'interactie1/badleaf.png');
-        this.load.image('goodleaf', 'interactie1/goodleaf.png');
+        this.load.image('goodleaf', 'interaction1design/leave1.png');
+        this.load.image('background', 'interaction1design/background.png')
     }
 
     function create () {
@@ -184,10 +184,10 @@ const loadPhaser = () => {
         this.add.image(840, 473, 'background');
         broom = this.physics.add.sprite(840, 300, 'broom');
         broom.body.setAllowGravity(false);
-        this.add.image(840, 900, 'platform');
 
         let platforms = this.physics.add.staticGroup();
         platforms.create(840, 900, 'platform').refreshBody();
+        platforms.children.entries[0].alpha=0;
 
         badleaves = this.physics.add.group({
             key: 'badleaf',
@@ -584,7 +584,6 @@ const imkerPage = () => {
 // -------------------- BASIS STUFF VOOR THREE JS -------------------------
 window.addEventListener('resize', () =>
 {
-    console.log(sizes, window.innerWidth, window.innerHeight);
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -764,7 +763,7 @@ function handleMoveDocumentTest( event ) {
 
 }
 
-document.addEventListener(`click`, handleClickDocument);
+//document.addEventListener(`click`, handleClickDocument);
 //document.addEventListener(`click`, handleMoveDocumentStuff);
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
@@ -789,13 +788,13 @@ const tick = () => {
     }
 
     if(loadImkerOnce) {
-        imkerPage();
+        //imkerPage();
         loadImkerOnce = false;
         var callback = function() {
             loadAll();
             removeImkerMeshes();
           }
-        setTimeout(callback, 2500);
+        setTimeout(callback, 300);
     }    
 
     targetX= mouseX * .05;
