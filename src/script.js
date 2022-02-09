@@ -764,7 +764,7 @@ function handleMoveDocumentTest( event ) {
 
 }
 
-//document.addEventListener(`click`, handleClickDocument);
+document.addEventListener(`click`, handleClickDocument);
 //document.addEventListener(`click`, handleMoveDocumentStuff);
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
@@ -789,7 +789,7 @@ const tick = () => {
     }
 
     if(loadImkerOnce) {
-        //imkerPage();
+        imkerPage();
         loadImkerOnce = false;
         var callback = function() {
             loadAll();
