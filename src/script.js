@@ -24,12 +24,13 @@ const scene = new THREE.Scene()
 // -------------------- GLOBALE VERIABELEN HOME -------------------
 const basicTextures  = []; 
 const basicTexturesLoaded  = []; 
-let counters = [0, 0, 0, 0, 0, 0];
+let counters = [0, 0, 0, 0, 0, 0, 0];
 let secondPassed = 0;
 let once = true;
 let meshBackgroundMap;
 let meshBackCircle;
 let meshBackCircleClouds;
+let meshImker;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2( 1, 1 );
 let interactionClouds = false;
@@ -96,6 +97,11 @@ basicTextures.push(new THREE.MeshBasicMaterial({
 }));
 basicTexturesLoaded.push(loadImagesAnimation('water', 74))
 
+//Imker
+basicTextures.push(new THREE.MeshBasicMaterial({
+    transparent: true
+}));
+basicTexturesLoaded.push(loadImagesAnimation('Imker', 79))
 
 
 const home = () => {
@@ -120,14 +126,24 @@ const home = () => {
     scene.add(meshBackCircleClouds);
 
     //laadt de eerst frame van animatie in
-    const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
-        const shapeAnimation =  new THREE.PlaneGeometry(x, y);
-        basicTextures[indexTexture].map = textures[0];
-        const meshAnimation = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
-        meshAnimation.position.z = -29.5;
-        meshAnimation.position.y = posY;
-        meshAnimation.position.x = posX;
-        scene.add(meshAnimation);
+    const animationMesh = (textures, x,y, indexTexture, posX, posY, bool) =>{ 
+        if(!bool) {
+            const shapeAnimation =  new THREE.PlaneGeometry(x, y);
+            basicTextures[indexTexture].map = textures[0];
+            const meshAnimation = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
+            meshAnimation.position.z = -29.5;
+            meshAnimation.position.y = posY;
+            meshAnimation.position.x = posX;
+            scene.add(meshAnimation);    
+        } else {
+            const shapeAnimation =  new THREE.PlaneGeometry(x, y);
+            basicTextures[indexTexture].map = textures[0];
+            meshImker = new THREE.Mesh(shapeAnimation, basicTextures[indexTexture]);
+            meshImker.position.z = -29.5;
+            meshImker.position.y = posY;
+            meshImker.position.x = posX;
+            scene.add(meshImker);  
+        }
     }
 
     //tuinier
@@ -147,6 +163,9 @@ const home = () => {
 
     //water
     animationMesh(basicTexturesLoaded[5], 3.54, 2, 5, 8, -2);
+
+    //imker
+    animationMesh(basicTexturesLoaded[6], 1.2, 1.99, 6, -2.2, 1.5, true);
 }
 
 const loadPhaser = () => {
@@ -503,9 +522,6 @@ const loadPhaser = () => {
                 broom.y = 780;
             }
         }
-        if(interactionClouds) {
-
-        }
     }
 }
 
@@ -769,8 +785,7 @@ const addHome = () =>{
 const sceneToHome = () => {
     // event verwijderen voor bewegen
     document.removeEventListener(`mousemove`, handleMoveDocument);
-    document.addEventListener(`click`, handleClickDocument);
-
+    document.removeEventListener(`click`, handleClickDocument);    
     conditionMoveCamera = false;
 
     new TWEEN.Tween(camera.position)
@@ -809,6 +824,7 @@ const sceneToHome = () => {
 }
 
 const sceneToImker = () => {
+    document.addEventListener(`click`, handleClickDocument);
     addImkerMeshes();
     new TWEEN.Tween(camera.position)
     .to(
@@ -863,7 +879,7 @@ const loadAll = () => {
     .start();
 }
 
-const handleClickDocument = e => {
+const handleClickDocument = () => {
     if (userOnDetailImker) {
         sceneToHome();
     }
@@ -888,7 +904,6 @@ function handleMoveDocumentTest( event ) {
 }
 
 //document.addEventListener(`click`, handleClickDocument);
-//document.addEventListener(`click`, handleMoveDocumentStuff);
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
 
@@ -919,7 +934,7 @@ const tick = () => {
             loadAll();
             removeImkerMeshes();
           }
-        setTimeout(callback, 300);
+        setTimeout(callback, 3500);
     }    
 
     targetX= mouseX * .05;
@@ -1001,6 +1016,19 @@ const tick = () => {
             }
         }
 
+        const intersectionImker = raycaster.intersectObject( meshImker);
+        if ( intersectionImker.length > 0 && intersectionImker.length !== 2 ) {
+            if (doubleClickPrevent) {
+                mouse.x = 10;
+                mouse.y = 10;
+                doubleClickPrevent = false;
+                handleClickDocument();
+                var callback = function() {
+                    doubleClickPrevent= true;
+                  }
+                setTimeout(callback, 2000); 
+            }
+        }
     }
 
 
