@@ -29,6 +29,7 @@ let secondPassed = 0;
 let once = true;
 let meshBackgroundMap;
 let meshBackCircle;
+let meshBackCircleClouds;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2( 1, 1 );
 
@@ -106,8 +107,15 @@ const home = () => {
     const shapeCircle = new THREE.PlaneGeometry(.3, .3);
     meshBackCircle = new THREE.Mesh(shapeCircle, circleTexture);
     meshBackCircle.position.z = -25;
-    meshBackCircle.position.y =0;
+    meshBackCircle.position.y =-.4;
+    meshBackCircle.position.x =-.6;
     scene.add(meshBackCircle);
+
+    meshBackCircleClouds = new THREE.Mesh(shapeCircle, circleTexture);
+    meshBackCircleClouds.position.z = -25;
+    meshBackCircleClouds.position.y =.8;
+    meshBackCircleClouds.position.x =-1.8;
+    scene.add(meshBackCircleClouds);
 
     //laadt de eerst frame van animatie in
     const animationMesh = (textures, x,y, indexTexture, posX, posY) =>{ 
@@ -166,12 +174,14 @@ const loadPhaser = () => {
       
     let rect;
     let goodleaves;    
-    let badleaves;
+    let goodleaves1;   
+    let goodleaves2;   
+    let goodleaves3;   
     let scene;
     let broom;
 
     function preload () {
-        this.load.image('broom', 'interactie1/broom.png');
+        this.load.image('broom', 'interaction1design/broom.png');
         this.load.image('platform', 'interaction1design/platform.png');
         this.load.image('badleaf', 'interactie1/badleaf.png');
         this.load.image('goodleaf', 'interaction1design/leave1.png');
@@ -185,21 +195,45 @@ const loadPhaser = () => {
         broom = this.physics.add.sprite(840, 300, 'broom');
         broom.body.setAllowGravity(false);
 
+        const numberRandom = Phaser.Math.Between(0, 700);
+
         let platforms = this.physics.add.staticGroup();
         platforms.create(840, 900, 'platform').refreshBody();
         platforms.children.entries[0].alpha=0;
+        platforms.create(840, 860, 'platform').refreshBody();
+        platforms.children.entries[1].alpha=0;
+        platforms.create(840, 820, 'platform').refreshBody();
+        platforms.children.entries[2].alpha=0;
+        platforms.create(840, 780, 'platform').refreshBody();
+        platforms.children.entries[3].alpha=0;
 
-        badleaves = this.physics.add.group({
-            key: 'badleaf',
-            repeat: 4,
-            setXY: {x: 100, y: 600, stepX: 100}
+        
+        goodleaves3 = this.physics.add.group({
+            key: 'goodleaf',
+            repeat: 3,
+            setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
+            setXY: {x:  Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
+        }); 
+
+        goodleaves2 = this.physics.add.group({
+            key: 'goodleaf',
+            repeat: 3,
+            setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
+            setXY: {x:  Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
+        }); 
+
+        goodleaves1 = this.physics.add.group({
+            key: 'goodleaf',
+            repeat: 3,
+            setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
+            setXY: {x: Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
         });
 
         goodleaves = this.physics.add.group({
             key: 'goodleaf',
             repeat: 3,
-            setAngle: { min: 0, max: 360 },
-            setXY: {x: 150, y: 600, stepX: 100}
+            setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
+            setXY: {x:  Phaser.Math.Between(50, 200), y: 600, stepX: numberRandom}
         });
 
         const handleColiBroom = (eBroom, eLeave) => {
@@ -214,12 +248,22 @@ const loadPhaser = () => {
 
         goodleaves.children.entries.forEach(leaf => {
             this.input.setDraggable(leaf.setInteractive());
-            leaf.setBounce(0.2).setCollideWorldBounds(true);
+            leaf.setCollideWorldBounds(true);
         })
 
-        badleaves.children.entries.forEach(leaf => {
+        goodleaves1.children.entries.forEach(leaf => {
             this.input.setDraggable(leaf.setInteractive());
-            leaf.setBounce(0.2).setCollideWorldBounds(true);
+            leaf.setCollideWorldBounds(true);
+        })
+
+        goodleaves2.children.entries.forEach(leaf => {
+            this.input.setDraggable(leaf.setInteractive());
+            leaf.setCollideWorldBounds(true);
+        })
+
+        goodleaves3.children.entries.forEach(leaf => {
+            this.input.setDraggable(leaf.setInteractive());
+            leaf.setCollideWorldBounds(true);
         })
 
         this.input.on('dragstart', function (pointer, obj)
@@ -237,13 +281,20 @@ const loadPhaser = () => {
             obj.body.moves = true;
         });
 
-        this.physics.add.collider(badleaves, platforms);
-        this.physics.add.collider(goodleaves, platforms);
+        //this.physics.add.collider(badleaves, platforms);
+        this.physics.add.collider(goodleaves, platforms.children.entries[0]);
+        this.physics.add.collider(goodleaves1, platforms.children.entries[1]);
+        this.physics.add.collider(goodleaves2, platforms.children.entries[2]);
+        this.physics.add.collider(goodleaves3, platforms.children.entries[3]);
         this.physics.add.collider(broom, goodleaves, handleColiBroom);
-        this.physics.add.collider(broom, badleaves, handleColiBroom);
+        this.physics.add.collider(broom, goodleaves1, handleColiBroom);
+        this.physics.add.collider(broom, goodleaves2, handleColiBroom);
+        this.physics.add.collider(broom, goodleaves3, handleColiBroom);
 
-        this.physics.add.collider(badleaves, goodleaves, customSeparate);
-        this.physics.add.collider(goodleaves, badleaves, customSeparate);
+        this.physics.add.collider(goodleaves, goodleaves, customSeparate);
+        this.physics.add.collider(goodleaves1, goodleaves1, customSeparate);
+        this.physics.add.collider(goodleaves2, goodleaves2, customSeparate);
+        this.physics.add.collider(goodleaves3, goodleaves3, customSeparate);
         
         rect = this.add.rectangle(780, 600, 730, 600).setStrokeStyle(2, 0xffff00);
     }
@@ -349,19 +400,31 @@ const loadPhaser = () => {
     
 
         goodleaves.children.entries.forEach(leaf => {
-            if (leaf.y > 900) {
-                leaf.y = 830;
+            if (leaf.y > 860) {
+                leaf.y = 860;
             }
         })
 
-        badleaves.children.entries.forEach(leaf => {
-            if (leaf.y > 900) {
-                leaf.y = 830;
+        goodleaves1.children.entries.forEach(leaf => {
+            if (leaf.y > 820) {
+                leaf.y = 820;
             }
         })
 
-        if (broom.y >760) {
-            broom.y = 760;
+        goodleaves2.children.entries.forEach(leaf => {
+            if (leaf.y > 780) {
+                leaf.y = 780;
+            }
+        })
+
+        goodleaves3.children.entries.forEach(leaf => {
+            if (leaf.y > 740) {
+                leaf.y = 740;
+            }
+        })
+
+        if (broom.y >780) {
+            broom.y = 780;
         }
     }
     var modal = document.querySelector(`.myModal`);
@@ -789,7 +852,7 @@ const tick = () => {
     }
 
     if(loadImkerOnce) {
-        //imkerPage();
+        imkerPage();
         loadImkerOnce = false;
         var callback = function() {
             loadAll();
@@ -800,7 +863,6 @@ const tick = () => {
 
     targetX= mouseX * .05;
     targetY= mouseY * .05;
-    //console.log(targetX, targetY);
 
     const time = Date.now() * 0.005;
     TWEEN.update();
@@ -848,6 +910,18 @@ const tick = () => {
             mouse.x = 10;
             mouse.y = 10;
         }
+
+        const intersectionClouds = raycaster.intersectObject( meshBackCircleClouds );
+        if ( intersectionClouds.length > 0 && intersectionClouds.length !== 2 ) {
+            var modal = document.querySelector(`.myModal`);
+            modal.style.display = "grid";
+            let frame = document.getElementById("myBtn");
+            frame.style.width= sizes.width - 400;
+            frame.style.height= sizes.height - 800;
+            mouse.x = 10;
+            mouse.y = 10;
+        }
+
     }
 
 
