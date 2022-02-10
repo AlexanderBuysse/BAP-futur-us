@@ -917,10 +917,16 @@ function handleMoveDocumentTest( event ) {
 
 }
 
+const handleClickLeft = () => {
+    loadAll();
+    removeImkerMeshes();
+    document.querySelector(`.menu`).style.display = "none"
+}
+
 //document.addEventListener(`click`, handleClickDocument);
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
-
+document.querySelector(`.left`).addEventListener(`click`, handleClickLeft);
 
 // gebruiker op welke pagina
 let loadHomeOnce = true;
@@ -944,11 +950,6 @@ const tick = () => {
     if(loadImkerOnce) {
         imkerPage();
         loadImkerOnce = false;
-        var callback = function() {
-            //loadAll();
-            //removeImkerMeshes();
-          }
-        setTimeout(callback, 3500);
     }    
 
     targetX= mouseX * .05;
