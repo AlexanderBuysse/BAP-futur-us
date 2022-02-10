@@ -68,7 +68,7 @@ body
         height: 100vh;
         display: grid;
         place-items: center;
-        position: absolute;
+        /*position: absolute;*/
         z-index: 100;
         width: 100vw;
   }
@@ -83,4 +83,34 @@ body
 
   .opacity {
     opacity: 0;
+  }
+
+  .menu {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 9;
+    background-image: url('../static/ui/background.png');
+    background-position: center;
+    background-repeat: repeat-x;
+    display: grid;
+    place-items: center;
+  }
+
+  
+  @media only screen and (max-width: 1680px) {
+    .menu {
+      background-size: cover;
+    }
+  }
+
+  .grid {
+    width: 90vw;
+    height: 86vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .left {
+    
   }

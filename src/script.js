@@ -4,6 +4,8 @@ import * as dat from 'dat.gui'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 import Phaser from "phaser";
 
+const gui = new dat.GUI();
+
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -708,7 +710,7 @@ const imkerPage = () => {
     const shapeCloud = new THREE.PlaneGeometry(20,10);
     const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
     meshTextureEight.position.z = 0;
-    meshTextureEight.position.y = 9;
+    meshTextureEight.position.y = 9.5;
     scene.add(meshTextureEight);
     scene.add(meshBackground);
     
@@ -742,9 +744,13 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 15
-camera.position.y = 0
-camera.position.z = 5
+camera.position.x = 8.2
+camera.position.y = 1.6
+camera.position.z = 5.3
+camera.rotation.z = 1.6;
+gui.add(camera.position, 'x');
+gui.add(camera.position, 'y');
+gui.add(camera.position, 'z');
 scene.add(camera);
 /**
  * Renderer
@@ -877,6 +883,14 @@ const loadAll = () => {
       }, 300)
       .easing(TWEEN.Easing.Sinusoidal.In)
     .start();
+
+    new TWEEN.Tween(camera.rotation)
+    .to(
+      {
+        z: 0,
+      }, 300)
+      .easing(TWEEN.Easing.Sinusoidal.In)
+    .start();
 }
 
 const handleClickDocument = () => {
@@ -931,8 +945,8 @@ const tick = () => {
         imkerPage();
         loadImkerOnce = false;
         var callback = function() {
-            loadAll();
-            removeImkerMeshes();
+            //loadAll();
+            //removeImkerMeshes();
           }
         setTimeout(callback, 3500);
     }    
