@@ -23,6 +23,9 @@
     };
 
         let game = new Phaser.Game(config);
+        let emitters = [];
+        let onceEmitters = true;
+        let emittersStart= false;
         
         function preload() {
             this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json');
@@ -31,10 +34,30 @@
 
         function create() {
             socket = io();
-            var curve = new Phaser.Curves.Spline([ 50, 300, 164, 246, 274, 342, 412, 257, 522, 341, 664, 264 ]);
-    
             const tree = this.add.image(350, 400, 'tree');
             tree.scale = 2;
+
+            const posX = 200;
+            const moreX = 1;
+            const more = 2;
+
+            const curves = [new Phaser.Curves.Spline([ 152, 552, 208, 440, 150, 303, 213, 173, 143, 53]),
+            new Phaser.Curves.Spline([ 152+posX*moreX, 552, 208+posX*moreX, 440, 150+posX*moreX, 303, 213+posX*moreX, 173, 143+posX*moreX, 53]),
+            new Phaser.Curves.Spline([ 152+posX*more, 552, 208+posX*more, 440, 150+posX*more, 303, 213+posX*more, 173, 143+posX*more, 53])]
+
+            const particles = this.add.particles('flares');
+            for (let i = 0; i < curves.length; i++) {
+                emitters.push(particles.createEmitter({
+                    frame: { frames: 'blue', cycle: true },
+                    scale: { start: 0.5, end: 0 },
+                    blendMode: 'ADD',
+                    emitZone: { type: 'edge', source: curves[i], quantity: 100, yoyo: false }
+                }));
+            }
+
+            emitters.forEach(emitter=> {
+                emitter.stop();
+            });
 
             // event listeners
             let slider =  document.querySelector(`.slider`);
@@ -53,7 +76,7 @@
         }
 
         function handleClickButton() {
-            //emittersStart= true;
+            emittersStart= true;
         }
 
         
@@ -83,9 +106,8 @@
         }*/
 
         function update(time, delta) {
-            /*
             if (emittersStart) {
-                if (lastTime === 0) {
+                /*if (lastTime === 0) {
                     lastTime = time;
                     life = createLifepoints(99);
                 } else if((time - lastTime) >= 1000) {
@@ -96,17 +118,17 @@
                     count++;
                     if (Math.sign(life) == -1) {
                         life = 0;
+                    }
+                }*/
+
+                if(onceEmitters) {
+                    emitters.forEach(emitter=> {
+                        emitter.start();
+                    });
+                    onceEmitters = false;
                 }
             }
-
-            if(onceEmitters) {
-                emitters.forEach(emitter=> {
-                    emitter.start();
-                });
-                onceEmitters = false;
-            }
-        }
         // life time of emitter
-        emitterDies();*/
+        //emitterDies();
         }
 }
