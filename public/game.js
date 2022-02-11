@@ -67,10 +67,10 @@
             for (let i = 0; i < curves.length; i++) {
                 emitters.push(particles.createEmitter({
                     frame: { frames: 'blue', cycle: true },
-                    scale: .5 ,
+                    scale: .1 ,
                     lifespan: 2000,
                     blendMode: 'NORMAL',
-                    emitZone: { type: 'edge', source: curves[i], quantity: 250 },
+                    emitZone: { type: 'edge', source: curves[i], quantity: 350 },
                     alpha: .5
                 }));
             }
@@ -154,8 +154,8 @@
             emitterDies();
 
             graphics.clear();
-            graphics.lineStyle(2, 0xffffff, 1);
-        
+            graphics.lineStyle(3, 0xffffff, .5);
+    
             curves.forEach(emitter => {
                 emitter.draw(graphics);
             })
