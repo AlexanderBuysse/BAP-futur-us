@@ -628,8 +628,7 @@ const beekeeperTexture = new THREE.MeshBasicMaterial({
 
 //background blue BLIJVEN ALGEMEEN
 const material1 = new THREE.MeshBasicMaterial( {
-    color: 0xb2dcff,
-    side: THREE.DoubleSide
+    color: 0xb2dcff
 });
 const shape = new THREE.PlaneGeometry(500, 500);
 const meshTexture = new THREE.Mesh(shape, material1);
@@ -639,10 +638,20 @@ scene.add(meshTexture);
 
 //wolk scene overgang
 const materialCloud = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('/cloud.jpg'),
-    transparent: true,
-    side: THREE.DoubleSide
+    map: textureLoader.load('transitionClouds/cloudpart1.png'),
+    transparent: true
 });
+
+
+//white plaine folows camera
+const whiteTexture = new THREE.MeshBasicMaterial( {
+    color: 0xffffff
+});
+
+const meshWhitePlane = new THREE.Mesh(new THREE.PlaneGeometry(20, 10), whiteTexture);
+meshWhitePlane.position.y= 15;
+meshWhitePlane.position.z= -26;
+scene.add(meshWhitePlane);
 
 
 const imkerPage = () => {
@@ -711,7 +720,13 @@ const imkerPage = () => {
     const meshTextureEight = new THREE.Mesh(shapeCloud, materialCloud);
     meshTextureEight.position.z = 0;
     meshTextureEight.position.y = 9.5;
+
+    const meshCloudTransition = new THREE.Mesh(shapeCloud, materialCloud);
+    meshCloudTransition.position.z = -26;
+    meshCloudTransition.position.y = 9.5;
+
     scene.add(meshTextureEight);
+    scene.add(meshCloudTransition);
     scene.add(meshBackground);
     
     const shapeBeekeeper = new THREE.PlaneGeometry(10, 5);
@@ -797,32 +812,42 @@ const sceneToHome = () => {
     new TWEEN.Tween(camera.position)
     .to(
       {
-        y: 9,
-      }, 800)
+        y: 15,
+      }, 1000)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(() => {
           removeImkerMeshes();
+          transitionPlane = true;
 
           new TWEEN.Tween(camera.position)
           .to(
             {
-              y: 40,
-            }, 500)
-            .easing(TWEEN.Easing.Sinusoidal.In)
-          .start();
-          new TWEEN.Tween(camera.position)
-          .to(
-            {
               z: -23,
-            }, 500)
+            }, 1000)
             .easing(TWEEN.Easing.Sinusoidal.In)
             .onComplete(() => {
+
+                transitionPlane = false;
                 addHome();
-                camera.position.x = 0
-                camera.position.y = 0
-            // start redendering home page
-              userOnHome= true;
-              userOnDetailImker = false;
+                new TWEEN.Tween(camera.position)
+                .to(
+                {
+                    y: 0,
+                }, 1000)
+                .easing(TWEEN.Easing.Sinusoidal.In)
+                .start();
+                new TWEEN.Tween(camera.position)
+                .to(
+                {
+                    x: 0,
+                }, 1000)
+                .easing(TWEEN.Easing.Sinusoidal.In)
+                .start();
+                mouse.x = 0;
+                mouse.y = 0;
+                // start redendering home page
+                userOnHome= true;
+                userOnDetailImker = false;
           })
           .start();
       })
@@ -830,31 +855,43 @@ const sceneToHome = () => {
 }
 
 const sceneToImker = () => {
-    document.addEventListener(`click`, handleClickDocument);
-    addImkerMeshes();
-    new TWEEN.Tween(camera.position)
-    .to(
-      {
-        y: 0,
-      }, 300)
-      .easing(TWEEN.Easing.Sinusoidal.In)
-    .start();
 
     new TWEEN.Tween(camera.position)
     .to(
       {
-        z: 5,
-      }, 500)
+        y: 15,
+      }, 1000)
       .easing(TWEEN.Easing.Sinusoidal.In)
-      .onComplete(() => {
-        removeHome();
-        userOnHome= false;
-        userOnDetailImker = true;
-
-        //event voor imker
-        conditionMoveCamera = true;
-        document.addEventListener(`mousemove`, handleMoveDocument);
-    })
+      .onComplete(()=> {
+        transitionPlane = true;
+        addImkerMeshes();
+        new TWEEN.Tween(camera.position)
+        .to(
+          {
+            z: 5,
+          }, 2000)
+          .easing(TWEEN.Easing.Sinusoidal.In)
+          .onComplete(() => {
+            removeHome();
+            userOnHome= false;
+            userOnDetailImker = true;
+            transitionPlane = false;
+            new TWEEN.Tween(camera.position)
+            .to(
+              {
+                y: 0,
+              }, 1000)
+              .easing(TWEEN.Easing.Sinusoidal.In)
+              .onComplete(()=>{
+                conditionMoveCamera = true;
+                document.addEventListener(`click`, handleClickDocument);
+                document.addEventListener(`mousemove`, handleMoveDocument);    
+              })
+            .start();
+            //event voor imker
+        })
+        .start();
+      })
     .start();
 }
 
@@ -909,7 +946,6 @@ const handleMoveDocument = e => {
 
 
 function handleMoveDocumentTest( event ) {
-
     event.preventDefault();
 
     mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -940,7 +976,13 @@ const clock = new THREE.Clock();
 let onceStart = true;
 let doubleClickPrevent = true;
 
+let transitionPlane = false;
+
 const tick = () => {
+    if(transitionPlane) {
+        meshWhitePlane.position.y = camera.position.y;
+        meshWhitePlane.position.z = camera.position.z - 5;   
+    }
 
     if(loadHomeOnce) {
         home();
@@ -999,8 +1041,8 @@ const tick = () => {
                 let frame = document.getElementById("myBtn");
                 frame.style.width= sizes.width - 400;
                 frame.style.height= sizes.height - 800;
-                mouse.x = 10;
-                mouse.y = 10;
+                mouse.x = 100;
+                mouse.y = 100;
                 interactionLeaves = true;
                 loadPhaser();
                 doubleClickPrevent = false;
@@ -1019,8 +1061,8 @@ const tick = () => {
                 let frame = document.getElementById("myBtn");
                 frame.style.width= sizes.width - 400;
                 frame.style.height= sizes.height - 800;
-                mouse.x = 10;
-                mouse.y = 10;
+                mouse.x = 100;
+                mouse.y = 100;
                 interactionClouds = true; 
                 loadPhaser();
                 doubleClickPrevent = false;
@@ -1034,14 +1076,14 @@ const tick = () => {
         const intersectionImker = raycaster.intersectObject( meshImker);
         if ( intersectionImker.length > 0 && intersectionImker.length !== 2 ) {
             if (doubleClickPrevent) {
-                mouse.x = 10;
-                mouse.y = 10;
+                mouse.x = 100;
+                mouse.y = 100;
                 doubleClickPrevent = false;
                 handleClickDocument();
                 var callback = function() {
                     doubleClickPrevent= true;
-                  }
-                setTimeout(callback, 2000); 
+                    }
+                setTimeout(callback, 1000); 
             }
         }
     }
