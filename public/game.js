@@ -32,6 +32,9 @@
         let count = 0;
         let lifeSpanProcent = 1800*.5;
         let life;
+
+        let graphics;
+        const curves = [];
         
         function preload() {
             this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json');
@@ -39,19 +42,18 @@
         }
 
         function create() {
+            
+            graphics = this.add.graphics();
             socket = io();
-            const tree = this.add.image(350, 400, 'tree');
-            tree.scale = 2;
 
             const posX = 30;
             const min = -50;
             const max = 50;
 
-            const curves = [];
             for (let i = 0; i < 20; i++) {
                 //console.log(Phaser.Math.Between(min, max));
                 curves.push(new Phaser.Curves.Spline([ 
-                    97+posX*i + Phaser.Math.Between(min, max), 571, 
+                    60+posX*i + Phaser.Math.Between(min, max), 571, 
                     100+posX*i+ Phaser.Math.Between(min, max), 410 + Phaser.Math.Between(min, max),
                     100+posX*i + Phaser.Math.Between(min, max), 255 + Phaser.Math.Between(min, max), 
                     104+posX*i + Phaser.Math.Between(min, max), 126 + Phaser.Math.Between(min, max), 
@@ -65,8 +67,8 @@
             for (let i = 0; i < curves.length; i++) {
                 emitters.push(particles.createEmitter({
                     frame: { frames: 'blue', cycle: true },
-                    scale: { start: .5, end: .5 },
-                    lifespan: 20,
+                    scale: .5 ,
+                    lifespan: 2000,
                     blendMode: 'NORMAL',
                     emitZone: { type: 'edge', source: curves[i], quantity: 250 },
                     alpha: .5
@@ -113,21 +115,27 @@
                 if (emitter.lifespan.propertyValue <= 0) {
                     emitter.stop();
                 } else {
-                    emitter.lifespan.propertyValue = lifeSpanProcent * parseFloat(`.${life}`);
+                    //console.log( parseFloat(`.${life}`));
+                    if(life >= 10) {
+                        emitter.alpha.propertyValue = .5* parseFloat(`.${life}`); //lifeSpanProcent * parseFloat(`.${life}`);
+                    } else {
+                        emitter.alpha.propertyValue = .5* parseFloat(`.0${life}`); //lifeSpanProcent * parseFloat(`.${life}`);
+                    }
                 }
             });
         }
 
         function update(time, delta) {
+
             if (emittersStart) {
                 if (lastTime === 0) {
                     lastTime = time;
                     life = createLifepoints(99);
-                } else if((time - lastTime) >= 1000) {
+                } else if((time - lastTime) >= 300) {
                     lastTime = time;
                     if (!forever) {
                         console.log(life);
-                        life = life - 5;                      
+                        life = life - 1;                      
                     }
                     count++;
                     if (Math.sign(life) == -1) {
@@ -142,7 +150,14 @@
                     onceEmitters = false;
                 }
             }
-        // life time of emitter
+            // life time of emitter
             emitterDies();
+
+            graphics.clear();
+            graphics.lineStyle(2, 0xffffff, 1);
+        
+            curves.forEach(emitter => {
+                emitter.draw(graphics);
+            })
         }
 }
