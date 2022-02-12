@@ -50,6 +50,8 @@
             const min = -50;
             const max = 50;
 
+            const colors = ['blue', 'red'];
+
             for (let i = 0; i < 20; i++) {
                 //console.log(Phaser.Math.Between(min, max));
                 curves.push(new Phaser.Curves.Spline([ 
@@ -66,12 +68,12 @@
             const particles = this.add.particles('flares');
             for (let i = 0; i < curves.length; i++) {
                 emitters.push(particles.createEmitter({
-                    frame: { frames: 'blue', cycle: true },
+                    frame: { frames:[colors[Phaser.Math.Between(1, 1)]], cycle: true },
                     scale: .1 ,
                     lifespan: 2000,
                     blendMode: 'NORMAL',
                     emitZone: { type: 'edge', source: curves[i], quantity: 350 },
-                    alpha: .5
+                    alpha: 1
                 }));
             }
 
@@ -87,12 +89,10 @@
         }
 
         function handleChangeSlider(e) {
-            console.log(e.target.value);
-            /*
-            [arraymet emmitters].forEach(emitter => {
-                [arraymet emmitters].quantity.propertyValue = valueSlider;
+            const sliderValue = (e.target.value*400)
+            emitters.forEach(emitter => {
+                emitter.lifespan.propertyValue = sliderValue;
             });
-            */
         }
 
         function handleClickButton() {
@@ -134,7 +134,6 @@
                 } else if((time - lastTime) >= 300) {
                     lastTime = time;
                     if (!forever) {
-                        console.log(life);
                         life = life - 1;                      
                     }
                     count++;
