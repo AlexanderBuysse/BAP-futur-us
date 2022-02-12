@@ -145,8 +145,10 @@
 
                 if(onceEmitters) {
                     emitters.forEach(emitter=> {
-                         
-                        emitter.start();
+                        var callback = function() {
+                            emitter.start();
+                          }
+                        setTimeout(callback, Phaser.Math.Between(0, 3000)); 
                     });
                     onceEmitters = false;
                 }
