@@ -68,7 +68,7 @@
             const particles = this.add.particles('flares');
             for (let i = 0; i < curves.length; i++) {
                 emitters.push(particles.createEmitter({
-                    frame: { frames:[colors[Phaser.Math.Between(1, 1)]], cycle: true },
+                    frame: { frames:[colors[Phaser.Math.Between(0, 1)]], cycle: true },
                     scale: .1 ,
                     lifespan: 2000,
                     blendMode: 'NORMAL',
