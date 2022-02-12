@@ -1,7 +1,7 @@
 {
     const config = {
         type: Phaser.WEBGL,
-        width: 800,
+        width: 1020,
         height: 600,
         parent: 'phaser-example',
         backgroundColor: '#1c1917',
