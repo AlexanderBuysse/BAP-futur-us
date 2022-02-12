@@ -145,6 +145,7 @@
 
                 if(onceEmitters) {
                     emitters.forEach(emitter=> {
+                         
                         emitter.start();
                     });
                     onceEmitters = false;
@@ -154,7 +155,7 @@
             emitterDies();
 
             graphics.clear();
-            graphics.lineStyle(3, 0xffffff, .5);
+            graphics.lineStyle(6, 0xffffff, .25);
     
             curves.forEach(emitter => {
                 emitter.draw(graphics);
