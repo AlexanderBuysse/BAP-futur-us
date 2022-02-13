@@ -12,6 +12,8 @@ document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButt
 document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="288" height="130" class="info">`
 document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="75" height="50" class="check">`
 
+//document.querySelector(`.img-tree`).innerHTML  = `<img src="${imgTree}" alt="image" width="75" height="50" class="check">`
+
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -1014,7 +1016,7 @@ const handleClickLeft = () => {
 //document.addEventListener(`click`, handleClickDocument);
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
-document.querySelector(`.left`).addEventListener(`click`, handleClickLeft);
+document.querySelector(`.ontdekButton`).addEventListener(`click`, handleClickLeft);
 
 // gebruiker op welke pagina
 let loadHomeOnce = true;

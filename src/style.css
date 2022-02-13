@@ -126,6 +126,7 @@ body
     background-repeat: no-repeat;
     padding: 20px;
     padding-left: 74px;
+    background-position: 8px center
   }
 
   .introTitle {
@@ -186,11 +187,43 @@ body
     font-style: normal;
   }
 
+  .img-tree {
+    width: 100%;
+    height: 100%;
+    margin-top: -56px;
+    margin-right: -24px;
+    background-image: url('../static/ui/hoofdscreen.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    position: absolute;
+  }
+
   .opening {
     grid-area: opening;
     background-image: url('../static/ui/leftdown.png');
-    background-position: center;
+    background-position: 26px center;
     background-repeat: no-repeat;
+    padding-top: 28px;
+    padding-left: 61px;
+    padding-right: 82px;
+  }
+
+  .openingTime {
+    margin-top: 30px;
+    margin-bottom: 19px;
+    padding-left: 46px;
+  }
+
+  .openingButton {
+    padding-left: 73px;
+    margin-top: 25px; 
+  }
+
+  .ontdekButton {
+    padding-left: 83px;
+    padding-top: 19px;
+    line-height: 40px;
   }
 
   .infoMenu {
@@ -198,6 +231,7 @@ body
     background-image: url('../static/ui/rightmiddle.png');
     background-position: center;
     background-repeat: no-repeat;
+    padding: 31px 39px;
   }
 
   .ontdek {
@@ -205,19 +239,20 @@ body
     background-image: url('../static/ui/rightdown.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-position: 27px center;
   }
 
   .grid {
     display: grid;
-    grid-template-rows:  327px 14px 233px 19px 233px 100px; 
-    grid-template-columns: 473px 665px 446px;
-    grid-template-areas: 
-    "intro . ."
-    ". . ."
-    ". . info"
-    "opening . info"
-    "opening . ."
-    "opening . ontdek";
+    grid-template-rows: 327px 14px 233px 19px 233px 114px;
+    grid-template-columns: 473px 9px 637px 88px 398px;
+        grid-template-areas:
+        "intro . . . ."
+        ". . . . ."
+        ". . . . info"
+        "opening . . . info"
+        "opening . . . ."
+        "opening . . ontdek ontdek";
   }
 
 
