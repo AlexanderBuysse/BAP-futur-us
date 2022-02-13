@@ -119,12 +119,107 @@ body
     }
   }
 
-  .grid {
-    width: 90vw;
-    height: 86vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  .intro {
+    font-size: 24px;
+    background-image: url('../static/ui/lefttop.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    padding-left: 74px;
   }
+
+  .introTitle {
+    padding-right: 73px;
+    padding-left: 17px;
+    line-height: 62px;
+
+  }
+
+  .introText {
+    padding-right: 130px;
+  }
+
+  .smallpad {
+    padding-left: 30px;
+  }
+
+  .mediumpad {
+    padding-left: 15px;
+  }
+
+  .keplerBold {
+    grid-area: intro;
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 22px;
+  }
+
+  .extraBig {
+    font-size: 75px;
+    color: white;
+  }
+
+  .sizeBig {
+    font-size: 66px;
+  }
+
+  .medium { 
+    font-size: 44px;
+    color: white;
+  }
+
+  .small {
+    font-size: 22px;
+  }
+
+  .baskerExtreBold {
+    font-family: baskerville-urw, serif;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 22px;
+  }
+
+  .baskerMedium {
+    font-family: baskerville-urw, serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .opening {
+    grid-area: opening;
+    background-image: url('../static/ui/leftdown.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .infoMenu {
+    grid-area: info;
+    background-image: url('../static/ui/rightmiddle.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .ontdek {
+    grid-area: ontdek;
+    background-image: url('../static/ui/rightdown.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-rows:  327px 14px 233px 19px 233px 100px; 
+    grid-template-columns: 473px 665px 446px;
+    grid-template-areas: 
+    "intro . ."
+    ". . ."
+    ". . info"
+    "opening . info"
+    "opening . ."
+    "opening . ontdek";
+  }
+
 
   .homeButton {
     margin-bottom: -12vh;
