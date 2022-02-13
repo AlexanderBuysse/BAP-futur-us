@@ -2,7 +2,7 @@
     const config = {
         type: Phaser.WEBGL,
         width: 1020,
-        height: 600,
+        height: 980,
         parent: 'phaser-example',
         backgroundColor: '#1c1917',
         dom: {
@@ -35,6 +35,12 @@
 
         let graphics;
         const curves = [];
+
+        const chosenColors = [];
+
+        let treeTopRed;
+        let treeTopBlue;
+        let sliderValueTop = 5;
         
         function preload() {
             this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json');
@@ -47,43 +53,69 @@
             socket = io();
 
             const posX = 30;
-            const min = -50;
-            const max = 50;
+            const min = -40;
+            const max = 40;
 
             const colors = ['blue', 'red'];
 
             for (let i = 0; i < 20; i++) {
-                //console.log(Phaser.Math.Between(min, max));
                 curves.push(new Phaser.Curves.Spline([ 
-                    60+posX*i + Phaser.Math.Between(min, max), 571, 
-                    100+posX*i+ Phaser.Math.Between(min, max), 410 + Phaser.Math.Between(min, max),
-                    100+posX*i + Phaser.Math.Between(min, max), 255 + Phaser.Math.Between(min, max), 
-                    104+posX*i + Phaser.Math.Between(min, max), 126 + Phaser.Math.Between(min, max), 
-                    101+posX*i, 31]));
+                    100+posX*i + Phaser.Math.Between(min, max), 941, 
+                    100+posX*i+ Phaser.Math.Between(min, max), 821 + Phaser.Math.Between(min, max),
+                    100+posX*i + Phaser.Math.Between(min, max), 719 + Phaser.Math.Between(min, max), 
+                    100+posX*i + Phaser.Math.Between(min, max), 641 + Phaser.Math.Between(min, max), 
+                    100+posX*i, 536])
+                    );
             }
-
-            //const topCurve = [new Phaser.Curves.Spline([ 303, 213+posX*1, 173, 143+posX*1, 53])];
-
 
             const particles = this.add.particles('flares');
             for (let i = 0; i < curves.length; i++) {
+                const thisColor = colors[Phaser.Math.Between(0, 1)];
                 emitters.push(particles.createEmitter({
-                    frame: { frames:[colors[Phaser.Math.Between(0, 1)]], cycle: true },
+                    frame: { frames:[thisColor], cycle: true },
                     scale: .1 ,
                     lifespan: 2000,
                     blendMode: 'NORMAL',
                     emitZone: { type: 'edge', source: curves[i], quantity: 350 },
                     alpha: 1
                 }));
+                chosenColors.push(thisColor);
             }
 
             emitters.forEach(emitter=> {
                 emitter.stop();
             });
 
+            const shape1 = new Phaser.Geom.Rectangle(-350, -250, 900, 450);
+
+            treeTopRed = particles.createEmitter({
+                frame: { frames:[colors[1]], cycle: false },
+                x: 400, y: 300,
+                lifespan: 4000,
+                quantity: 1,
+                scale: 0.2,
+                alpha: { start: 0, end: 1 },
+                blendMode: 'NORMAL',
+                emitZone: { type: 'random', source: shape1 }
+            });
+            treeTopBlue = particles.createEmitter({
+                frame: { frames:[colors[0]], cycle: false },
+                x: 400, y: 300,
+                lifespan: 4000,
+                quantity: 1,
+                scale: 0.2,
+                alpha: { start: 0, end: 1 },
+                blendMode: 'NORMAL',
+                emitZone: { type: 'random', source: shape1 }
+            });
+
+            treeTopRed.stop();
+            treeTopBlue.stop();
+
             // event listeners
             let slider =  document.querySelector(`.slider`);
             slider.addEventListener('change', handleChangeSlider);
+            document.querySelector(`.sliderTop`).addEventListener('change', handleChangeSliderTop);
             document.querySelector(`.start`).addEventListener('click', handleClickButton);
             document.querySelector(`.start-forever`).addEventListener('click', handleClickButtonForever);
         }
@@ -93,6 +125,12 @@
             emitters.forEach(emitter => {
                 emitter.lifespan.propertyValue = sliderValue;
             });
+        }
+
+        function handleChangeSliderTop(e) {
+            console.log(e.target.value);
+            sliderValueTop = e.target.value;
+            treeTopBlue.quantity.propertyValue = sliderValueTop;
         }
 
         function handleClickButton() {
@@ -115,18 +153,31 @@
                 if (emitter.lifespan.propertyValue <= 0) {
                     emitter.stop();
                 } else {
-                    //console.log( parseFloat(`.${life}`));
                     if(life >= 10) {
-                        emitter.alpha.propertyValue = .5* parseFloat(`.${life}`); //lifeSpanProcent * parseFloat(`.${life}`);
+                        emitter.alpha.propertyValue = .5* parseFloat(`.${life}`);
                     } else {
-                        emitter.alpha.propertyValue = .5* parseFloat(`.0${life}`); //lifeSpanProcent * parseFloat(`.${life}`);
+                        emitter.alpha.propertyValue = .5* parseFloat(`.0${life}`);
                     }
                 }
             });
+
+            const quantityEmitter = treeTopBlue.quantity.propertyValue;
+            if (life <= 0) {
+                treeTopBlue.stop();
+            } else {
+                if(life >= 80 && life < 90) {
+                    treeTopBlue.quantity.propertyValue = sliderValueTop * .75;
+                } else if (life < 50 && life > 10) {
+                    treeTopBlue.quantity.propertyValue = sliderValueTop * .5;
+                } else if (life === 99) {
+                    treeTopBlue.quantity.propertyValue = sliderValueTop;
+                } else {
+                    treeTopBlue.quantity.propertyValue = sliderValueTop * .25;
+                }
+            }
         }
 
         function update(time, delta) {
-
             if (emittersStart) {
                 if (lastTime === 0) {
                     lastTime = time;
@@ -150,16 +201,22 @@
                         setTimeout(callback, Phaser.Math.Between(0, 3000)); 
                     });
                     onceEmitters = false;
+
+                    treeTopBlue.start();
                 }
             }
             // life time of emitter
             emitterDies();
 
             graphics.clear();
-            graphics.lineStyle(6, 0xffffff, .25);
-    
-            curves.forEach(emitter => {
-                emitter.draw(graphics);
-            })
+
+            for (let i = 0; i < curves.length; i++) {
+                if(chosenColors[i] === 'red') {
+                    graphics.lineStyle(6, 0xe2a681, .25);
+                } else {
+                    graphics.lineStyle(6, 0xb2dcff, .25);
+                }
+                curves[i].draw(graphics);
+            }
         }
 }
