@@ -45,6 +45,13 @@ let interactionClouds = false;
 let interactionLeaves = false;
 let countLeaves;
 
+let leavesComfirmed;
+let stopClickLeaves = false;
+
+let cloudsComfirmed;
+let stopClickClouds = false;
+
+
 // -------------------- HOME PAGE -------------------------
 //begin inladen textures voor home
 // Objects
@@ -177,6 +184,16 @@ const home = () => {
     animationMesh(basicTexturesLoaded[6], 1.2, 1.99, 6, -2.2, 1.5, true);
 }
 
+const interactionOverview = (nameInteraction) => {
+    if(nameInteraction === 'leaves') {
+        console.log('werk aub');
+        document.querySelector(`.containerOverview`).classList.add('absolute');
+        var modalOVer = document.querySelector(`.myModalOverView`);
+        modalOVer.style.display = "grid";
+    }
+
+}
+
 const loadPhaser = () => {
     const config = {
         type: Phaser.AUTO,
@@ -282,8 +299,19 @@ const loadPhaser = () => {
                     element[0].parentNode.removeChild(element[0]);
                 }    
             }
+            if(interactionLeaves) {
+                leavesComfirmed = countLeaves;
+                stopClickLeaves = true;
+                console.log(countLeaves);
+                interactionOverview('leaves');
+            }
+            if (interactionClouds) {
+                stopClickClouds = true;
+                interactionOverview('clouds');
+            }
             interactionClouds = false;
             interactionLeaves = false;
+
         }
         checkButton.addEventListener(`click`, handleClickCheckButton);
 
@@ -1054,7 +1082,7 @@ const tick = () => {
 
         raycaster.setFromCamera( mouse, camera );
 		const intersection = raycaster.intersectObject( meshBackCircle );
-        if ( intersection.length > 0 && intersection.length !== 2 ) {
+        if ( intersection.length > 0 && intersection.length !== 2 && stopClickLeaves === false) {
             if(doubleClickPrevent && !interactionLeaves) {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
@@ -1075,7 +1103,7 @@ const tick = () => {
 
         const intersectionClouds = raycaster.intersectObject( meshBackCircleClouds );
         if ( intersectionClouds.length > 0 && intersectionClouds.length !== 2 ) {
-            if (doubleClickPrevent && !interactionClouds) {
+            if (doubleClickPrevent && !interactionClouds && stopClickClouds === false) {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
                 let frame = document.getElementById("myBtn");
