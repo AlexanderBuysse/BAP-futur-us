@@ -43,6 +43,7 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2( 1, 1 );
 let interactionClouds = false;
 let interactionLeaves = false;
+let countLeaves;
 
 // -------------------- HOME PAGE -------------------------
 //begin inladen textures voor home
@@ -268,6 +269,24 @@ const loadPhaser = () => {
             interactionLeaves = false;    
         }
         homeButton.addEventListener(`click`, handleClickHomeButton);
+
+        const checkButton = document.querySelector(`.check`);
+        const handleClickCheckButton = (e) => {
+            modal.style.display = "none";
+            var element = document.getElementById('game-area').getElementsByTagName('canvas');
+            if(element.length >= 2) {
+                element[0].parentNode.removeChild(element[0]);  
+                element[0].parentNode.removeChild(element[0]);  
+            } else {
+                for (let i = 0; i < element.length; i++) {
+                    element[0].parentNode.removeChild(element[0]);
+                }    
+            }
+            interactionClouds = false;
+            interactionLeaves = false;
+        }
+        checkButton.addEventListener(`click`, handleClickCheckButton);
+
         //document.querySelector(`.image-container`).innerHTML = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`;
         if(interactionLeaves) {
             scene= this;
@@ -488,7 +507,7 @@ const loadPhaser = () => {
             var y = rect.y - (rect.height / 2);
         
             var within = this.physics.overlapRect(x, y, rect.width, rect.height);
-            let countLeaves= 0;
+            countLeaves= 0;
         
             within.forEach(function (body) {
                 if(body.width <= 80) {
