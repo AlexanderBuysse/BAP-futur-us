@@ -3,8 +3,14 @@ import * as THREE from 'three'
 import * as dat from 'dat.gui'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 import Phaser from "phaser";
+import imgHomeButton from "../static/ui/homeButton.png"
+import imgInfoTree from "../static/ui/info.png"
+import imgcheck from "../static/ui/check.png"
 
 const gui = new dat.GUI();
+document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`
+document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="288" height="130" class="info">`
+document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="75" height="50" class="check">`
 
 const sizes = {
     width: window.innerWidth,
@@ -207,28 +213,7 @@ const loadPhaser = () => {
     let broom;
 
     var modal = document.querySelector(`.myModal`);
-    var btn = document.getElementById("myBtn");
-    var span = document.getElementsByClassName("close")[0]; 
-    btn.onclick = function() {
-        modal.style.display = "grid";
-        let frame = document.getElementById("myBtn");
-        frame.style.width= sizes.width - 400;
-        frame.style.height= sizes.height - 400;        
-    }
-    span.onclick = function() {
-        modal.style.display = "none";
-        var element = document.getElementById('game-area').getElementsByTagName('canvas');
-        if(element.length >= 2) {
-            element[0].parentNode.removeChild(element[0]);  
-            element[0].parentNode.removeChild(element[0]);  
-        } else {
-            for (let i = 0; i < element.length; i++) {
-                element[0].parentNode.removeChild(element[0]);
-            }    
-        }
-        interactionClouds = false;
-        interactionLeaves = false;
-    }
+
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
@@ -267,6 +252,23 @@ const loadPhaser = () => {
 
 
     function create () {
+        const homeButton = document.querySelector(`.homeButton`);
+        const handleClickHomeButton = (e) => {
+            modal.style.display = "none";
+            var element = document.getElementById('game-area').getElementsByTagName('canvas');
+            if(element.length >= 2) {
+                element[0].parentNode.removeChild(element[0]);  
+                element[0].parentNode.removeChild(element[0]);  
+            } else {
+                for (let i = 0; i < element.length; i++) {
+                    element[0].parentNode.removeChild(element[0]);
+                }    
+            }
+            interactionClouds = false;
+            interactionLeaves = false;    
+        }
+        homeButton.addEventListener(`click`, handleClickHomeButton);
+        //document.querySelector(`.image-container`).innerHTML = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`;
         if(interactionLeaves) {
             scene= this;
 
@@ -385,7 +387,6 @@ const loadPhaser = () => {
             layerThree = this.add.image(840, 920, 'layer2');
 
             let slider = this.add.dom(400,400).createFromCache('slider');
-            console.log(slider.addListener('change'));
             slider.addListener('input');
 
             slider.on('input', function (event) {
@@ -490,12 +491,12 @@ const loadPhaser = () => {
             let countLeaves= 0;
         
             within.forEach(function (body) {
-                if(body.width !== 95) {
+                if(body.width <= 80) {
                     countLeaves ++;
                 }
             });
     
-            document.querySelector(`.countLeaves`).textContent= countLeaves;
+            //console.log(countLeaves);
             goodleaves.children.entries.forEach(leaf => {
                 if (leaf.y > 860) {
                     leaf.y = 860;
@@ -1039,8 +1040,8 @@ const tick = () => {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
                 let frame = document.getElementById("myBtn");
-                frame.style.width= sizes.width - 400;
-                frame.style.height= sizes.height - 800;
+                frame.style.width= sizes.width ;
+                frame.style.height= sizes.height ;
                 mouse.x = 100;
                 mouse.y = 100;
                 interactionLeaves = true;
@@ -1059,8 +1060,9 @@ const tick = () => {
                 var modal = document.querySelector(`.myModal`);
                 modal.style.display = "grid";
                 let frame = document.getElementById("myBtn");
-                frame.style.width= sizes.width - 400;
-                frame.style.height= sizes.height - 800;
+                console.log(sizes);
+                frame.style.width= sizes.width;
+                frame.style.height= sizes.height;
                 mouse.x = 100;
                 mouse.y = 100;
                 interactionClouds = true; 
