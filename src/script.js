@@ -231,6 +231,7 @@ const loadPhaser = () => {
     let broom;
 
     var modal = document.querySelector(`.myModal`);
+    var Overview = document.querySelector(`.modalOverview`);
 
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -246,6 +247,9 @@ const loadPhaser = () => {
             }
             interactionClouds = false;
             interactionLeaves = false;
+        } if(event.target == Overview) {
+            Overview.style.display = "none";
+            document.querySelector(`.containerOverview`).classList.remove('absolute');
         }
     }
 
