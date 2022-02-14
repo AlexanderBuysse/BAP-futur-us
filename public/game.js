@@ -113,40 +113,55 @@
             treeTopBlue.stop();
 
             // event listeners
-            let slider =  document.querySelector(`.slider`);
-            slider.addEventListener('change', handleChangeSlider);
-            document.querySelector(`.sliderTop`).addEventListener('change', handleChangeSliderTop);
+            //let slider =  document.querySelector(`.slider`);
+            //slider.addEventListener('change', handleChangeSlider);
+            //document.querySelector(`.sliderTop`).addEventListener('change', handleChangeSliderTop);
             document.querySelector(`.start`).addEventListener('click', handleClickButton);
             document.querySelector(`.start-forever`).addEventListener('click', handleClickButtonForever);
         }
 
-        function handleChangeSlider(e) {
-            const sliderValue = (e.target.value*400)
-            emitters.forEach(emitter => {
-                emitter.lifespan.propertyValue = sliderValue;
-            });
-        }
+        // function handleChangeSlider(e) {
+        //     const sliderValue = (e.target.value*400)
+        //     emitters.forEach(emitter => {
+        //         emitter.lifespan.propertyValue = sliderValue;
+        //     });
+        // }
 
-        function handleChangeSliderTop(e) {
-            console.log(e.target.value);
-            sliderValueTop = e.target.value;
-            treeTopBlue.quantity.propertyValue = sliderValueTop;
-        }
+        // function handleChangeSliderTop(e) {
+        //     console.log(e.target.value);
+        //     sliderValueTop = e.target.value;
+        //     treeTopBlue.quantity.propertyValue = sliderValueTop;
+        // }
 
         function handleClickButton() {
             emittersStart= true;
+            startWithCode();
         }
 
         
         function handleClickButtonForever() {
             emittersStart= true;
             forever = true
+            startWithCode();
         }
 
         function createLifepoints(sliders) {
             return 99;
         }
         
+        function startWithCode() {
+            const leavesCode = parseInt(document.querySelector(`.code`).value.slice(0, -2));
+            const waterCode = parseInt(document.querySelector(`.code`).value.slice(2, 4));
+
+            const sliderValue = (waterCode*400)
+            emitters.forEach(emitter => {
+                emitter.lifespan.propertyValue = sliderValue;
+            });
+
+            sliderValueTop = leavesCode;
+            treeTopBlue.quantity.propertyValue = sliderValueTop;
+
+        }
 
         function emitterDies() {
             emitters.forEach(emitter => {
