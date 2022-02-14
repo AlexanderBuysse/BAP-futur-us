@@ -41,6 +41,10 @@
         let treeTopRed;
         let treeTopBlue;
         let sliderValueTop = 5;
+
+        let inProgress =  false;
+
+        let socket;
         
         function preload() {
             this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json');
@@ -118,6 +122,22 @@
             //document.querySelector(`.sliderTop`).addEventListener('change', handleChangeSliderTop);
             document.querySelector(`.start`).addEventListener('click', handleClickButton);
             document.querySelector(`.start-forever`).addEventListener('click', handleClickButtonForever);
+
+            socket.on(`inprogress`, function (bool) {
+                console.log(bool);
+                inProgress = bool;
+            })
+
+            socket.on('codeString', function (code) {
+                if (!emittersStart && !inProgress) {
+                    console.log(code);
+                    startWithCode(code);
+                    emittersStart= true;  
+                    onceEmitters= true;
+                } else {
+                    console.log('wait for the other animation to end');
+                }
+            });
         }
 
         // function handleChangeSlider(e) {
@@ -134,24 +154,23 @@
         // }
 
         function handleClickButton() {
-            emittersStart= true;
-            startWithCode();
+            socket.emit("start", document.querySelector(`.code`).value);
         }
 
         
         function handleClickButtonForever() {
-            emittersStart= true;
-            forever = true
-            startWithCode();
+            //startWithCode();
+            //emittersStart= true;
+            //forever = true
         }
 
-        function createLifepoints(sliders) {
+        function createLifepoints() {
             return 99;
         }
         
-        function startWithCode() {
-            const leavesCode = parseInt(document.querySelector(`.code`).value.slice(0, -2));
-            const waterCode = parseInt(document.querySelector(`.code`).value.slice(2, 4));
+        function startWithCode(code) {
+            const leavesCode = parseInt(code.slice(0, -2));
+            const waterCode = parseInt(code.slice(2, 4));
 
             const sliderValue = (waterCode*400)
             emitters.forEach(emitter => {
@@ -179,6 +198,9 @@
             const quantityEmitter = treeTopBlue.quantity.propertyValue;
             if (life <= 0) {
                 treeTopBlue.stop();
+                emittersStart =false;
+                lastTime= 0;
+                socket.emit('stop', 'stop de interactie');
             } else {
                 if(life >= 80 && life < 90) {
                     treeTopBlue.quantity.propertyValue = sliderValueTop * .75;
