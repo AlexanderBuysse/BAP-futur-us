@@ -122,6 +122,14 @@
             document.querySelector(`.start`).addEventListener('click', handleClickButton);
             document.querySelector(`.showMode`).addEventListener('click', handleClickShow);
 
+            socket.on('showButton', function(bool){
+                if(bool) {
+                    document.querySelector(`.showMode`).style.display = 'none';
+                } else {
+                    document.querySelector(`.showMode`).style.display = 'block';
+                }
+            })
+
             socket.on(`inprogress`, function (bool) {
                 console.log(bool);
                 inProgress = bool;
@@ -142,6 +150,7 @@
         function handleClickShow() { 
             document.querySelector(`.uiUser`).classList.add('none');
             document.querySelector(`.phaser`).classList.remove('none');
+            socket.emit('hideShowButton', false);
         }
 
         function handleClickButton() {
