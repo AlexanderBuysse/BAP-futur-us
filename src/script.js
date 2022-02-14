@@ -6,6 +6,9 @@ import Phaser from "phaser";
 import imgHomeButton from "../static/ui/homeButton.png"
 import imgInfoTree from "../static/ui/info.png"
 import imgcheck from "../static/ui/check.png"
+import imgLeaves from "../static/ui/leaves.png"
+import imgWater from "../static/ui/water.png"
+import imgCut from "../static/ui/cut.png"
 
 const gui = new dat.GUI();
 document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`
@@ -177,7 +180,7 @@ const home = () => {
     animationMesh(basicTexturesLoaded[3], 2.4, 1.5, 3, -2, -2.5);
 
     //wolken
-    animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.75, 1.65);
+    animationMesh(basicTexturesLoaded[4], 7.14, 6, 4, -5.65, 1.6);
 
     //water
     animationMesh(basicTexturesLoaded[5], 3.54, 2, 5, 8, -2);
@@ -188,8 +191,8 @@ const home = () => {
 
 const interactionOverview = (nameInteraction) => {
     if(nameInteraction === 'leaves') {
-        console.log('werk aub');
         document.querySelector(`.containerOverview`).classList.add('absolute');
+        document.querySelector(`.containerOverview`).classList.add('heightAll');
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
     }
@@ -200,9 +203,7 @@ const loadPhaser = () => {
     const config = {
         type: Phaser.AUTO,
         scale: {
-            mode: Phaser.Scale.FIT,
             parent: 'game-area',
-            autoCenter: Phaser.Scale.CENTER_BOTH,
             width: 1680,
             height: 945
         },
@@ -252,6 +253,7 @@ const loadPhaser = () => {
         } if(event.target == Overview) {
             Overview.style.display = "none";
             document.querySelector(`.containerOverview`).classList.remove('absolute');
+            document.querySelector(`.containerOverview`).classList.remove('heightAll');
         }
     }
 
@@ -823,7 +825,6 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = 8.2
 camera.position.y = 1.6
 camera.position.z = 5.3
-camera.rotation.z = 1.6;
 gui.add(camera.position, 'x');
 gui.add(camera.position, 'y');
 gui.add(camera.position, 'z');
@@ -982,14 +983,18 @@ const loadAll = () => {
         x: 0,
       }, 300)
       .easing(TWEEN.Easing.Sinusoidal.In)
-    .start();
-
-    new TWEEN.Tween(camera.rotation)
-    .to(
-      {
-        z: 0,
-      }, 300)
-      .easing(TWEEN.Easing.Sinusoidal.In)
+      .onComplete(()=> {
+        document.querySelector(`.containerUi`).classList.add('absolute');
+        document.querySelector(`.containerUi`).classList.add('heightAll');
+        var modalUi = document.querySelector(`.myModalUi`);
+        modalUi.style.display = "block";
+        document.querySelector(`.uiInteractions`).innerHTML = `            <img class="imgLeaves" src="${imgLeaves}" alt="" width="74" height="74">
+        <img class="imgWater" src="${imgWater}" alt="" width="74" height="74">
+        <img class="imgCut" src="${imgCut}" alt="" width="74" height="74">`
+        document.querySelector(`.imgCut`).style.opacity ='0.5';
+        document.querySelector(`.imgWater`).style.opacity ='0.5';
+        document.querySelector(`.imgLeaves`).style.opacity ='0.5';
+      })
     .start();
 }
 
