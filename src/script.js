@@ -219,6 +219,16 @@ const interactionOverview = (nameInteraction) => {
     }
 }
 
+const handleClickCodeButton = () => {
+    if(stopClickLeaves && stopClickClouds) {
+        document.querySelector(`.containerOverview`).classList.add('absolute');
+        document.querySelector(`.containerOverview`).classList.add('heightAll');
+        var modalOVer = document.querySelector(`.myModalOverView`);
+        modalOVer.style.display = "grid";
+        dontShowUiHome();
+    }
+}
+
 const loadPhaser = () => {
     const config = {
         type: Phaser.AUTO,
@@ -1055,6 +1065,7 @@ const handleClickLeft = () => {
 //document.addEventListener(`mousemove`, handleMoveDocument);
 document.addEventListener(`click`, handleMoveDocumentTest);
 document.querySelector(`.ontdekButton`).addEventListener(`click`, handleClickLeft);
+document.querySelector(`.buttonCode`).addEventListener(`click`, handleClickCodeButton);
 
 // gebruiker op welke pagina
 let loadHomeOnce = true;
