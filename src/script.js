@@ -682,13 +682,20 @@ const beekeeperTexture = new THREE.MeshBasicMaterial({
 
 //background blue BLIJVEN ALGEMEEN
 const material1 = new THREE.MeshBasicMaterial( {
+    color: 0xF4EADE
+});
+let materialBlue = new THREE.MeshBasicMaterial( {
     color: 0xb2dcff
 });
 const shape = new THREE.PlaneGeometry(500, 500);
 const meshTexture = new THREE.Mesh(shape, material1);
 meshTexture.position.y = -.5;
-meshTexture.position.z = -60;
+meshTexture.position.z = -61;
 scene.add(meshTexture);
+
+const meshTextureBlue = new THREE.Mesh(shape, materialBlue);
+meshTextureBlue.position.y = -.5;
+meshTextureBlue.position.z = -60;
 
 //wolk scene overgang
 const materialCloud = new THREE.MeshBasicMaterial({
@@ -881,6 +888,7 @@ const sceneToHome = () => {
             .easing(TWEEN.Easing.Sinusoidal.In)
             .onComplete(() => {
 
+                scene.remove(meshTextureBlue);
                 transitionPlane = false;
                 addHome();
                 new TWEEN.Tween(camera.position)
@@ -930,6 +938,7 @@ const sceneToImker = () => {
             userOnHome= false;
             userOnDetailImker = true;
             transitionPlane = false;
+            scene.add(meshTextureBlue);
             new TWEEN.Tween(camera.position)
             .to(
               {
