@@ -56,6 +56,8 @@ let stopClickLeaves = false;
 let cloudsComfirmed;
 let stopClickClouds = false;
 
+let valuesSliderCloud = 5;
+
 const showUiHome = () => {
     document.querySelector(`.containerUi`).classList.add('absolute');
     document.querySelector(`.containerUi`).classList.add('heightAll');
@@ -226,6 +228,7 @@ const handleClickCodeButton = () => {
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
         dontShowUiHome();
+        document.querySelector(`.code`).textContent = `${leavesComfirmed}${valuesSliderCloud}`;
     }
 }
 
@@ -342,7 +345,6 @@ const loadPhaser = () => {
             if(interactionLeaves) {
                 leavesComfirmed = countLeaves;
                 stopClickLeaves = true;
-                console.log(countLeaves);
                 interactionOverview('leaves');
             }
             if (interactionClouds) {
@@ -355,7 +357,6 @@ const loadPhaser = () => {
         }
         checkButton.addEventListener(`click`, handleClickCheckButton);
 
-        //document.querySelector(`.image-container`).innerHTML = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`;
         if(interactionLeaves) {
             scene= this;
 
@@ -482,6 +483,7 @@ const loadPhaser = () => {
                     layerOne.y = 880 - sliderValue;
                     layerTwo.y = 900 - (.6*sliderValue);
                     layerThree.y = 920 -  (.5*sliderValue);
+                    valuesSliderCloud = event.target.value;
                 }
             });
         }
@@ -951,7 +953,7 @@ const sceneToHome = () => {
 }
 
 const sceneToImker = () => {
-
+    dontShowUiHome();
     new TWEEN.Tween(camera.position)
     .to(
       {
@@ -959,7 +961,6 @@ const sceneToImker = () => {
       }, 1000)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(()=> {
-        dontShowUiHome();
         transitionPlane = true;
         addImkerMeshes();
         new TWEEN.Tween(camera.position)
@@ -1181,6 +1182,7 @@ const tick = () => {
 
         const intersectionImker = raycaster.intersectObject( meshImker);
         if ( intersectionImker.length > 0 && intersectionImker.length !== 2 ) {
+            console.log('dit gebeurt om 1 of andere reden?');
             if (doubleClickPrevent) {
                 mouse.x = 100;
                 mouse.y = 100;

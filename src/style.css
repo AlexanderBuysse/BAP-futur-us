@@ -104,9 +104,10 @@ body
   }
 
   .modal-contentOverview {
-    width: 100vw;
+    width: 80vw;
     height: 80vh;
-    background-color: #D5F3FF;
+    background-color: #F4EADE;
+    border: 5px solid #000000;
   }
 
   .modal-contentUi {
@@ -194,7 +195,7 @@ body
     z-index: 9;
     background-image: url('../static/ui/background.png');
     background-position: center;
-    background-repeat: repeat-x;
+    background-repeat: repeat;
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -365,4 +366,8 @@ body
 
   .homeButton {
     pointer-events: auto;
+  }
+
+  .overzicht {
+    font-size: 24px;
   }
