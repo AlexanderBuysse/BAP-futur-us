@@ -56,6 +56,18 @@ let stopClickLeaves = false;
 let cloudsComfirmed;
 let stopClickClouds = false;
 
+const showUiHome = () => {
+    document.querySelector(`.containerUi`).classList.add('absolute');
+    document.querySelector(`.containerUi`).classList.add('heightAll');
+    document.querySelector(`.containerUi`).style.display ='grid';
+}
+
+const dontShowUiHome = () => {
+    document.querySelector(`.containerUi`).classList.remove('absolute');
+    document.querySelector(`.containerUi`).classList.remove('heightAll');
+    document.querySelector(`.containerUi`).style.display ='none';
+}
+
 
 // -------------------- HOME PAGE -------------------------
 //begin inladen textures voor home
@@ -195,8 +207,16 @@ const interactionOverview = (nameInteraction) => {
         document.querySelector(`.containerOverview`).classList.add('heightAll');
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
+        document.querySelector(`.imgLeaves`).style.opacity= 1;
     }
 
+    if(nameInteraction === 'clouds') {
+        document.querySelector(`.containerOverview`).classList.add('absolute');
+        document.querySelector(`.containerOverview`).classList.add('heightAll');
+        var modalOVer = document.querySelector(`.myModalOverView`);
+        modalOVer.style.display = "grid";
+        document.querySelector(`.imgWater`).style.opacity= 1;
+    }
 }
 
 const loadPhaser = () => {
@@ -254,6 +274,7 @@ const loadPhaser = () => {
             Overview.style.display = "none";
             document.querySelector(`.containerOverview`).classList.remove('absolute');
             document.querySelector(`.containerOverview`).classList.remove('heightAll');
+            showUiHome();
         }
     }
 
@@ -291,7 +312,8 @@ const loadPhaser = () => {
                 }    
             }
             interactionClouds = false;
-            interactionLeaves = false;    
+            interactionLeaves = false;
+            showUiHome();
         }
         homeButton.addEventListener(`click`, handleClickHomeButton);
 
@@ -911,7 +933,8 @@ const sceneToHome = () => {
                 // start redendering home page
                 userOnHome= true;
                 userOnDetailImker = false;
-          })
+                showUiHome();      
+            })
           .start();
       })
     .start();
@@ -926,6 +949,7 @@ const sceneToImker = () => {
       }, 1000)
       .easing(TWEEN.Easing.Sinusoidal.In)
       .onComplete(()=> {
+        dontShowUiHome();
         transitionPlane = true;
         addImkerMeshes();
         new TWEEN.Tween(camera.position)
@@ -1114,6 +1138,7 @@ const tick = () => {
                 interactionLeaves = true;
                 loadPhaser();
                 doubleClickPrevent = false;
+                dontShowUiHome();
                 var callback = function() {
                     doubleClickPrevent= true;
                   }
@@ -1135,6 +1160,7 @@ const tick = () => {
                 interactionClouds = true; 
                 loadPhaser();
                 doubleClickPrevent = false;
+                dontShowUiHome();
                 var callback = function() {
                     doubleClickPrevent= true;
                   }

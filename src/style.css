@@ -349,13 +349,20 @@ body
     margin-bottom: -85rem;
     margin-left: 6px;
     flex-direction: column;
+    pointer-events: none;
   }
 
   .info {
     margin-top: 160px;
+    pointer-events: auto;
   }
 
   .check {
     margin-top: 317px;
     margin-left: 1622px;
+    pointer-events: auto;
+  }
+
+  .homeButton {
+    pointer-events: auto;
   }
