@@ -45,6 +45,8 @@
         let inProgress =  false;
 
         let socket;
+
+        document.querySelector(`.phaser`).classList.add('none');
         
         function preload() {
             this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json');
@@ -117,11 +119,8 @@
             treeTopBlue.stop();
 
             // event listeners
-            //let slider =  document.querySelector(`.slider`);
-            //slider.addEventListener('change', handleChangeSlider);
-            //document.querySelector(`.sliderTop`).addEventListener('change', handleChangeSliderTop);
             document.querySelector(`.start`).addEventListener('click', handleClickButton);
-            document.querySelector(`.start-forever`).addEventListener('click', handleClickButtonForever);
+            document.querySelector(`.showMode`).addEventListener('click', handleClickShow);
 
             socket.on(`inprogress`, function (bool) {
                 console.log(bool);
@@ -140,28 +139,13 @@
             });
         }
 
-        // function handleChangeSlider(e) {
-        //     const sliderValue = (e.target.value*400)
-        //     emitters.forEach(emitter => {
-        //         emitter.lifespan.propertyValue = sliderValue;
-        //     });
-        // }
-
-        // function handleChangeSliderTop(e) {
-        //     console.log(e.target.value);
-        //     sliderValueTop = e.target.value;
-        //     treeTopBlue.quantity.propertyValue = sliderValueTop;
-        // }
+        function handleClickShow() { 
+            document.querySelector(`.uiUser`).classList.add('none');
+            document.querySelector(`.phaser`).classList.remove('none');
+        }
 
         function handleClickButton() {
             socket.emit("start", document.querySelector(`.code`).value);
-        }
-
-        
-        function handleClickButtonForever() {
-            //startWithCode();
-            //emittersStart= true;
-            //forever = true
         }
 
         function createLifepoints() {
