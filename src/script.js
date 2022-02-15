@@ -351,8 +351,12 @@ const codeScreen = () => {
     if(!overzicht.classList.contains('overzichtCode')) {
         overzicht.classList.add('overzichtCode');
     }
-    
-    //document.querySelector(`.code`).textContent = `${leavesComfirmed}${valuesSliderCloud}`;
+
+    if(leavesComfirmed === 10) {
+        document.querySelector(`.codeAll-title`).textContent = `${leavesComfirmed}${Math.round(valuesSliderCloud/10)}`;
+    } else {
+        document.querySelector(`.codeAll-title`).textContent = `0${leavesComfirmed}${Math.round(valuesSliderCloud/10)}`;  
+    }
 }
 
 const handleClickCodeButton = () => {
