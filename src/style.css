@@ -370,9 +370,6 @@ body
 
   .overzicht {
     font-size: 24px;
-    background-image: url('../static/ui/backgroundBlue.png');
-    background-position: center;
-    background-repeat: no-repeat;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -380,6 +377,18 @@ body
     "uitleg invloed"
     "uitleg domein";
     place-items: center;
+  }
+
+  .overzichtBlue {
+    background-image: url('../static/ui/backgroundBlue.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .overzichtRed {
+    background-image: url('../static/ui/backgroundRed.png');
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   .uitleg {

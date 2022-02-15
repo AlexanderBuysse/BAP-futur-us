@@ -11,6 +11,7 @@ import imgLeaves from "../static/ui/leaves.png"
 import imgWater from "../static/ui/water.png"
 import imgCut from "../static/ui/cut.png"
 import imgGraphLeaves from "../static/ui/graph.png"
+import imgGraphWater from "../static/ui/graphWater.png"
 import imgSliderLeaves from "../static/ui/slider.png"
 import imgArrow from "../static/ui/arrow.png"
 
@@ -212,6 +213,57 @@ const home = () => {
     animationMesh(basicTexturesLoaded[6], 1.2, 1.99, 6, -2.2, 1.5, true);
 }
 
+const showUiClouds = () => {
+    const overzicht  = document.querySelector(`.overzicht`);
+    if (overzicht.classList.contains('overzichtBlue')) {
+        overzicht.classList.remove('overzichtBlue');
+    }
+    if (!overzicht.classList.contains('overzichtRed')) {
+        overzicht.classList.add('overzichtRed');
+    }
+
+    document.querySelector(`.uitleg-title`).textContent = `GRONDWATER`
+    document.querySelector(`.ImgleavesLogo`).src =imgWater;
+    document.querySelector(`.uitleg-text`).innerHTML =`De lindeboom groeit op licht vochtige standplaatsen. <br>
+    We doorstaan droogte bovendien beter dan overdreven nattigheid. De grondwatertafel op het domein is erg ondiep, al sta ik op een wat hoger gelegen deel van het domein, op een ideale, licht vochtige plaats. <br> <br>
+    
+    Door klimaatverandering wisselen vandaag lange droogtes af met intense neerslag, waardoor de grondwaterstand sterk gaat schommelen, zeker wanneer door achterstallig beheer oude grachtenstelsels hun regulerende functie verliezen. Voor mij is dit erg nadelig. <br><br>
+    
+    Ideaal zouden de grondwaterstanden dus gestabiliseerd moeten worden door een actief peilbeheer op de grachten.`;
+    
+    document.querySelector(`.invloed-title`).textContent = `Jouw invloed op de neerslag:`
+    document.querySelector(`.invloed-text`).textContent = 'Een hogere grondwaterpeil beïnvloedt mij op een negatieve manier. Wat verdroging zou ik nog wel kunnen hebben, maar zal zijn standplaats niet verder verbeteren.'
+
+    document.querySelector(`.imgGraphLeaves`).src = imgGraphWater;
+    // imgGraphLeaves
+    //nog kijken voor images van 2 dingen
+}
+
+const showUiLeaves = () => {
+    const overzicht  = document.querySelector(`.overzicht`);
+    if (!overzicht.classList.contains('overzichtBlue')) {
+        overzicht.classList.add('overzichtBlue');
+    }
+    if (overzicht.classList.contains('overzichtRed')) {
+        overzicht.classList.remove('overzichtRed');
+    }
+
+    document.querySelector(`.uitleg-title`).innerHTML = `Organisch <br> materiaal`
+    document.querySelector(`.ImgleavesLogo`).src =imgLeaves;
+    document.querySelector(`.uitleg-text`).innerHTML =`<span class="code">0000</span> Lindes verkiezen een eerder kalkrijke leembodem. 
+    Het domein bestaat echter uit voedselarm, zuur zand. <br> <br>
+    
+    Gelukkig is de linde een echte ‘bodembouwer’: ze pompt calcium en andere mineralen op uit diepere bodemlagen. Die geeft ze in de herfst terug af via hun bladafval. Dit zal 
+    de zuurtegraad doen afnemen en de bodem verrijken.  <br> <br>
+    
+    Je laat het afgevallen blad dus best liggen om de grond te composteren. Gegeven de omstandigheden van de standplaats zou het zelfs een goed idee zijn om nog extra bladafval van boomsoorten met goed verteerbare bladeren toe te voegen (zoals linde, hazelaar en vogelkers). <br> <br>
+    
+    Bladeren van eiken en beuken zijn dan weer slecht verteerbaar, wat een negatieve impact heeft op de bodem.</p>`
+    document.querySelector(`.invloed-text`).textContent = 'Door bladafval te verwijderen wordt de grond nog zuurder dan hij al is. Allesbehalve ideaal dus voor een lindeboom.'
+    document.querySelector(`.imgGraphLeaves`).src = imgGraphLeaves;
+
+}
+
 const interactionOverview = (nameInteraction) => {
     if(nameInteraction === 'leaves') {
         document.querySelector(`.containerOverview`).classList.add('absolute');
@@ -219,6 +271,7 @@ const interactionOverview = (nameInteraction) => {
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
         document.querySelector(`.imgLeaves`).style.opacity= 1;
+        showUiLeaves();
     }
 
     if(nameInteraction === 'clouds') {
@@ -227,6 +280,7 @@ const interactionOverview = (nameInteraction) => {
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
         document.querySelector(`.imgWater`).style.opacity= 1;
+        showUiClouds()
     }
     document.removeEventListener(`click`, handleMoveDocumentTest)
 }
@@ -309,7 +363,6 @@ const loadPhaser = () => {
         document.addEventListener(`click`, handleMoveDocumentTest)
         showUiHome();
     }
-
     document.querySelector(`.checkSubmenu`).addEventListener(`click`, handleClickCheckSubMenu)
 
     function preload () {
