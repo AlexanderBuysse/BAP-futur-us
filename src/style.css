@@ -371,6 +371,12 @@ body
   .overzicht {
     font-size: 24px;
     display: grid;
+  }
+
+  .overzichtBlue {
+    background-image: url('../static/ui/backgroundBlue.png');
+    background-position: center;
+    background-repeat: no-repeat;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
@@ -379,16 +385,112 @@ body
     place-items: center;
   }
 
-  .overzichtBlue {
-    background-image: url('../static/ui/backgroundBlue.png');
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
   .overzichtRed {
     background-image: url('../static/ui/backgroundRed.png');
     background-position: center;
     background-repeat: no-repeat;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "uitleg invloed"
+    "uitleg domein";
+    place-items: center;
+  }
+
+  .overzichtCode {
+    background-image: url('../static/ui/backgroundBlack.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "overzichtAll overzichtAll uit"
+    "codeAll infoAll uit";
+  }
+
+  .overzichtAll {
+    grid-area: overzichtAll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .overzichtAll-title {
+    font-size: 50px;
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    margin-bottom: 32px;
+  }
+
+  .uit {
+    grid-area: uit;
+    color: white; 
+    width: 340px;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .uit-title {
+    font-size: 45px;
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 41px;
+    margin-bottom: 25px;
+  }
+
+  .uit-width {
+    width: 190px;
+  }
+
+  .uit-text {
+    font-size: 20px;
+  }
+
+  .uit-textbold {
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .codeAll {
+    grid-area: codeAll;
+    background-image: url('../static/ui/codeBack.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 444px;
+    height: 152px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 69px;
+    margin-left: -22px;
+  }
+
+  .infoAll {
+    grid-area: infoAll;
+    width: 349px;
+    padding-top: 36px;
+  }
+
+  .infAll-title {
+    font-family: kepler-std-subhead,serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 40px;
+    margin-bottom: 18px;
+  }
+
+  .codeAll-title {
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 100px;
+    color: white;
+    letter-spacing: 20px;
+    margin-right: -78px;
   }
 
   .uitleg {
