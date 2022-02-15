@@ -94,6 +94,35 @@ const circleTexture = new THREE.MeshBasicMaterial({
     transparent: true
 });
 
+const textureTitleImker = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/title/imkerTitle.png`),
+    transparent: true
+});
+const shapeTitleImker = new THREE.PlaneGeometry(4.15, 1);
+const meshTitleImker = new THREE.Mesh(shapeTitleImker, textureTitleImker);
+meshTitleImker.position.z =0;
+meshTitleImker.position.y =3;
+meshTitleImker.position.x =0;
+meshTitleImker.scale.set(.8,.8, 1);
+scene.add(meshTitleImker);
+
+
+const textureTitleMaria = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(`/title/mariahoveTitle.png`),
+    transparent: true
+});
+const shapeTitleMaria = new THREE.PlaneGeometry(1.36, .33);
+const meshTitleMaria = new THREE.Mesh(shapeTitleMaria, textureTitleMaria);
+meshTitleMaria.position.z =-25;
+meshTitleMaria.position.y =1.2;
+meshTitleMaria.position.x =0;
+scene.add(meshTitleMaria);
+
+/*    meshBackCircle.position.z = -25;
+    meshBackCircle.position.y =-.4;
+    meshBackCircle.position.x =-.6; */
+
+
 const loadImagesAnimation = (animationName, amountFrames) => {
     const arrayOfTextures =[];
     for (let i = 0; i < amountFrames; i++) {
@@ -369,11 +398,13 @@ const loadPhaser = () => {
         this.load.image('badleaf', 'interactie1/badleaf.png');
         this.load.image('goodleaf', 'interaction1design/leave1.png');
         this.load.image('background', 'interaction1design/background.png')    
+        this.load.image('titleLeave', 'interaction1design/title.png')    
         
         this.load.image('backgroundCloud', 'testClouds/background.png');
         this.load.image('layer', 'testClouds/layers.png');
         this.load.image('layer1', 'testClouds/layers1.png');
         this.load.image('layer2', 'testClouds/layers2.png');
+        this.load.image('titleWater', 'interactieWater/title.png');
         this.load.html('slider', 'testClouds/slider.html');
     }
 
@@ -434,6 +465,7 @@ const loadPhaser = () => {
 
             scene= this;
             this.add.image(840, 473, 'background');
+            this.add.image(840, 100, 'titleLeave').setScale(.8);;
             broom = this.physics.add.sprite(840, 300, 'broom');
             broom.body.setAllowGravity(false);
     
@@ -1013,13 +1045,16 @@ const sceneToHome = () => {
                     x: 0,
                 }, 1000)
                 .easing(TWEEN.Easing.Sinusoidal.In)
+                .onComplete(()=> {
+                    showUiHome();
+                })
                 .start();
                 mouse.x = 0;
                 mouse.y = 0;
                 // start redendering home page
                 userOnHome= true;
                 userOnDetailImker = false;
-                showUiHome();      
+                
             })
           .start();
       })
