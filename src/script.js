@@ -235,8 +235,6 @@ const showUiClouds = () => {
     document.querySelector(`.invloed-text`).textContent = 'Een hogere grondwaterpeil beïnvloedt mij op een negatieve manier. Wat verdroging zou ik nog wel kunnen hebben, maar zal zijn standplaats niet verder verbeteren.'
 
     document.querySelector(`.imgGraphLeaves`).src = imgGraphWater;
-    // imgGraphLeaves
-    //nog kijken voor images van 2 dingen
 }
 
 const showUiLeaves = () => {
