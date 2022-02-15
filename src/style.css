@@ -370,4 +370,66 @@ body
 
   .overzicht {
     font-size: 24px;
+    background-image: url('../static/ui/backgroundBlue.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "uitleg invloed"
+    "uitleg domein";
+    place-items: center;
+  }
+
+  .uitleg {
+    grid-area: uitleg;
+    width: 548px;
+  }
+
+  .uitleg-title {
+    font-size: 50px;
+    line-height: 45px;
+  }
+
+  .uitleg-divTitle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 68px;
+  }
+
+  .ImgleavesLogo{
+    margin-right: 20px;
+  }
+
+  .invloed {
+    grid-area: invloed;
+    width: 548px;
+    padding-left: 62px;
+  }
+
+  .invloed-title {
+    font-size: 30px;
+    margin-bottom: 45px;
+  }
+
+  .invloed-subtitle {
+    margin-top: 40px;
+    margin-bottom: 8px;
+  }
+
+  .domein {
+    grid-area: domein;
+    width: 548px;
+    padding-left: 62px;
+    margin-top: 2rem;
+  }
+
+  .domein-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .checkSubmenu {
+    margin-left: 459px;
   }

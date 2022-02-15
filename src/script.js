@@ -5,15 +5,24 @@ import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 import Phaser from "phaser";
 import imgHomeButton from "../static/ui/homeButton.png"
 import imgInfoTree from "../static/ui/info.png"
+import imgInfoEmpty from "../static/ui/empty.png"
 import imgcheck from "../static/ui/check.png"
 import imgLeaves from "../static/ui/leaves.png"
 import imgWater from "../static/ui/water.png"
 import imgCut from "../static/ui/cut.png"
+import imgGraphLeaves from "../static/ui/graph.png"
+import imgSliderLeaves from "../static/ui/slider.png"
+import imgArrow from "../static/ui/arrow.png"
 
 const gui = new dat.GUI();
-document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="144" height="109" class="homeButton">`
+document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="144" height="87" class="homeButton">`
 document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="335" height="151" class="info">`
-document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="144" height="109" class="check">`
+document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="144" height="87" class="check">`
+
+document.querySelector(`.imgGraphLeaves`).src  = imgGraphLeaves
+document.querySelector(`.imgSliderLeaves`).src = imgSliderLeaves
+document.querySelector(`.ImgleavesLogo`).src = imgLeaves
+document.querySelector(`.checkSubmenu`).src = imgArrow;
 
 //document.querySelector(`.img-tree`).innerHTML  = `<img src="${imgTree}" alt="image" width="75" height="50" class="check">`
 
@@ -219,6 +228,7 @@ const interactionOverview = (nameInteraction) => {
         modalOVer.style.display = "grid";
         document.querySelector(`.imgWater`).style.opacity= 1;
     }
+    document.removeEventListener(`click`, handleMoveDocumentTest)
 }
 
 const handleClickCodeButton = () => {
@@ -287,9 +297,20 @@ const loadPhaser = () => {
             Overview.style.display = "none";
             document.querySelector(`.containerOverview`).classList.remove('absolute');
             document.querySelector(`.containerOverview`).classList.remove('heightAll');
+            document.addEventListener(`click`, handleMoveDocumentTest)
             showUiHome();
         }
     }
+
+    const handleClickCheckSubMenu = () => {
+        Overview.style.display = "none";
+        document.querySelector(`.containerOverview`).classList.remove('absolute');
+        document.querySelector(`.containerOverview`).classList.remove('heightAll');
+        document.addEventListener(`click`, handleMoveDocumentTest)
+        showUiHome();
+    }
+
+    document.querySelector(`.checkSubmenu`).addEventListener(`click`, handleClickCheckSubMenu)
 
     function preload () {
         this.load.image('broom', 'interaction1design/broom.png');
@@ -358,8 +379,9 @@ const loadPhaser = () => {
         checkButton.addEventListener(`click`, handleClickCheckButton);
 
         if(interactionLeaves) {
-            scene= this;
+            document.querySelector(`.info`).src= imgInfoTree;
 
+            scene= this;
             this.add.image(840, 473, 'background');
             broom = this.physics.add.sprite(840, 300, 'broom');
             broom.body.setAllowGravity(false);
@@ -469,6 +491,7 @@ const loadPhaser = () => {
         }
 
         if(interactionClouds) {
+            document.querySelector(`.info`).src= imgInfoEmpty;
             this.add.image(840, 473, 'backgroundCloud');
             layerOne = this.add.image(840, 880, 'layer');
             layerTwo = this.add.image(840, 900, 'layer1');
