@@ -298,6 +298,7 @@ const interactionOverview = (nameInteraction) => {
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
         document.querySelector(`.imgLeaves`).style.opacity= 1;
+        scene.remove(meshBackCircle);
         showUiLeaves();
     }
 
@@ -307,6 +308,7 @@ const interactionOverview = (nameInteraction) => {
         var modalOVer = document.querySelector(`.myModalOverView`);
         modalOVer.style.display = "grid";
         document.querySelector(`.imgWater`).style.opacity= 1;
+        scene.remove(meshBackCircleClouds);
         showUiClouds()
     }
     document.removeEventListener(`click`, handleMoveDocumentTest)
@@ -321,6 +323,10 @@ const handleClickCodeButton = () => {
         dontShowUiHome();
         document.querySelector(`.code`).textContent = `${leavesComfirmed}${valuesSliderCloud}`;
     }
+}
+
+const makeCodeButtonPrimary = () => {
+    console.log('this happend');
 }
 
 const loadPhaser = () => {
@@ -1192,6 +1198,12 @@ let doubleClickPrevent = true;
 let transitionPlane = false;
 
 const tick = () => {
+
+    if(stopClickLeaves && stopClickClouds && onceStart) {
+        makeCodeButtonPrimary();
+        onceStart = false
+    }
+
     if(transitionPlane) {
         meshWhitePlane.position.y = camera.position.y;
         meshWhitePlane.position.z = camera.position.z - 5;   
