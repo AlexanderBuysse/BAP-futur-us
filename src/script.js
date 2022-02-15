@@ -406,7 +406,7 @@ const loadPhaser = () => {
         this.load.image('background', 'interaction1design/background.png')    
         this.load.image('titleLeave', 'interaction1design/title.png')    
         
-        this.load.image('backgroundCloud', 'testClouds/background.png');
+        this.load.image('backgroundCloud', 'interactieWater/background.png');
         this.load.image('layer', 'testClouds/layers.png');
         this.load.image('layer1', 'testClouds/layers1.png');
         this.load.image('layer2', 'testClouds/layers2.png');
@@ -471,7 +471,7 @@ const loadPhaser = () => {
 
             scene= this;
             this.add.image(840, 473, 'background');
-            this.add.image(840, 100, 'titleLeave').setScale(.8);;
+            this.add.image(840, 100, 'titleLeave').setScale(.8);
             broom = this.physics.add.sprite(840, 300, 'broom');
             broom.body.setAllowGravity(false);
     
@@ -582,6 +582,7 @@ const loadPhaser = () => {
         if(interactionClouds) {
             document.querySelector(`.info`).src= imgInfoEmpty;
             this.add.image(840, 473, 'backgroundCloud');
+            this.add.image(840, 70, 'titleWater').setScale(.8);
             layerOne = this.add.image(840, 880, 'layer');
             layerTwo = this.add.image(840, 900, 'layer1');
             layerThree = this.add.image(840, 920, 'layer2');
