@@ -347,20 +347,20 @@ body
   .image-container {
     position: relative;
     display: flex;
-    margin-bottom: -85rem;
-    margin-left: 6px;
+    margin-bottom: -102rem;
     flex-direction: column;
     pointer-events: none;
   }
 
   .info {
-    margin-top: 160px;
+    margin-top: 55px;
     pointer-events: auto;
+    margin-left: 20px;
   }
 
   .check {
     margin-top: 317px;
-    margin-left: 1622px;
+    margin-left: 1579px;
     pointer-events: auto;
   }
 

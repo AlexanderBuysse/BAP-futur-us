@@ -11,9 +11,9 @@ import imgWater from "../static/ui/water.png"
 import imgCut from "../static/ui/cut.png"
 
 const gui = new dat.GUI();
-document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="75" height="50" class="homeButton">`
-document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="288" height="130" class="info">`
-document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="75" height="50" class="check">`
+document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="144" height="109" class="homeButton">`
+document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="335" height="151" class="info">`
+document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="144" height="109" class="check">`
 
 //document.querySelector(`.img-tree`).innerHTML  = `<img src="${imgTree}" alt="image" width="75" height="50" class="check">`
 
@@ -379,28 +379,28 @@ const loadPhaser = () => {
             
             goodleaves3 = this.physics.add.group({
                 key: 'goodleaf',
-                repeat: 3,
+                repeat: 1,
                 setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
                 setXY: {x:  Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
             }); 
     
             goodleaves2 = this.physics.add.group({
                 key: 'goodleaf',
-                repeat: 3,
+                repeat: 2,
                 setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
                 setXY: {x:  Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
             }); 
     
             goodleaves1 = this.physics.add.group({
                 key: 'goodleaf',
-                repeat: 3,
+                repeat: 2,
                 setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
                 setXY: {x: Phaser.Math.Between(0, 300), y: 600, stepX: Phaser.Math.Between(0, 700)}
             });
     
             goodleaves = this.physics.add.group({
                 key: 'goodleaf',
-                repeat: 3,
+                repeat: 1,
                 setRotation: { value: 0, step: Phaser.Math.FloatBetween(0, 1)},
                 setXY: {x:  Phaser.Math.Between(50, 200), y: 600, stepX: numberRandom}
             });
@@ -465,7 +465,7 @@ const loadPhaser = () => {
             this.physics.add.collider(goodleaves2, goodleaves2, customSeparate);
             this.physics.add.collider(goodleaves3, goodleaves3, customSeparate);
             
-            rect = this.add.rectangle(780, 600, 730, 600).setStrokeStyle(2, 0xffff00);
+            rect = this.add.rectangle(850, 800, 500, 230).setStrokeStyle(2, 0xffff00);
         }
 
         if(interactionClouds) {
