@@ -14,8 +14,6 @@ import imgGraphLeaves from "../static/ui/graph.png"
 import imgGraphWater from "../static/ui/graphWater.png"
 import imgArrow from "../static/ui/arrow.png"
 import imgInputCut from "../static/ui/inputCut.png"
-import svgSliderLeaves from "../static/ui/sliders/leavesSlider.svg"
-import svgSliderWater from "../static/ui/sliders/waterSlider.svg"
 import imgSliderLeaves from "../static/ui/sliders/leaves.png"
 import imgSliderWater from "../static/ui/sliders/water.png"
 
@@ -427,12 +425,13 @@ const codeScreen = () => {
 
     let water0;
     if(Math.round((valuesSliderCloud/1.2)/10) === 10) {
-        water0 = leavesComfirmed;
+        water0 = Math.round((valuesSliderCloud/1.2)/10);
     } else if(Math.round((valuesSliderCloud/1.2)/10) === 0 ) {  
         water0 = `01`;
     } else {
         water0 = `0${Math.round((valuesSliderCloud/1.2)/10)}`;
     }
+
     document.querySelector(`.codeAll-title`).textContent = `${leavesWith0}${water0}`; 
 }
 
@@ -448,7 +447,7 @@ const handleClickCodeButton = () => {
 }
 
 const makeCodeButtonPrimary = () => {
-    console.log('this happend');
+    document.querySelector('.buttonCode').style.opacity= 1;
 }
 
 const loadPhaser = () => {

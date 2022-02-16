@@ -141,6 +141,7 @@ body
     position: relative;
     top: -105%;
     left: -44.6%;
+    opacity: .8;
   }
 
   .absolute {
