@@ -81,18 +81,67 @@ body
     place-items: center;
   }
   
+  .modalUi {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: hidden; /* Enable scroll if needed */
+    place-items: center;
+  }
+  
 
   .modal-content {
     max-width: 95vw;
     max-height: 95vh;
     min-width: 94vw;
     min-height: 94vh;
+    display: grid;
+    place-items: center;
   }
 
   .modal-contentOverview {
-    width: 100vw;
+    width: 1500px;
     height: 80vh;
-    background-color: #D5F3FF;
+    background-color: #F4EADE;
+    border: 5px solid #000000;
+  }
+
+  .modal-contentUi {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+
+  .uiInteractions {
+    background-image: url('../static/ui/backgroundInteractions.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 119px;
+    height: 325px;
+    position: relative;
+    top: -19%;
+    left: -44%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .buttonCode {
+    background-image: url('../static/ui/buttonCode.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 132px;
+    height: 109px;
+    position: relative;
+    top: -105%;
+    left: -44.6%;
+    opacity: .8;
   }
 
   .absolute {
@@ -109,12 +158,23 @@ body
   }
 
   .containerOverview {
-    height: 100vh;
     display: grid;
     place-items: center;
     /*position: absolute;*/
     z-index: 100;
     width: 100vw;
+}
+
+.containerUi {
+  display: grid;
+  place-items: center;
+  /*position: absolute;*/
+  z-index: 100;
+  width: 100vw;
+}
+
+.heightAll {
+  height: 100vh;
 }
 
   .onTop {
@@ -136,7 +196,7 @@ body
     z-index: 9;
     background-image: url('../static/ui/background.png');
     background-position: center;
-    background-repeat: repeat-x;
+    background-repeat: repeat;
     display: grid;
     place-items: center;
     overflow: hidden;
@@ -285,23 +345,239 @@ body
         "opening . . ontdek ontdek";
   }
 
-
-  .homeButton {
-    margin-bottom: -12vh;
-    margin-left: 2.3vw;
-  }
-
   .image-container {
-    position: absolute;
-    width: 1200px;
+    position: relative;
+    display: flex;
+    margin-bottom: -102rem;
+    flex-direction: column;
+    pointer-events: none;
   }
 
   .info {
-    margin-bottom: -19vw;
-    margin-left: -10vh;
+    margin-top: 55px;
+    pointer-events: auto;
+    margin-left: 20px;
   }
 
   .check {
-    margin-left: 60vw;
-    margin-bottom: -87vh;
+    margin-top: 317px;
+    margin-left: 1579px;
+    pointer-events: auto;
   }
+
+  .homeButton {
+    pointer-events: auto;
+  }
+
+  .overzicht {
+    font-size: 24px;
+    display: grid;
+  }
+
+  .overzichtBlue {
+    background-image: url('../static/ui/backgroundBlue.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "uitleg invloed"
+    "uitleg domein";
+    place-items: center;
+  }
+
+  .overzichtRed {
+    background-image: url('../static/ui/backgroundRed.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "uitleg invloed"
+    "uitleg domein";
+    place-items: center;
+  }
+
+  .overzichtCode {
+    background-image: url('../static/ui/backgroundBlack.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "overzichtAll overzichtAll uit"
+    "codeAll infoAll uit";
+  }
+
+  .overzichtAll {
+    grid-area: overzichtAll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .overzichtAll-title {
+    font-size: 50px;
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    margin-bottom: 32px;
+  }
+
+  .uit {
+    grid-area: uit;
+    color: white; 
+    width: 340px;
+    justify-self: center;
+    align-self: center;
+  }
+
+  .uit-title {
+    font-size: 45px;
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 41px;
+    margin-bottom: 25px;
+  }
+
+  .uit-width {
+    width: 190px;
+  }
+
+  .uit-text {
+    font-size: 20px;
+  }
+
+  .uit-textbold {
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .codeAll {
+    grid-area: codeAll;
+    background-image: url('../static/ui/codeBack.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 444px;
+    height: 152px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 69px;
+    margin-left: -22px;
+  }
+
+  .infoAll {
+    grid-area: infoAll;
+    width: 349px;
+    padding-top: 36px;
+  }
+
+  .infAll-title {
+    font-family: kepler-std-subhead,serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 40px;
+    margin-bottom: 18px;
+  }
+
+  .codeAll-title {
+    font-family: kepler-std, serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 100px;
+    color: white;
+    letter-spacing: 20px;
+    margin-right: -78px;
+  }
+
+  .uitleg {
+    grid-area: uitleg;
+    width: 548px;
+  }
+
+  .uitleg-title {
+    font-size: 50px;
+    line-height: 45px;
+  }
+
+  .uitleg-divTitle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 68px;
+  }
+
+  .ImgleavesLogo{
+    margin-right: 20px;
+  }
+
+  .invloed {
+    grid-area: invloed;
+    width: 548px;
+    padding-left: 62px;
+  }
+
+  .invloed-title {
+    font-size: 30px;
+    margin-bottom: 45px;
+  }
+
+  .invloed-subtitle {
+    margin-top: 40px;
+    margin-bottom: 8px;
+  }
+
+  .domein {
+    grid-area: domein;
+    width: 548px;
+    padding-left: 62px;
+    margin-top: 2rem;
+  }
+
+  .domein-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+
+  .checkSubmenu {
+    margin-left: 459px;
+  }
+
+  .sliderImg::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.sliderImg::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper-img {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.margin-right {
+  margin-right: 43px;
+  margin-bottom: 15px;
+}
