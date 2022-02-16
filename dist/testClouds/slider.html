@@ -1,0 +1,22 @@
+<style>
+    input[type=range][orient=vertical] {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* Chromium */
+    width: 8px;
+    height: 175px;
+    padding: 0 5px;
+}
+
+.slidecontainer {
+  height: 100%;
+}
+
+.slider {
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+}
+</style>
+<div class="slidecontainer">
+    <input class="slider" type="range" min="1" max="120" value="50" name="slider" orient="vertical">
+</div>

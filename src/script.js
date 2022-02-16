@@ -87,17 +87,17 @@ const dontShowUiHome = () => {
 //begin inladen textures voor home
 // Objects
 const backgroundMapTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/background.png`),
+    map: textureLoader.load(`./background.png`),
     transparent: false
 });
 
 const circleTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/indicators/circle.png`),
+    map: textureLoader.load(`./indicators/circle.png`),
     transparent: true
 });
 
 const textureTitleImker = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/title/imkerTitle.png`),
+    map: textureLoader.load(`./title/imkerTitle.png`),
     transparent: true
 });
 const shapeTitleImker = new THREE.PlaneGeometry(4.15, 1);
@@ -110,7 +110,7 @@ scene.add(meshTitleImker);
 
 
 const textureTitleMaria = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/title/mariahoveTitle.png`),
+    map: textureLoader.load(`./title/mariahoveTitle.png`),
     transparent: true
 });
 const shapeTitleMaria = new THREE.PlaneGeometry(1.36, .33);
@@ -936,7 +936,7 @@ const swtichDistanceTree = number => {
 }
 
 // -------------------- BIJ PARTICLE IMKER -------------------------
-const sprite1 = textureLoader.load(`/detailpage/beesprite.png`);
+const sprite1 = textureLoader.load(`./detailpage/beesprite.png`);
 for ( let i = 0; i < 100; i ++ ) {
     const x = Math.random() * 20 - 10;
     const y = Math.random() * 20 - 10;
@@ -951,7 +951,7 @@ parameters = [
 
 // -------------------- BIJ TEXTURES INLADEN IMKER -------------------------
 const backgroundTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/detailpage/clouds.png`),
+    map: textureLoader.load(`./detailpage/clouds.png`),
     transparent: true
 });
 const shapeBackground = new THREE.PlaneGeometry(200, 120);
@@ -960,7 +960,7 @@ meshBackground.position.z = -60;
 meshBackground.position.y = 6;
 
 const beekeeperTexture = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/detailpage/beekeper.png`),
+    map: textureLoader.load(`./detailpage/beekeper.png`),
     transparent: true
 });
 
@@ -983,7 +983,7 @@ meshTextureBlue.position.z = -60;
 
 //wolk scene overgang
 const materialCloud = new THREE.MeshBasicMaterial({
-    map: textureLoader.load('transitionClouds/cloudpart1.png'),
+    map: textureLoader.load('./transitionClouds/cloudpart1.png'),
     transparent: true
 });
 
@@ -1002,7 +1002,7 @@ scene.add(meshWhitePlane);
 const imkerPage = () => {
     for (let i = 0; i < 6; i++) {
         treeTextures[i]= new THREE.MeshBasicMaterial({
-            map: textureLoader.load(`/detailpage/tree_${i}.png`),
+            map: textureLoader.load(`./detailpage/tree_${i}.png`),
             transparent: true
         });
         let shapeTree;
@@ -1025,7 +1025,7 @@ const imkerPage = () => {
     const flowerTextures = [];
     for (let i = 0; i < 6; i++) {
         flowerTextures[i]= new THREE.MeshBasicMaterial({
-            map: textureLoader.load(`/detailpage/flower_${i}.png`),
+            map: textureLoader.load(`./detailpage/flower${i}.png`),
             transparent: true
         });
         let shapeFlower;
