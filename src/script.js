@@ -350,6 +350,42 @@ const codeScreen = () => {
     overzicht.innerHTML=`
     <article class="overzichtAll">
       <h2 class="overzichtAll-title">OVERZICHT</h2>
+      <div class="wrapper-img">
+        <img class="margin-right" src="${imgLeaves}" alt="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="641" height="45" viewBox="0 0 641 45">
+        <g id="Rectangle_368" data-name="Rectangle 368" transform="translate(3 3)" fill="#fff553" stroke="#000" stroke-width="3">
+          <rect width="635" height="39" rx="19.5" stroke="none"/>
+          <rect x="-1.5" y="-1.5" width="638" height="42" rx="21" fill="none"/>
+        </g>
+        <g id="Rectangle_365" data-name="Rectangle 365" transform="translate(3 3)" fill="#fff" stroke="#000" stroke-width="3">
+          <rect width="550" height="39" rx="19.5" stroke="none"/>
+          <rect x="-1.5" y="-1.5" width="553" height="42" rx="21" fill="none"/>
+        </g>
+        <g id="Rectangle_366" data-name="Rectangle 366" transform="translate(8 8)" fill="#fff553" stroke="#000" stroke-width="3">
+          <rect width="${54 *leavesComfirmed}" height="29" rx="14.5" stroke="none"/>
+          <rect width="${(54 *leavesComfirmed)+3}" x="-1.5" y="-1.5" height="32" rx="16" fill="none"/>
+        </g>
+        <path id="Path_723" data-name="Path 723" d="M6089.185,6536.233v5.931l16.343-11.466-16.87-10.807v4.745h-16.87v11.6h17.4Z" transform="translate(-5481.288 -6508.527)"/>
+      </svg>      
+      </div>
+      <div class="wrapper-img">
+        <img class="margin-right" src="${imgWater}" alt="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="641" height="45" viewBox="0 0 641 45">
+        <g id="Rectangle_369" data-name="Rectangle 369" transform="translate(3 3)" fill="#76dffe" stroke="#000" stroke-width="3">
+            <rect width="635" height="39" rx="19.5" stroke="none"/>
+            <rect x="-1.5" y="-1.5" width="638" height="42" rx="21" fill="none"/>
+        </g>
+        <g id="Rectangle_365" data-name="Rectangle 365" transform="translate(3 3)" fill="#fff" stroke="#000" stroke-width="3">
+            <rect width="550" height="39" rx="19.5" stroke="none"/>
+            <rect x="-1.5" y="-1.5" width="553" height="42" rx="21" fill="none"/>
+        </g>
+        <g id="Rectangle_366" data-name="Rectangle 366" transform="translate(7.779 8)" fill="#76dffe" stroke="#000" stroke-width="3">
+            <rect width="${54 *Math.round((valuesSliderCloud/1.2)/10)}" height="29" rx="14.5" stroke="none"/>
+            <rect x="-1.5" y="-1.5" width="${(54 *Math.round((valuesSliderCloud/1.2)/10))+3}" height="32" rx="16" fill="none"/>
+        </g>
+        <path id="Path_722" data-name="Path 722" d="M6089.185,6536.233v5.931l16.343-11.466-16.87-10.807v4.745h-16.87v11.6h17.4Z" transform="translate(-5479.288 -6507.625)" fill="#fff"/>
+        </svg>
+      </div>
       <img class="imgInputCut" src="${imgInputCut}" alt="input" width="760" height="80">
     </article>
     <article class="codeAll">
@@ -380,12 +416,24 @@ const codeScreen = () => {
         overzicht.classList.add('overzichtCode');
     }
 
+    let leavesWith0;
     if(leavesComfirmed === 10) {
-    } else if(leavesComfirmed === 0 ) {   
+        leavesWith0 = leavesComfirmed;
+    } else if(leavesComfirmed === 0 ) {  
+        leavesWith0 = `01`;
     } else {
+        leavesWith0 = `0${leavesComfirmed}`;
     }
 
-    document.querySelector(`.codeAll-title`).textContent = `0${leavesComfirmed}${Math.round((valuesSliderCloud/1.2)/10)}`; 
+    let water0;
+    if(Math.round((valuesSliderCloud/1.2)/10) === 10) {
+        water0 = leavesComfirmed;
+    } else if(Math.round((valuesSliderCloud/1.2)/10) === 0 ) {  
+        water0 = `01`;
+    } else {
+        water0 = `0${Math.round((valuesSliderCloud/1.2)/10)}`;
+    }
+    document.querySelector(`.codeAll-title`).textContent = `${leavesWith0}${water0}`; 
 }
 
 const handleClickCodeButton = () => {

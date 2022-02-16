@@ -569,3 +569,14 @@ body
   justify-content: center;
   align-items: center;
 }
+
+.wrapper-img {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.margin-right {
+  margin-right: 43px;
+  margin-bottom: 15px;
+}
