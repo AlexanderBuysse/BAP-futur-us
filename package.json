@@ -2,8 +2,10 @@
   "repository": "#",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "webpack --config ./bundler/webpack.prod.js",
-    "dev": "webpack serve --config ./bundler/webpack.dev.js"
+    "build": "webpack --config ./bundler/webpack.prod.js",
+    "dev": "webpack serve --config ./bundler/webpack.dev.js",
+    "postinstall": "webpack -p",
+    "start": "node server.js"
   },
   "dependencies": {
     "@babel/core": "^7.13.1",
