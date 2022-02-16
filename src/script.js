@@ -12,9 +12,12 @@ import imgWater from "../static/ui/water.png"
 import imgCut from "../static/ui/cut.png"
 import imgGraphLeaves from "../static/ui/graph.png"
 import imgGraphWater from "../static/ui/graphWater.png"
-import imgSliderLeaves from "../static/ui/slider.png"
 import imgArrow from "../static/ui/arrow.png"
 import imgInputCut from "../static/ui/inputCut.png"
+import svgSliderLeaves from "../static/ui/sliders/leavesSlider.svg"
+import svgSliderWater from "../static/ui/sliders/waterSlider.svg"
+import imgSliderLeaves from "../static/ui/sliders/leaves.png"
+import imgSliderWater from "../static/ui/sliders/water.png"
 
 const gui = new dat.GUI();
 document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="144" height="87" class="homeButton">`
@@ -67,7 +70,7 @@ let stopClickLeaves = false;
 let cloudsComfirmed;
 let stopClickClouds = false;
 
-let valuesSliderCloud = 5;
+let valuesSliderCloud = 50;
 
 const showUiHome = () => {
     document.querySelector(`.containerUi`).classList.add('absolute');
@@ -118,11 +121,6 @@ meshTitleMaria.position.z =-25;
 meshTitleMaria.position.y =1.2;
 meshTitleMaria.position.x =0;
 scene.add(meshTitleMaria);
-
-/*    meshBackCircle.position.z = -25;
-    meshBackCircle.position.y =-.4;
-    meshBackCircle.position.x =-.6; */
-
 
 const loadImagesAnimation = (animationName, amountFrames) => {
     const arrayOfTextures =[];
@@ -254,6 +252,20 @@ const showUiClouds = () => {
 
     document.querySelector(`.uitleg-title`).textContent = `GRONDWATER`
     document.querySelector(`.ImgleavesLogo`).src =imgWater;
+    document.querySelector(`.svgSliderLeaves`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="410.5" height="30" viewBox="0 0 410.5 30">
+    <g id="Line_2" data-name="Line 2" transform="translate(-25 15)" fill="#fff" stroke-linecap="round">
+      <path d="M 420.9703063964844 13.5 L 39.52968597412109 13.5 C 36.03794860839844 13.5 32.75847244262695 12.08815765380859 30.29531669616699 9.524526596069336 C 27.8478946685791 6.9772629737854 26.5 3.59468412399292 26.5 0 C 26.5 -3.59468412399292 27.8478946685791 -6.9772629737854 30.29531669616699 -9.524526596069336 C 32.75847244262695 -12.08815765380859 36.03794860839844 -13.5 39.52968597412109 -13.5 L 420.9703063964844 -13.5 C 424.4620666503906 -13.5 427.7415161132812 -12.08815765380859 430.2046813964844 -9.524526596069336 C 432.652099609375 -6.9772629737854 434 -3.59468412399292 434 0 C 434 3.59468412399292 432.652099609375 6.9772629737854 430.2046813964844 9.524526596069336 C 427.7415161132812 12.08815765380859 424.4620666503906 13.5 420.9703063964844 13.5 Z" stroke="none"/>
+      <path d="M 420.9703063964844 12 C 427.3380126953125 12 432.5 6.627420902252197 432.5 0 C 432.5 -6.627420902252197 427.3380126953125 -12 420.9703063964844 -12 L 39.52968597412109 -12 C 33.1619987487793 -12 28 -6.627420902252197 28 0 C 28 6.627420902252197 33.1619987487793 12 39.52968597412109 12 L 420.9703063964844 12 M 420.9703063964844 15 L 39.52968597412109 15 C 37.55442047119141 15 35.63779067993164 14.59715747833252 33.83310699462891 13.80268383026123 C 32.09963226318359 13.03963184356689 30.5454216003418 11.94989490509033 29.21368408203125 10.56378936767578 C 26.49642181396484 7.735736846923828 25 3.984105348587036 25 0 C 25 -3.984105348587036 26.49642181396484 -7.735736846923828 29.21368408203125 -10.56378936767578 C 30.5454216003418 -11.94989490509033 32.09963226318359 -13.03963184356689 33.83310699462891 -13.80268383026123 C 35.63779067993164 -14.59715747833252 37.55442047119141 -15 39.52968597412109 -15 L 420.9703063964844 -15 C 422.9455871582031 -15 424.8622131347656 -14.59715747833252 426.6669006347656 -13.80268383026123 C 428.4003601074219 -13.03963184356689 429.95458984375 -11.94989490509033 431.2863159179688 -10.56378936767578 C 434.0035705566406 -7.735736846923828 435.5 -3.984105348587036 435.5 0 C 435.5 3.984105348587036 434.0035705566406 7.735736846923828 431.2863159179688 10.56378936767578 C 429.95458984375 11.94989490509033 428.4003601074219 13.03963184356689 426.6669006347656 13.80268383026123 C 424.8622131347656 14.59715747833252 422.9455871582031 15 420.9703063964844 15 Z" stroke="none" fill="#000"/>
+    </g>
+    <g id="Rectangle_385" data-name="Rectangle 385" transform="translate(5.5 4.884)" fill="#76dffe" stroke="#000" stroke-width="3">
+      <rect class="sliderYellow" width="400" height="20" rx="10" stroke="none"/>
+      <rect class="sliderYellow" x="1.5" y="1.5" width="397" height="17" rx="8.5" fill="none"/>
+    </g>
+  </svg>`;
+    const sliderUser  = document.querySelectorAll(`.sliderYellow`);
+    sliderUser.forEach(slider => {
+        slider.style.width = `${40*Math.round((valuesSliderCloud/1.2)/10)}px`;
+    })
     document.querySelector(`.uitleg-text`).innerHTML =`De lindeboom groeit op licht vochtige standplaatsen. <br>
     We doorstaan droogte bovendien beter dan overdreven nattigheid. De grondwatertafel op het domein is erg ondiep, al sta ik op een wat hoger gelegen deel van het domein, op een ideale, licht vochtige plaats. <br> <br>
     
@@ -263,7 +275,7 @@ const showUiClouds = () => {
     
     document.querySelector(`.invloed-title`).textContent = `Jouw invloed op de neerslag:`
     document.querySelector(`.invloed-text`).textContent = 'Een hogere grondwaterpeil beïnvloedt mij op een negatieve manier. Wat verdroging zou ik nog wel kunnen hebben, maar zal zijn standplaats niet verder verbeteren.'
-
+    document.querySelector(`.imgSliderLeaves`).src =imgSliderWater;
     document.querySelector(`.imgGraphLeaves`).src = imgGraphWater;
 }
 
@@ -278,7 +290,24 @@ const showUiLeaves = () => {
 
     document.querySelector(`.uitleg-title`).innerHTML = `Organisch <br> materiaal`
     document.querySelector(`.ImgleavesLogo`).src =imgLeaves;
-    document.querySelector(`.uitleg-text`).innerHTML =`<span class="code">0000</span> Lindes verkiezen een eerder kalkrijke leembodem. 
+    document.querySelector(`.imgSliderLeaves`).src =imgSliderLeaves;
+    document.querySelector(`.svgSliderLeaves`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="410.5" height="30" viewBox="0 0 410.5 30">
+    <g id="Group_1230" data-name="Group 1230" transform="translate(-10910.5 -4913)">
+      <g id="Line_2" data-name="Line 2" transform="translate(10885.5 4928)" fill="#fff" stroke-linecap="round">
+        <path d="M 420.9703063964844 13.5 L 39.52968597412109 13.5 C 36.03794860839844 13.5 32.75847244262695 12.08815765380859 30.29531669616699 9.524526596069336 C 27.8478946685791 6.9772629737854 26.5 3.59468412399292 26.5 0 C 26.5 -3.59468412399292 27.8478946685791 -6.9772629737854 30.29531669616699 -9.524526596069336 C 32.75847244262695 -12.08815765380859 36.03794860839844 -13.5 39.52968597412109 -13.5 L 420.9703063964844 -13.5 C 424.4620666503906 -13.5 427.7415161132812 -12.08815765380859 430.2046813964844 -9.524526596069336 C 432.652099609375 -6.9772629737854 434 -3.59468412399292 434 0 C 434 3.59468412399292 432.652099609375 6.9772629737854 430.2046813964844 9.524526596069336 C 427.7415161132812 12.08815765380859 424.4620666503906 13.5 420.9703063964844 13.5 Z" stroke="none"/>
+        <path d="M 420.9703063964844 12 C 427.3380126953125 12 432.5 6.627420902252197 432.5 0 C 432.5 -6.627420902252197 427.3380126953125 -12 420.9703063964844 -12 L 39.52968597412109 -12 C 33.1619987487793 -12 28 -6.627420902252197 28 0 C 28 6.627420902252197 33.1619987487793 12 39.52968597412109 12 L 420.9703063964844 12 M 420.9703063964844 15 L 39.52968597412109 15 C 37.55442047119141 15 35.63779067993164 14.59715747833252 33.83310699462891 13.80268383026123 C 32.09963226318359 13.03963184356689 30.5454216003418 11.94989490509033 29.21368408203125 10.56378936767578 C 26.49642181396484 7.735736846923828 25 3.984105348587036 25 0 C 25 -3.984105348587036 26.49642181396484 -7.735736846923828 29.21368408203125 -10.56378936767578 C 30.5454216003418 -11.94989490509033 32.09963226318359 -13.03963184356689 33.83310699462891 -13.80268383026123 C 35.63779067993164 -14.59715747833252 37.55442047119141 -15 39.52968597412109 -15 L 420.9703063964844 -15 C 422.9455871582031 -15 424.8622131347656 -14.59715747833252 426.6669006347656 -13.80268383026123 C 428.4003601074219 -13.03963184356689 429.95458984375 -11.94989490509033 431.2863159179688 -10.56378936767578 C 434.0035705566406 -7.735736846923828 435.5 -3.984105348587036 435.5 0 C 435.5 3.984105348587036 434.0035705566406 7.735736846923828 431.2863159179688 10.56378936767578 C 429.95458984375 11.94989490509033 428.4003601074219 13.03963184356689 426.6669006347656 13.80268383026123 C 424.8622131347656 14.59715747833252 422.9455871582031 15 420.9703063964844 15 Z" stroke="none" fill="#000"/>
+      </g>
+      <g id="Rectangle_375" data-name="Rectangle 375" transform="translate(10916 4917.884)" fill="#fff553" stroke="#000" stroke-width="3">
+        <rect class="sliderYellow" width="400" height="20" rx="10" stroke="none"/>
+        <rect class="sliderYellow" x="1.5" y="1.5" width="397" height="17" rx="8.5" fill="none"/>
+      </g>
+    </g>
+  </svg>`;
+    const sliderUser  = document.querySelectorAll(`.sliderYellow`);
+    sliderUser.forEach(slider => {
+        slider.style.width = `${40*leavesComfirmed}px`;
+    })
+    document.querySelector(`.uitleg-text`).innerHTML =`Lindes verkiezen een eerder kalkrijke leembodem. 
     Het domein bestaat echter uit voedselarm, zuur zand. <br> <br>
     
     Gelukkig is de linde een echte ‘bodembouwer’: ze pompt calcium en andere mineralen op uit diepere bodemlagen. Die geeft ze in de herfst terug af via hun bladafval. Dit zal 
@@ -287,6 +316,7 @@ const showUiLeaves = () => {
     Je laat het afgevallen blad dus best liggen om de grond te composteren. Gegeven de omstandigheden van de standplaats zou het zelfs een goed idee zijn om nog extra bladafval van boomsoorten met goed verteerbare bladeren toe te voegen (zoals linde, hazelaar en vogelkers). <br> <br>
     
     Bladeren van eiken en beuken zijn dan weer slecht verteerbaar, wat een negatieve impact heeft op de bodem.</p>`
+    document.querySelector(`.invloed-title`).textContent = `Jouw invloed op bladafval:` 
     document.querySelector(`.invloed-text`).textContent = 'Door bladafval te verwijderen wordt de grond nog zuurder dan hij al is. Allesbehalve ideaal dus voor een lindeboom.'
     document.querySelector(`.imgGraphLeaves`).src = imgGraphLeaves;
 
@@ -321,8 +351,6 @@ const codeScreen = () => {
     <article class="overzichtAll">
       <h2 class="overzichtAll-title">OVERZICHT</h2>
       <img class="imgInputCut" src="${imgInputCut}" alt="input" width="760" height="80">
-      <img class="imgInputCut" src="${imgInputCut}" alt="input" width="760" height="80">
-      <img class="imgInputCut" src="${imgInputCut}" alt="input" width="760" height="80">
     </article>
     <article class="codeAll">
       <h2 class="codeAll-title">3481</h2> 
@@ -353,10 +381,11 @@ const codeScreen = () => {
     }
 
     if(leavesComfirmed === 10) {
-        document.querySelector(`.codeAll-title`).textContent = `${leavesComfirmed}${Math.round(valuesSliderCloud/10)}`;
+    } else if(leavesComfirmed === 0 ) {   
     } else {
-        document.querySelector(`.codeAll-title`).textContent = `0${leavesComfirmed}${Math.round(valuesSliderCloud/10)}`;  
     }
+
+    document.querySelector(`.codeAll-title`).textContent = `0${leavesComfirmed}${Math.round((valuesSliderCloud/1.2)/10)}`; 
 }
 
 const handleClickCodeButton = () => {
@@ -452,9 +481,9 @@ const loadPhaser = () => {
         this.load.image('titleLeave', 'interaction1design/title.png')    
         
         this.load.image('backgroundCloud', 'interactieWater/background.png');
-        this.load.image('layer', 'testClouds/layers.png');
-        this.load.image('layer1', 'testClouds/layers1.png');
-        this.load.image('layer2', 'testClouds/layers2.png');
+        this.load.image('layer', 'testClouds/wave1.png');
+        this.load.image('layer1', 'testClouds/wave2.png');
+        this.load.image('layer2', 'testClouds/wave3.png');
         this.load.image('titleWater', 'interactieWater/title.png');
         this.load.html('slider', 'testClouds/slider.html');
     }
@@ -466,6 +495,9 @@ const loadPhaser = () => {
 
 
     function create () {
+        if ( document.querySelector(`.slider`)) {
+            document.querySelector(`.slider`).style.display = "none";
+        }
         const homeButton = document.querySelector(`.homeButton`);
         const handleClickHomeButton = (e) => {
             modal.style.display = "none";
@@ -632,16 +664,27 @@ const loadPhaser = () => {
             layerTwo = this.add.image(840, 900, 'layer1');
             layerThree = this.add.image(840, 920, 'layer2');
 
-            let slider = this.add.dom(400,400).createFromCache('slider');
+            let slider = this.add.dom(1500, 800).createFromCache('slider');
             slider.addListener('input');
 
             slider.on('input', function (event) {
                 if( event.target.name ='slider') {
-                    const sliderValue = event.target.value;
-                    layerOne.y = 880 - sliderValue;
-                    layerTwo.y = 900 - (.6*sliderValue);
-                    layerThree.y = 920 -  (.5*sliderValue);
-                    valuesSliderCloud = event.target.value;
+                    console.log(event.target.value);
+                    if(event.target.value <= 50){
+                        const sliderValue = event.target.value;
+                        layerOne.y = 1080 - (sliderValue*2);
+                        layerTwo.y = 1100 - (sliderValue*2);
+                        layerThree.y = 1120 -  (sliderValue*2);
+                        console.log(layerOne.y, layerTwo.y, layerThree.y)
+                        valuesSliderCloud = event.target.value;    
+                    } else {
+                        const sliderValue = event.target.value;
+                        layerOne.y = 1027 - sliderValue;
+                        layerTwo.y = 1149 - (3*sliderValue);
+                        layerThree.y = 1098 -  (2*sliderValue);
+                        console.log(layerOne.y, layerTwo.y, layerThree.y)
+                        valuesSliderCloud = event.target.value;    
+                    }
                 }
             });
         }
