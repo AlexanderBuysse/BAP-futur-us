@@ -38,6 +38,31 @@ body
 {
     height: 100vh;
     font-family: 'Poppins';
+    line-height: 30px;
+}
+
+@font-face {
+  font-family: picadilly;
+  src: url(assets/fonts/4a021628d8df446c89eaf9acc0038b17.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: picadillyBold;
+  src: url(assets/fonts/125a34d088c92b3be0a382303edfab79.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: TestTiemposText;
+  src: url(assets/fonts/94992b657022a941b913048e95c7e9da.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: TestTiemposTextBold;
+  src: url(assets/fonts/e8669d8711bf506ca068e801288150a0.otf);
+  font-weight: normal;
 }
 
 .webgl
@@ -228,6 +253,7 @@ body
 
   .introText {
     padding-right: 130px;
+    margin-top: 17px;
   }
 
   .smallpad {
@@ -265,14 +291,14 @@ body
   }
 
   .baskerExtreBold {
-    font-family: baskerville-urw, serif;
+    font-family: picadillyBold, serif;
     font-weight: 800;
     font-style: normal;
     font-size: 22px;
   }
 
   .baskerMedium {
-    font-family: baskerville-urw, serif;
+    font-family: picadilly, serif;
     font-weight: 500;
     font-style: normal;
   }
@@ -295,13 +321,13 @@ body
     background-position: 26px center;
     background-repeat: no-repeat;
     padding-top: 28px;
-    padding-left: 61px;
+    padding-left: 75px;
     padding-right: 82px;
   }
 
   .openingTime {
-    margin-top: 30px;
-    margin-bottom: 19px;
+    margin-top: 63px;
+    margin-bottom: 36px;
     padding-left: 46px;
   }
 
@@ -372,6 +398,7 @@ body
   .overzicht {
     font-size: 24px;
     display: grid;
+    height: 856px;
   }
 
   .overzichtBlue {
@@ -409,6 +436,13 @@ body
     "codeAll infoAll uit";
   }
 
+  .infAll-text {
+    font-family: picadilly, serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+  }
+
   .overzichtAll {
     grid-area: overzichtAll;
     display: flex;
@@ -440,6 +474,7 @@ body
     font-style: normal;
     line-height: 41px;
     margin-bottom: 25px;
+    margin-top: 20px;
   }
 
   .uit-width {
@@ -447,13 +482,20 @@ body
   }
 
   .uit-text {
-    font-size: 20px;
+    font-family: TestTiemposText, sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 18px;
+    width: 392px;
   }
 
   .uit-textbold {
-    font-family: kepler-std, serif;
+    font-family: TestTiemposTextBold, sans-serif;
     font-weight: 700;
     font-style: normal;
+    font-size: 18px;
+    width: 392px;
+    margin-top: 42px;
   }
 
   .codeAll {
@@ -504,6 +546,15 @@ body
     line-height: 45px;
   }
 
+  .uitleg-text {
+    font-family: picadilly, serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+    width: 526px;
+    line-height: 30px;
+  }
+
   .uitleg-divTitle {
     display: flex;
     align-items: center;
@@ -528,6 +579,18 @@ body
   .invloed-subtitle {
     margin-top: 40px;
     margin-bottom: 8px;
+    font-family: picadillyBold, serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+  }
+
+  .invloed-text {
+    font-family: picadilly, serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+    width: 535px;
   }
 
   .domein {
@@ -545,24 +608,6 @@ body
   .checkSubmenu {
     margin-left: 459px;
   }
-
-  .sliderImg::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%; 
-    background: #04AA6D;
-    cursor: pointer;
-}
-
-.sliderImg::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #04AA6D;
-    cursor: pointer;
-}
 
 .center {
   display: flex;
