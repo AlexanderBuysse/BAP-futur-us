@@ -71,7 +71,7 @@ module.exports = {
 
             // Fonts
             {
-                test: /\.(ttf|eot|woff|woff2)$/,
+                test: /\.(otf|eot|woff|woff2)$/,
                 use:
                 [
                     {

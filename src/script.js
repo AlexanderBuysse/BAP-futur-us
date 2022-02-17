@@ -1,6 +1,5 @@
 import './style.css'
 import * as THREE from 'three'
-import * as dat from 'dat.gui'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min'
 import Phaser from "phaser";
 import imgHomeButton from "../static/ui/homeButton.png"
