@@ -17,7 +17,6 @@ import imgInputCut from "../static/ui/inputCut.png"
 import imgSliderLeaves from "../static/ui/sliders/leaves.png"
 import imgSliderWater from "../static/ui/sliders/water.png"
 
-const gui = new dat.GUI();
 document.querySelector(`.image-container`).innerHTML  = `<img src="${imgHomeButton}" alt="image" width="144" height="87" class="homeButton">`
 document.querySelector(`.image-container`).innerHTML  += `<img src="${imgInfoTree}" alt="image" width="335" height="151" class="info">`
 document.querySelector(`.image-container`).innerHTML  += `<img src="${imgcheck}" alt="image" width="144" height="87" class="check">`
@@ -1107,9 +1106,6 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = 8.2
 camera.position.y = 1.6
 camera.position.z = 5.3
-gui.add(camera.position, 'x');
-gui.add(camera.position, 'y');
-gui.add(camera.position, 'z');
 scene.add(camera);
 /**
  * Renderer
