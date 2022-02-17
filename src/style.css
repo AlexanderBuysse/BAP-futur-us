@@ -372,6 +372,7 @@ body
   .overzicht {
     font-size: 24px;
     display: grid;
+    height: 856px;
   }
 
   .overzichtBlue {
@@ -546,24 +547,6 @@ body
     margin-left: 459px;
   }
 
-  .sliderImg::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%; 
-    background: #04AA6D;
-    cursor: pointer;
-}
-
-.sliderImg::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: #04AA6D;
-    cursor: pointer;
-}
-
 .center {
   display: flex;
   flex-direction: column;
@@ -580,4 +563,16 @@ body
 .margin-right {
   margin-right: 43px;
   margin-bottom: 15px;
+}
+
+@font-face {
+  font-family: picadilly;
+  src: url(../static/fonts/Picadilly.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: picadilly;
+  src: url(../static/fonts/PicadillyBold.otf);
+  font-weight: bold;
 }
