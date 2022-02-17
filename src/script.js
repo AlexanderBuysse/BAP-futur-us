@@ -396,14 +396,12 @@ const codeScreen = () => {
       <h2 class="uit-title uit-width">TILIA NODIGT JE UIT</h2>
       <p class="uit-text">
         Tilia Through Time is een installatie dat aan de hand van licht en geluid het
-        leven van een van de grootste lindebomen van België blood legt. <br>
+        leven van een van de grootste lindebomen van België blood legt. <br> <br>
         Hoor hoe sappen door de dikke stam van de boom sijpelen om te 
         communiceren met omliggende flora en zie hoe de kroon kaal wordt door ziekte of ouderdom.
       </p>
       <p class="uit-textbold">Bij het ingeven van jouw code ervaar je hoe de boom zou reageren op
          de omstandigheden die jij op deze site voor haar hebt gecreëerd.</p>
-         <p>Mariahovelaan 2, <br> 
-          9881 Aalter</p>
       <h3 class="uit-title">18 FEBRUARI <br> 17 uur - 21 uur</h3>
     </article>`;
     overzicht.classList.remove('overzichtBlue');
